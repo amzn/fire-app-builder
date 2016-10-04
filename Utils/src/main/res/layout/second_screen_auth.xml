@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#F1000000"
+              android:orientation="vertical"
+              tools:context="com.amazon.android.ui.activities.SecondScreenAuthenticationActivity">
+
+    <ImageView
+            android:id="@+id/main_logo"
+            android:layout_width="116dp"
+            android:layout_height="46dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="56dp"
+            android:layout_marginTop="27dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/company_logo"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="100dp"
+            android:text="@string/second_screen_login_instruction_line_1"
+            android:textSize="28sp"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="100dp"
+            android:text="@string/second_screen_login_instruction_line_2"
+            android:textSize="28sp"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="100dp"
+            android:text="@string/second_screen_login_instruction_line_3"
+            android:textSize="28sp"/>
+
+    <TextView
+            android:id="@+id/login_instruction_reg_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="100dp"
+            android:text="@string/second_screen_login_instruction_line_4"
+            android:textAllCaps="true"
+            android:textSize="36sp"
+            android:textStyle="bold"/>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp"
+            android:layout_marginLeft="100dp"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+        <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/action_button_background"
+                android:textColor="@drawable/action_button_text_color_selector"
+                android:minWidth="200dp"
+                android:minHeight="48dp"
+                android:text="@string/btn_submit"/>
+
+        <Button
+                android:id="@+id/btn_get_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:textColor="@drawable/action_button_text_color_selector"
+                android:background="@drawable/action_button_background"
+                android:minWidth="200dp"
+                android:minHeight="48dp"
+                android:text="@string/btn_get_new_code"/>
+
+    </LinearLayout>
+</LinearLayout>

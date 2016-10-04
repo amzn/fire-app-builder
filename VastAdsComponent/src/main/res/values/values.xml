@@ -1,0 +1,17 @@
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+    <string name="vast_preroll_tag">"https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&amp;iu=/124319096/external/single_ad_samples&amp;ciu_szs=300x250&amp;impl=s&amp;gdfp_req=1&amp;env=vp&amp;output=vast&amp;unviewed_position_start=1&amp;cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&amp;correlator="</string>
+</resources>

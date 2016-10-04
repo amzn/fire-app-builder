@@ -1,0 +1,10 @@
+{
+  "recipeCooker": "com.amazon.dynamicparser.DynamicParser",
+  "format": "json",
+  "model": "com.amazon.parserprototype.model.ContentContainer",
+  "modelType": "array",
+  "conversionType": "dynamic",
+  "query": "$.categories[?(@.type == 'category')]",
+  "matchList": ["id@id"],
+  "keyDataPath": "data@keyDataPath"
+}

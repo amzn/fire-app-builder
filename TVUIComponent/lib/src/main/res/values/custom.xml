@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+
+<resources>
+
+    <!-- Feed configuration file -->
+    <string name="feed_configuration_url_file">media_urls.json</string>
+
+    <!-- Splash Screen Customization -->
+
+    <!-- Background image for splash screen -->
+    <drawable name="splash_background">@drawable/bg_generic_nopreview</drawable>
+    <!-- Company logo to show on Splash Screen -->
+    <drawable name="splash_logo">@drawable/fire_app_builder_white</drawable>
+    <!-- Color of splash screen loader -->
+    <color name="spinner_color">#FFFFFF</color>
+    <!-- Alpha of spinner -->
+    <integer name="spinner_alpha">60</integer>
+    <!-- color of loading and reloading text-->
+    <color name="feed_loading">#E6FFFFFF</color>
+
+    <!-- Copyright string text color -->
+    <color name="copyright">#E6FFFFFF</color>
+
+    <!-- End of Splash Screen Customization -->
+
+    <!-- Related Content & Recommendations Customization -->
+    <bool name="show_recommendations">true</bool>
+
+    <!-- End of Related Content & Recommendations Customization -->
+
+    <!-- Browse Customization -->
+
+    <!-- The background gradient color, if no background drawable is provided.
+         Used in default_background.xml -->
+    <color name="background_gradient_start">#000000</color>
+    <color name="background_gradient_end">#DDDDDD</color>
+    <!-- The header's bar color (left-hand navigation bar) -->
+    <color name="browse_headers_bar">#0DFFFFFF</color>
+    <!-- Selected header text color -->
+    <color name="browse_header_selected">#FFFFFFFF</color>
+    <!-- Non-selected header text color -->
+    <color name="browse_header">#CCD8D8D8</color>
+    <!-- Header color when left-hand navigation bar is closed
+         and rows are showing full screen -->
+    <color name="browse_row_header">#99FFFFFF</color>
+    <!-- Search orb color (the circle shape around the search icon) -->
+    <color name="search_orb">#EE962D</color>
+    <!-- Header text size -->
+    <dimen name="browse_header_text">16sp</dimen>
+    <!-- Company logo -->
+    <drawable name="company_logo">@drawable/fire_app_builder_white_2</drawable>
+    <!-- Background image -->
+    <drawable name="browse_background">@drawable/bg_generic</drawable>
+    <!-- Background image without preview -->
+    <drawable name="browse_background_no_preview">@drawable/bg_generic_nopreview</drawable>
+
+    <!-- End of Browse Customization -->
+
+    <!-- Movie Info Card Customization -->
+
+    <!-- Background color of the card info -->
+    <color name="card_info_bg">#2B2B2B</color>
+    <!-- Card info title text color -->
+    <color name="card_info_title_text">#E6FFFFFF</color>
+    <!-- Card info content text color -->
+    <color name="card_info_content_text">#FFFFFFFF</color>
+    <!-- Card info title text size -->
+    <dimen name="card_info_title_text">8sp</dimen>
+    <!-- Card info content text size -->
+    <dimen name="card_info_content_text">12sp</dimen>
+    <!-- Card info selected title text size -->
+    <dimen name="card_info_selected_title_text">10sp</dimen>
+    <!-- Card info selected content text size -->
+    <dimen name="card_info_selected_content_text">15sp</dimen>
+    <!-- End of Movie Info Card Customization -->
+
+    <!-- Details Customization -->
+
+    <!-- Text color for unfocused action button -->
+    <color name="action_button_text_color">#E6FFFFFF</color>
+    <!-- Text color for focused action button -->
+    <color name="action_button_text_color_focused">#E6FFFFFF</color>
+    <!-- Background color for focused action button -->
+    <drawable name="action_button_focused">@drawable/btn_generic_focused</drawable>
+    <!-- Background color for normal state of action button -->
+    <drawable name="action_button_normal">@drawable/btn_normal</drawable>
+    <!-- Details description title text color -->
+    <color name="details_description_title">#E6FFFFFF</color>
+    <!-- Details description subtitle text color -->
+    <color name="details_description_subtitle">#B3FFFFFF</color>
+    <!-- Details description body text color -->
+    <color name="details_description_body">#FFFFFFFF</color>
+    <!-- Details description extended body text color -->
+    <color name="details_description_extended">#D8D8D8</color>
+    <!-- Action button text size -->
+    <dimen name="action_text">14sp</dimen>
+    <!-- Details description title text size -->
+    <dimen name="details_description_title_text">24sp</dimen>
+    <!-- Details description subtitle text size -->
+    <dimen name="details_description_subtitle_text">10sp</dimen>
+    <!-- Details description body text size -->
+    <dimen name="details_description_body_text">16sp</dimen>
+    <!-- Details description extended body text size -->
+    <dimen name="details_description_extended_text">15sp</dimen>
+    <!-- End of Details Customization -->
+
+    <!-- Playback Overlay Customization -->
+
+    <!-- Background color of the playback overlay -->
+    <color name="playback_background">#FF292929</color>
+    <!-- Background color of the progress bar -->
+    <color name="playback_background_progress_bar">#FF373737</color>
+    <!-- Color of buffered progress bar -->
+    <color name="playback_buffered_progress">#FF5A5A5A</color>
+    <!-- Color of the progress bar -->
+    <color name="progress_bar">#FFDADADA</color>
+    <!-- Text color of the playback time -->
+    <color name="playback_time_text">#FFFFFFFF</color>
+    <!-- Hide More options status activation status-->
+    <bool name="hide_more_options">true</bool>
+
+    <!-- End of Playback Overlay Customization -->
+
+    <!-- Search Bar Customization -->
+
+    <!-- Background color of search orb -->
+    <color name="search_orb_background">#EE962D</color>
+    <!-- Icon to display inside of search orb -->
+    <drawable name="search_icon">@drawable/ic_search</drawable>
+    <!-- Background color of Search screen -->
+    <drawable name="search_background">@drawable/bg_gradient_search</drawable>
+    <!-- End of Search Bar Customization -->
+
+    <!-- Error Activity Customization -->
+
+    <dimen name="error_message_text_size">16sp</dimen>
+    <color name="error_message_text_color">#E6FFFFFF</color>
+    <integer name="error_button_height">64</integer>
+    <color name="error_button_focus_color">#12A3F4</color>
+    <!-- End of Error Activity Customization -->
+
+
+    <!-- Content Reload time in milliseconds -->
+
+    <integer name="time_to_reload_content">14400000</integer>
+
+    <!-- End Content Reload time in milliseconds -->
+
+    <!-- Drm encryption schema, Allowed options are ENCRYPTION_DEFAULT, ENCRYPTION_PLAYREADY,
+    ENCRYPTION_WIDEVINE-->
+    <string name="drm_encryption_schema">ENCRYPTION_DEFAULT</string>
+</resources>

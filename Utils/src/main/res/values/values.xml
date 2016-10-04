@@ -1,0 +1,26 @@
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+    <integer name="ellipsized_text_view_max_characters">1700</integer>
+    <integer name="slide_show_slow_speed">10000</integer>
+    <integer name="slide_show_middle_speed">5000</integer>
+    <integer name="slide_show_fast_speed">3000</integer>
+    <integer name="slide_show_fade_anim_duration">600</integer>
+    <string name="logout_settings_fragment_tag">logout_settings_fragment</string>
+    <string name="notice_settings_fragment_tag">notice_settings_fragment</string>
+    <string name="slideshow_settings_fragment_tag">slideshow_settings_fragment</string>
+
+</resources>
+

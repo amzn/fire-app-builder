@@ -1,0 +1,16 @@
+{
+  "cooker": "DynamicParser",
+  "format": "xml",
+  "model": "com.amazon.android.model.content.Content",
+  "translator": "ContentTranslator",
+  "modelType": "array",
+  "query": "rss/channel/item",
+  "matchList": [
+    "title/#text@title",
+    "id/#text@id",
+    "description/#text@description",
+    "image/#text@url",
+    "image/#text@cardImageUrl",
+    "image/#text@backgroundImageUrl"
+  ]
+}

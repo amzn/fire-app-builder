@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+  <string name="app_name">Utils</string>
+  <string name="feed_error_message">サービスを使用できません。 後でもう一度お試しください。</string>
+  <string name="network_error_message">ネットワークがありません。後でもう一度お試しください。</string>
+  <string name="registration_code_error_message">登録コードの取得中にエラーが発生しました。このメッセージを閉じてもう一度お試しください。</string>
+  <string name="authentication_error_message">詳細情報の認証中にエラーが発生しました\r\nもう一度情報を入力するか、ケーブルプロバイダーに連絡してこのコンテンツへのアクセス許可をリクエストしてください。</string>
+  <string name="authorization_error_message">このコンテンツの表示権限がありません。\r\nケーブルプロバイダーに連絡してこのコンテンツへのアクセス許可をリクエストしてください。</string>
+  <string name="logout_success_message">ログアウトしました。間もなく詳細ページが開きます。</string>
+  <string name="logout_failure_message">ログアウトできませんでした。もう一度お試しください。</string>
+  <string name="playback_error_message">再生できませんでした。もう一度お試しください。</string>
+  <string name="try_again_label">再試行</string>
+  <string name="exit_app_label">アプリケーションを終了</string>
+  <string name="go_to_network_settings_label">ネットワーク設定画面を開く</string>
+  <string name="dismiss_label">閉じる</string>
+  <string name="login_label">ログイン</string>
+  <string name="logout_label">ログアウト</string>
+  <string name="slideshow_label">スライドショーの設定</string>
+  <string name="auto_play_speed">スライドの速度</string>
+  <string name="terms_title">利用規約</string>
+  <string name="terms_description">法律に関する通知を表示します。</string>
+  <string name="slideshow_title">スライドショーの速度</string>
+  <string name="slideshow_description">スライドショーの速度を設定します。</string>
+  <string name="logout_description">アカウントからログアウトします。</string>
+  <string name="login_description">アカウントにログインします。</string>
+  <string name="logout_dialog_description">ログアウトしますか?</string>
+  <string name="login_dialog_description">ログインしていません。ビデオを選択して再生するにはログインしてください。</string>
+  <string name="logout_dialog_option_1">はい</string>
+  <string name="logout_dialog_option_2">いいえ</string>
+  <string name="powered_by">Powered by:</string>
+  <string name="btn_submit">送信</string>
+  <string name="btn_get_new_code">新しいコードを取得</string>
+  <string name="second_screen_login_instruction_line_1">コンピューターまたはモバイル端末を使用します。</string>
+  <string name="second_screen_login_instruction_line_3">以下のコード（大文字小文字を区別）を入力します。</string>
+  <string name="second_screen_login_instruction_line_4">読み込み中…</string>
+</resources>

@@ -1,0 +1,13 @@
+{
+  "recipeCooker": "com.amazon.dynamicparser.DynamicParser",
+  "format": "json",
+  "model": "com.amazon.utils.testresources.DummyModelTranslator.TestObject",
+  "modelType": "",
+  "conversionType": "",
+  "query": "",
+  "matchList": [
+    "field1@field1",
+    "field2@field2"
+  ],
+  "keyDataPath": ""
+}

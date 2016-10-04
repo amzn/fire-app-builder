@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:feedLoc="urn:Feeds:Location" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Content Mix for AP Top News Videos</title>
+    <link>http://www.screenfeed.com/</link>
+    <description>Screenfeed Content Server</description>
+    <docs>http://www.rssboard.org/rss-specification</docs>
+    <generator>Screenfeed Content Server</generator>
+    <lastBuildDate>Mon, 08 Dec 2014 05:08:45 GMT</lastBuildDate>
+    <ttl>5</ttl>
+    <item>
+      <title>Chlorine gas leak sickens 19 at furry convention</title>
+      <description>A suburban Chicago hotel hosting an annual furries convention, the Midwest FurFest, was forced to evacuate after chlorine powder was discovered in a stairwell. (Dec. 7)</description>
+      <guid isPermaLink="false">TmqrDBITplykL76AQxhZVg2</guid>
+      <pubDate>Mon, 08 Dec 2014 05:08:45 GMT</pubDate>
+      <category>News Video: Select Top News</category>
+      <enclosure length="20545121" type="video/quicktime" url="http://samples.screenfeed.com/public/top-news-video/853x480/nLA7E1MfhUK2OZ_z7C0H_g-853x480-1.mov" />
+      <media:content url="http://samples.screenfeed.com/public/top-news-video/853x480/nLA7E1MfhUK2OZ_z7C0H_g-853x480-1.mov" fileSize="20545121" type="video/quicktime" medium="video" duration="74.768" height="480" width="853">
+        <media:title type="plain">Chlorine gas leak sickens 19 at furry convention</media:title>
+        <media:credit>Copyright The Associated Press</media:credit>
+        <media:thumbnail url="http://samples.screenfeed.com/public/top-news-video/853x480/nLA7E1MfhUK2OZ_z7C0H_g-853x480-1.mov" />
+      </media:content>
+      <dc:creator>Copyright The Associated Press</dc:creator>
+    </item>
+    <item>
+      <title>Monster truck show eyes global destruction</title>
+      <description>Monster truck shows have long packed arenas in the U.S. with their loud engines and dangerous stunts. Now, the uniquely American phenomenon is rumbling across international boundaries on giant wheels. (Dec. 5)</description>
+      <guid isPermaLink="false">43JJUYFP1VVeABMZRvhgfQ2</guid>
+      <pubDate>Fri, 05 Dec 2014 07:37:04 GMT</pubDate>
+      <category>News Video: Select Top News</category>
+      <enclosure length="28290670" type="video/quicktime" url="http://samples.screenfeed.com/public/top-news-video/853x480/HpPNLO6O2UCavtHr4USfIQ-853x480-1.mov" />
+      <media:content url="http://samples.screenfeed.com/public/top-news-video/853x480/HpPNLO6O2UCavtHr4USfIQ-853x480-1.mov" fileSize="28290670" type="video/quicktime" medium="video" duration="102.562" height="480" width="853">
+        <media:title type="plain">Monster truck show eyes global destruction</media:title>
+        <media:credit>Copyright The Associated Press</media:credit>
+        <media:thumbnail url="http://samples.screenfeed.com/public/top-news-video/853x480/HpPNLO6O2UCavtHr4USfIQ-853x480-1.mov" />
+      </media:content>
+      <dc:creator>Copyright The Associated Press</dc:creator>
+    </item>
+    <item>
+      <title>Adorable mini-horses visit sick kids in hospital</title>
+      <description>Two miniature horses named Mystery and Lunar are bringing comfort and joy to sick children at a Chicago hospital. Animal therapy, usually using dogs, is a growing trend in hospitals that may help in the healing process. (Dec. 4)</description>
+      <guid isPermaLink="false">wfeSbGJ_gPmgmdlXN0BZ3g2</guid>
+      <pubDate>Thu, 04 Dec 2014 07:35:10 GMT</pubDate>
+      <category>News Video: Select Top News</category>
+      <enclosure length="29563906" type="video/quicktime" url="http://samples.screenfeed.com/public/top-news-video/853x480/j2hkxJF1jUOiwxjno6oBaw-853x480-1.mov" />
+      <media:content url="http://samples.screenfeed.com/public/top-news-video/853x480/j2hkxJF1jUOiwxjno6oBaw-853x480-1.mov" fileSize="29563906" type="video/quicktime" medium="video" duration="107.183" height="480" width="853">
+        <media:title type="plain">Adorable mini-horses visit sick kids in hospital</media:title>
+        <media:credit>Copyright The Associated Press</media:credit>
+        <media:thumbnail url="http://samples.screenfeed.com/public/top-news-video/853x480/j2hkxJF1jUOiwxjno6oBaw-853x480-1.mov" />
+      </media:content>
+      <dc:creator>Copyright The Associated Press</dc:creator>
+    </item>
+    <item>
+      <title>AP EXCLUSIVE: Kobani's last medical station</title>
+      <description>A small team of doctors and nurses providing the only remaining medical services in the Syrian border town of Kobani is preparing for a new surge of admissions as fighting intensifies. (Dec. 3)</description>
+      <guid isPermaLink="false">3rg6AzQKD0uY9FAlugFg3Q2</guid>
+      <pubDate>Wed, 03 Dec 2014 22:04:05 GMT</pubDate>
+      <category>News Video: Select Top News</category>
+      <enclosure length="25856213" type="video/quicktime" url="http://samples.screenfeed.com/public/top-news-video/853x480/Ee8r2zp-skGZ8KDYUgCSqg-853x480-1.mov" />
+      <media:content url="http://samples.screenfeed.com/public/top-news-video/853x480/Ee8r2zp-skGZ8KDYUgCSqg-853x480-1.mov" fileSize="25856213" type="video/quicktime" medium="video" duration="94.598" height="480" width="853">
+        <media:title type="plain">AP EXCLUSIVE: Kobani's last medical station</media:title>
+        <media:credit>Copyright The Associated Press</media:credit>
+        <media:thumbnail url="http://samples.screenfeed.com/public/top-news-video/853x480/Ee8r2zp-skGZ8KDYUgCSqg-853x480-1.mov" />
+      </media:content>
+      <dc:creator>Copyright The Associated Press</dc:creator>
+    </item>
+    <item>
+      <title>Ashton Carter is Obama's likely Pentagon pick</title>
+      <description>Administration officials say Ashton Carter, a physicist with deep Pentagon experience, has emerged as the top candidate to succeed Chuck Hagel as defense secretary. But they caution that President Barack Obama hasn't made a final decision. (Dec. 2)</description>
+      <guid isPermaLink="false">OypXSO5sFwJZb-pAd2ZANA2</guid>
+      <pubDate>Tue, 02 Dec 2014 23:32:17 GMT</pubDate>
+      <category>News Video: Select Top News</category>
+      <enclosure length="28101972" type="video/quicktime" url="http://samples.screenfeed.com/public/top-news-video/853x480/lNheP3C8E0KbeQ2XPziElg-853x480-1.mov" />
+      <media:content url="http://samples.screenfeed.com/public/top-news-video/853x480/lNheP3C8E0KbeQ2XPziElg-853x480-1.mov" fileSize="28101972" type="video/quicktime" medium="video" duration="102.098" height="480" width="853">
+        <media:title type="plain">Ashton Carter is Obama's likely Pentagon pick</media:title>
+        <media:credit>Copyright The Associated Press</media:credit>
+        <media:thumbnail url="http://samples.screenfeed.com/public/top-news-video/853x480/lNheP3C8E0KbeQ2XPziElg-853x480-1.mov" />
+      </media:content>
+      <dc:creator>Copyright The Associated Press</dc:creator>
+    </item>
+  </channel>
+</rss>

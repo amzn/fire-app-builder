@@ -1,0 +1,4 @@
+{
+  "base_url" : "config_base_url$$token$$config_base_url_postfix",
+  "token_generation_url" : "config_token_generation_url"
+}

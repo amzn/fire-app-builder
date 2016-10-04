@@ -1,0 +1,27 @@
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+    <integer name="lb_playback_controls_show_time_ms">5000</integer>
+    <integer name="content_details_fragment_bg_opacity">180</integer>
+    <integer name="details_description_body_max_lines">4</integer>
+    <integer name="details_description_max_characters">1700</integer>
+    <integer name="background_timer_delay">300</integer>
+    <integer name="details_overview_image_corner_radius">5</integer>
+
+    <!-- Global Search -->
+    <!-- The action label for global search -->
+    <string name="global_search">GLOBALSEARCH</string>
+</resources>
+

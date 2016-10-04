@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+
+<resources>
+
+    <!-- Details fragment customization -->
+    <dimen name="lb_action_text_size">@dimen/action_text</dimen>
+    <dimen name="lb_details_overview_actions_height">48dp</dimen>
+    <dimen name="lb_action_1_line_height">28dp</dimen>
+    <dimen name="lb_action_2_lines_height">48dp</dimen>
+    <dimen name="lb_details_description_title_line_spacing">24dp</dimen>
+    <dimen name="lb_details_description_title_text_size">@dimen/details_description_title_text
+    </dimen>
+    <dimen name="lb_details_description_subtitle_text_size">
+        @dimen/details_description_subtitle_text
+    </dimen>
+    <dimen name="lb_details_description_body_text_size">@dimen/details_description_body_text</dimen>
+    <dimen name="lb_details_overview_description_margin_top">30dp</dimen>
+    <!-- Change to move content_details_activity_layout image right -->
+    <dimen name="lb_details_overview_margin_start">@dimen/lb_browse_padding_start</dimen>
+    <dimen name="lb_details_overview_margin_end">188dp</dimen>
+    <dimen name="lb_details_overview_z">0dp</dimen>
+    <dimen name="lb_details_rows_align_top">114dp</dimen>
+    <dimen name="lb_details_overview_image_margin_horizontal">0dp</dimen>
+    <!-- Can push up buttons but will cut off description if up too high.
+         Set to be aligned with bottom of image for now -->
+    <dimen name="lb_details_overview_description_margin_bottom">35dp</dimen>
+    <!-- space between action buttons-->
+    <dimen name="lb_details_overview_action_items_margin">8dp</dimen>
+
+    <!-- Playback fragment customization -->
+    <dimen name="lb_playback_controls_z">4dp</dimen>
+    <dimen name="lb_playback_description_margin_end">56dp</dimen>
+    <dimen name="lb_playback_description_margin_start">56dp</dimen>
+    <dimen name="lb_playback_description_margin_top">24dp</dimen>
+    <dimen name="lb_playback_controls_time_text_size">14sp</dimen>
+    <dimen name="lb_playback_current_time_margin_start">8dp</dimen>
+    <dimen name="lb_playback_total_time_margin_end">8dp</dimen>
+    <dimen name="lb_playback_controls_margin_bottom">16dp</dimen>
+    <dimen name="lb_playback_controls_card_height">64dp</dimen>
+    <dimen name="lb_playback_controls_align_bottom">58dp</dimen>
+    <dimen name="lb_playback_controls_padding_bottom">28dp</dimen>
+    <dimen name="lb_playback_major_fade_translate_y">200dp</dimen>
+    <dimen name="lb_playback_minor_fade_translate_y">36dp</dimen>
+    <!-- Browse fragment customization -->
+    <dimen name="lb_search_orb_size">32dp</dimen>
+    <dimen name="lb_browse_headers_vertical_margin">8dp</dimen>
+    <dimen name="lb_browse_rows_margin_top">100dp</dimen>
+    <!-- Specifies the left-hand starting point of the rows -->
+    <dimen name="lb_browse_rows_margin_start">270dp</dimen>
+    <dimen name="lb_browse_header_text_size">@dimen/browse_header_text</dimen>
+    <!-- Padding between selected row and its header -->
+    <dimen name="lb_browse_expanded_selected_row_top_padding">20dp</dimen>
+    <dimen name="lb_browse_expanded_row_no_hovercard_bottom_padding">36dp</dimen>
+    <dimen name="lb_browse_header_fading_length">0dp</dimen>
+    <dimen name="lb_browse_header_height">20dp</dimen>
+    <dimen name="lb_browse_header_padding_right">32dp</dimen>
+    <!-- Title icon dimensions -->
+    <dimen name="lb_browse_title_icon_height">28dp</dimen>
+    <dimen name="lb_browse_title_icon_margin_right">48dp</dimen>
+    <dimen name="lb_browse_title_icon_width">306dp</dimen>
+    <!-- Card info dimensions -->
+    <dimen name="lb_basic_card_title_text_size">@dimen/card_info_title_text</dimen>
+    <dimen name="lb_basic_card_content_text_size">@dimen/card_info_content_text</dimen>
+    <dimen name="lb_basic_card_info_padding">7dp</dimen>
+    <dimen name="lb_basic_card_info_text_margin">-2dp</dimen>
+    <dimen name="lb_basic_card_info_height">32dp</dimen>
+    <dimen name="lb_basic_card_title_text_size_selected">@dimen/card_info_selected_title_text
+    </dimen>
+    <dimen name="lb_basic_card_content_text_size_selected">@dimen/card_info_selected_content_text
+    </dimen>
+
+    <!-- Search fragment dimensions -->
+    <dimen name="lb_search_bar_speech_orb_size">40dp</dimen>
+    <dimen name="search_bar_margin_left">41dp</dimen>
+    <dimen name="search_bar_items_margin_left">0dp</dimen>
+    <dimen name="lb_search_bar_items_height">40dp</dimen>
+    <dimen name="lb_search_browse_rows_align_top">100dp</dimen>
+    <dimen name="lb_search_bar_padding_top">29dp</dimen>
+    <item name="lb_search_orb_focused_zoom" type="fraction">125%</item>
+    <dimen name="lb_search_bar_text_size">24sp</dimen>
+    <dimen name="lb_search_browse_row_padding_left">50dp</dimen>
+
+    <!-- Details description layout dimensions -->
+    <dimen name="details_description_subtitle_bottom_margin">8dp</dimen>
+
+    <!-- Splash screen dimensions -->
+    <dimen name="copyright_font_size">7sp</dimen>
+    <dimen name="copyright_margin_bottom">22dp</dimen>
+
+    <!-- Feed loading/reloading text dimensions -->
+    <dimen name="feed_loading_text_size">16sp</dimen>
+    <dimen name="feed_loading_margin_bottom">14dp</dimen>
+
+    <!-- Spinner dimensions-->
+    <dimen name="spinner_thickness">5dp</dimen>
+
+</resources>

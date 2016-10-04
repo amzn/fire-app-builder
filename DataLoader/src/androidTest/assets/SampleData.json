@@ -1,0 +1,28 @@
+[
+  {
+    "id": "1",
+    "title": "Test ",
+    "description": "test description",
+    "duration": "3455",
+    "thumbURL": "http:\/\/a.bcd.net\/_thumbs\/0000127\/0127287\/0127287__014f.jpg",
+    "imgURL": "http:\/\/a.bcd.net\/_thumbs\/0000127\/0127287\/0127287__014f.jpg",
+    "videoURL": "http:\/\/a.bcd.net\/802E1F\/process\/encoded\/video_1880k\/0000127\/0127287\/I8HBMX0AJ.mp4?source=firetv&channel_id=6341",
+    "categories": [
+      "test"
+    ],
+    "channel_id": "2"
+  },
+  {
+    "id": "1",
+    "title": "Test ",
+    "description": "test description",
+    "duration": "3455",
+    "thumbURL": "http:\/\/a.bcd.net\/_thumbs\/0000127\/0127287\/0127287__014f.jpg",
+    "imgURL": "http:\/\/a.bcd.net\/_thumbs\/0000127\/0127287\/0127287__014f.jpg",
+    "videoURL": "http:\/\/a.bcd.net\/802E1F\/process\/encoded\/video_1880k\/0000127\/0127287\/I8HBMX0AJ.mp4?source=firetv&channel_id=6341",
+    "categories": [
+      "test"
+    ],
+    "channel_id": "2"
+  }
+]

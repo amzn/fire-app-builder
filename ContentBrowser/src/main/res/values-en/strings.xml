@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+    <string name="app_name">ContentBrowser</string>
+    <string name="watch_now_1">Watch</string>
+    <string name="watch_now_2">Now</string>
+    <string name="watch_from_beginning_1">Watch</string>
+    <string name="watch_from_beginning_2">from Beginning</string>
+    <string name="resume_1">Resume</string>
+    <string name="resume_2">Playback</string>
+    <string name="premium_1">Go</string>
+    <string name="premium_2">Premium</string>
+    <string name="daily_pass_1">Daily</string>
+    <string name="daily_pass_2">Pass</string>
+    <string name="recommended_contents_header">Recommended Content</string>
+    <string name="optional_login_dialog_title">Login</string>
+    <string name="optional_login_dialog_message">Log in now to get the most from your app.</string>
+    <string name="now">Now</string>
+    <string name="later">Later</string>
+    <string name="iap_error_dialog_title">Purchase Error</string>
+    <string name="subscription_expired">Your subscription expired!</string>
+    <string name="ok">@android:string/ok</string>
+    <string name="settings_start_fragment_tag">"Show settings item"</string>
+</resources>

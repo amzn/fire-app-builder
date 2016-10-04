@@ -1,0 +1,139 @@
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+
+    <style name="AppTheme" parent="@style/Theme.Leanback.Custom"></style>
+
+    <style name="Theme.Leanback.Custom" parent="Theme.Leanback">
+        <item name="android:colorPrimary">@color/search_orb</item>
+        <item name="android:windowEnterTransition">@android:transition/fade</item>
+        <item name="android:windowExitTransition">@android:transition/fade</item>
+        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
+        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
+        <!-- Set to display colorPrimary when apps launches -->
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">false</item>
+        <item name="android:windowContentTransitions">true</item>
+
+        <!-- Custom content_details_activity_layout fragment styles-->
+        <item name="detailsActionButtonStyle">
+            @style/Widget.Leanback.DetailsActionButtonStyle.Custom
+        </item>
+    </style>
+
+    <declare-styleable name="LeanbackTheme">
+
+        <!-- left padding of ContentBrowseFragment, RowsFragment, DetailsFragment -->
+        <attr name="browsePaddingLeft" format="dimension"/>
+        <!-- right padding of ContentBrowseFragment, RowsFragment, DetailsFragment -->
+        <attr name="browsePaddingRight" format="dimension"/>
+
+    </declare-styleable>
+
+    <style name="SearchKeys">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:padding">4dp</item>
+    </style>
+
+    <style name="Widget.Example.Leanback.Title.Text" parent="Widget.Leanback.Title.Text">
+    </style>
+    <style name="Widget.Example.Leanback.Rows.VerticalGridView"
+           parent="Widget.Leanback.Rows.VerticalGridView">
+        <item name="android:paddingTop">96dp</item>
+    </style>
+
+    <!-- Start playback overlay fragment custom styles-->
+    <style name="TextAppearance.Leanback.PlaybackControlsTime">
+        <item name="android:textSize">@dimen/lb_playback_controls_time_text_size</item>
+        <item name="android:textColor">@color/lb_playback_controls_time_text_color</item>
+    </style>
+    <!-- End playback overlay fragment custom styles-->
+
+    <!-- Start content_details_activity_layout fragment custom styles-->
+    <style name="Widget.Leanback.DetailsActionButtonStyle.Custom"
+           parent="Widget.Leanback.DetailsActionButtonStyle">
+        <item name="android:background">@drawable/action_button_background</item>
+        <item name="android:gravity">center_vertical|start</item>
+    </style>
+    <style name="TextAppearance.Leanback.DetailsActionButton">
+        <item name="android:textSize">@dimen/lb_action_text_size</item>
+        <item name="android:textColor">@color/action_button_text_color_selector</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+    <style name="TextAppearance.Leanback.DetailsDescriptionBody">
+        <item name="android:textSize">@dimen/lb_details_description_body_text_size</item>
+        <item name="android:textColor">@color/lb_details_description_body_color</item>
+    </style>
+    <style name="TextAppearance.Leanback.DetailsDescriptionTitle">
+        <item name="android:textSize">@dimen/lb_details_description_title_text_size</item>
+        <item name="android:textColor">@color/lb_details_description_color</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="TextAppearance.Leanback.DetailsDescriptionSubtitle">
+        <item name="android:textSize">@dimen/lb_details_description_subtitle_text_size</item>
+        <item name="android:textColor">@color/lb_details_description_subtitle_color</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <!-- End content_details_activity_layout fragment custom styles-->
+
+    <!-- Start browse fragment custom styles -->
+    <style name="Widget.Leanback.Header">
+        <item name="android:minHeight">@dimen/lb_browse_header_height</item>
+        <item name="android:textAppearance">@style/TextAppearance.Leanback.Header</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TextAppearance.Leanback.Header" parent="TextAppearance.Leanback">
+        <item name="android:textSize">@dimen/lb_browse_header_text_size</item>
+        <item name="android:textColor">@color/lb_browse_header_color</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Widget.Leanback.Rows.VerticalGridView">
+        <item name="android:paddingBottom">?attr/browsePaddingBottom</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="focusOutFront">true</item>
+        <item name="focusOutEnd">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+    </style>
+
+    <style name="TextAppearance.Leanback.Row.Header" parent="TextAppearance.Leanback.Header">
+        <item name="android:textColor">@color/lb_browse_row_header_color</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/lb_browse_header_text_size</item>
+    </style>
+    <!-- End browse fragment custom styles -->
+
+    <!-- Description layout styles -->
+    <style name="DetailsDescription" parent="@style/Widget.Leanback.DetailsDescriptionBodyStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:maxLines">@integer/details_description_body_max_lines</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!--<style name="error_dialog" parent="@android:style/Theme.Dialog">-->
+    <style name="error_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@color/error_dialog_bg_color</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+</resources>

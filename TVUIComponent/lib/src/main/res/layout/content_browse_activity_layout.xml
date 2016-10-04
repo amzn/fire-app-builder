@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file was modified by Amazon:
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<!--
+     Copyright (C) 2014 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent" android:layout_height="match_parent"
+        >
+
+
+    <ImageView
+            android:id="@+id/content_image"
+            android:layout_width="560dp"
+            android:layout_height="400dp"
+            android:layout_alignParentRight="true"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"/>
+
+    <RelativeLayout
+            android:id="@+id/main_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/browse_background">
+
+        <ImageView
+                android:id="@+id/main_logo"
+                android:layout_width="116dp"
+                android:layout_height="46dp"
+                android:layout_marginBottom="24dp"
+                android:layout_marginLeft="@dimen/lb_browse_padding_start"
+                android:layout_marginTop="@dimen/lb_browse_padding_top"
+                android:scaleType="centerInside"
+                android:src="@drawable/company_logo"/>
+        <LinearLayout
+                android:id="@+id/content_details"
+                android:layout_width="352dp"
+                android:layout_height="125dp"
+                android:layout_below="@id/main_logo"
+                android:layout_marginBottom="71dp"
+                android:layout_marginLeft="@dimen/lb_browse_padding_start"
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/content_detail_title"
+                    style="@style/Widget.Leanback.DetailsDescriptionTitleStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textSize="@dimen/lb_details_description_title_text_size"/>
+
+            <TextView
+                    android:id="@+id/content_detail_description"
+                    style="@style/Widget.Leanback.DetailsDescriptionBodyStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:ellipsize="end"
+                    android:maxLines="4"
+                    android:textSize="@dimen/lb_details_description_body_text_size"/>
+
+        </LinearLayout>
+
+        <fragment
+                android:id="@+id/full_content_browse_fragment"
+                android:name="com.amazon.android.tv.tenfoot.ui.fragments.ContentBrowseFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/content_details"
+                tools:layout="@layout/action_widget_container"/>
+    </RelativeLayout>
+
+
+    <include layout="@layout/action_widget_container"/>
+</RelativeLayout>

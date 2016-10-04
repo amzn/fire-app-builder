@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+    <string name="app_name">ContentBrowser</string>
+    <string name="watch_now_1">Jetzt</string>
+    <string name="watch_now_2">ansehen</string>
+    <string name="watch_from_beginning_1">Von Anfang an</string>
+    <string name="watch_from_beginning_2">ansehen</string>
+    <string name="resume_1">Wiedergabe</string>
+    <string name="resume_2">fortsetzen</string>
+    <string name="premium_1">Premium</string>
+    <string name="premium_2">starten</string>
+    <string name="daily_pass_1">Tages</string>
+    <string name="daily_pass_2">pass</string>
+    <string name="recommended_contents_header">Empfohlener Inhalt</string>
+    <string name="optional_login_dialog_title">Anmeldung</string>
+    <string name="optional_login_dialog_message">Anmelden, um Ihre App optimal zu nutzen.</string>
+    <string name="now">Jetzt</string>
+    <string name="later">Später</string>
+    <string name="iap_error_dialog_title">Fehler beim Kauf</string>
+    <string name="subscription_expired">Ihre Abonnement ist abgelaufen!</string>
+    <string name="ok">@android:string/ok</string>
+    <string name="settings_start_fragment_tag">Element „Einstellungen anzeigen“</string>
+</resources>

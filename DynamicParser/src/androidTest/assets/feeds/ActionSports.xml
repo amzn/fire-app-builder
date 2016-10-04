@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:feedLoc="urn:Feeds:Location">
+  <channel>
+    <title>Content Mix for Action Sports</title>
+    <link>http://www.screenfeed.com/</link>
+    <description>Screenfeed Content Server</description>
+    <docs>http://www.rssboard.org/rss-specification</docs>
+    <generator>Screenfeed Content Server</generator>
+    <lastBuildDate>Wed, 19 Dec 2012 22:54:57 GMT</lastBuildDate>
+    <ttl>5</ttl>
+    <item>
+      <title>Dance_BOTY_1min_2-_FINAL_H264</title>
+      <guid isPermaLink="false">kxddfzDwZgj7Pjej1Ha7EQ2</guid>
+      <pubDate>Sun, 07 Dec 2014 00:00:00 GMT</pubDate>
+      <category>Action Sports</category>
+      <enclosure length="38525603" type="video/quicktime" url="http://samples.screenfeed.com/public/action-sports/1280x720/Dance_BOTY_1min_2-_FINAL_H264.mov" />
+      <media:content url="http://samples.screenfeed.com/public/action-sports/1280x720/Dance_BOTY_1min_2-_FINAL_H264.mov" fileSize="38525603" type="video/quicktime" medium="video" duration="60" height="720" width="1280">
+        <media:title type="plain">Dance_BOTY_1min_2-_FINAL_H264</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/action-sports/1280x720/Dance_BOTY_1min_2-_FINAL_H264.mov" />
+      </media:content>
+    </item>
+    <item>
+      <title>Nuremburg_1min_2-_FINAL_H264</title>
+      <guid isPermaLink="false">EsutSCT3pWBNsrq1hw0CNQ2</guid>
+      <pubDate>Sun, 07 Dec 2014 00:00:00 GMT</pubDate>
+      <category>Action Sports</category>
+      <enclosure length="39064376" type="video/quicktime" url="http://samples.screenfeed.com/public/action-sports/1280x720/Nuremburg_1min_2-_FINAL_H264.mov" />
+      <media:content url="http://samples.screenfeed.com/public/action-sports/1280x720/Nuremburg_1min_2-_FINAL_H264.mov" fileSize="39064376" type="video/quicktime" medium="video" duration="60" height="720" width="1280">
+        <media:title type="plain">Nuremburg_1min_2-_FINAL_H264</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/action-sports/1280x720/Nuremburg_1min_2-_FINAL_H264.mov" />
+      </media:content>
+    </item>
+    <item>
+      <title>IndoSearch_1min_2-_FINAL_H264</title>
+      <guid isPermaLink="false">2CXY3sUEMmysOEZtRPA_4A2</guid>
+      <pubDate>Sun, 07 Dec 2014 00:00:00 GMT</pubDate>
+      <category>Action Sports</category>
+      <enclosure length="38564700" type="video/quicktime" url="http://samples.screenfeed.com/public/action-sports/1280x720/IndoSearch_1min_2-_FINAL_H264.mov" />
+      <media:content url="http://samples.screenfeed.com/public/action-sports/1280x720/IndoSearch_1min_2-_FINAL_H264.mov" fileSize="38564700" type="video/quicktime" medium="video" duration="60" height="720" width="1280">
+        <media:title type="plain">IndoSearch_1min_2-_FINAL_H264</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/action-sports/1280x720/IndoSearch_1min_2-_FINAL_H264.mov" />
+      </media:content>
+    </item>
+    <item>
+      <title>Longboard_Tarp_1min_1-_FINAL_H264</title>
+      <guid isPermaLink="false">5MD-aH6YSfzLtY8EyqFSWA2</guid>
+      <pubDate>Sun, 07 Dec 2014 00:00:00 GMT</pubDate>
+      <category>Action Sports</category>
+      <enclosure length="38483327" type="video/quicktime" url="http://samples.screenfeed.com/public/action-sports/1280x720/Longboard_Tarp_1min_1-_FINAL_H264.mov" />
+      <media:content url="http://samples.screenfeed.com/public/action-sports/1280x720/Longboard_Tarp_1min_1-_FINAL_H264.mov" fileSize="38483327" type="video/quicktime" medium="video" duration="60" height="720" width="1280">
+        <media:title type="plain">Longboard_Tarp_1min_1-_FINAL_H264</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/action-sports/1280x720/Longboard_Tarp_1min_1-_FINAL_H264.mov" />
+      </media:content>
+    </item>
+    <item>
+      <title>MyHawaii_1min_2-_FINAL_H264</title>
+      <guid isPermaLink="false">Cl2HmtuntT1yUGGLOCyu2Q2</guid>
+      <pubDate>Sun, 07 Dec 2014 00:00:00 GMT</pubDate>
+      <category>Action Sports</category>
+      <enclosure length="38123205" type="video/quicktime" url="http://samples.screenfeed.com/public/action-sports/1280x720/MyHawaii_1min_2-_FINAL_H264.mov" />
+      <media:content url="http://samples.screenfeed.com/public/action-sports/1280x720/MyHawaii_1min_2-_FINAL_H264.mov" fileSize="38123205" type="video/quicktime" medium="video" duration="60" height="720" width="1280">
+        <media:title type="plain">MyHawaii_1min_2-_FINAL_H264</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/action-sports/1280x720/MyHawaii_1min_2-_FINAL_H264.mov" />
+      </media:content>
+    </item>
+    <item>
+      <title>DustyWeek_1min_2-_FINAL_H264</title>
+      <guid isPermaLink="false">bVx2BmCpy9vrmjwLkC7QuQ2</guid>
+      <pubDate>Sun, 07 Dec 2014 00:00:00 GMT</pubDate>
+      <category>Action Sports</category>
+      <enclosure length="38057593" type="video/quicktime" url="http://samples.screenfeed.com/public/action-sports/1280x720/DustyWeek_1min_2-_FINAL_H264.mov" />
+      <media:content url="http://samples.screenfeed.com/public/action-sports/1280x720/DustyWeek_1min_2-_FINAL_H264.mov" fileSize="38057593" type="video/quicktime" medium="video" duration="60" height="720" width="1280">
+        <media:title type="plain">DustyWeek_1min_2-_FINAL_H264</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/action-sports/1280x720/DustyWeek_1min_2-_FINAL_H264.mov" />
+      </media:content>
+    </item>
+    <item>
+      <title>DustyWeek_1min_1-_FINAL_H264</title>
+      <guid isPermaLink="false">sItkmFJWp3XD_XBDP-63GA2</guid>
+      <pubDate>Sun, 07 Dec 2014 00:00:00 GMT</pubDate>
+      <category>Action Sports</category>
+      <enclosure length="38628201" type="video/quicktime" url="http://samples.screenfeed.com/public/action-sports/1280x720/DustyWeek_1min_1-_FINAL_H264.mov" />
+      <media:content url="http://samples.screenfeed.com/public/action-sports/1280x720/DustyWeek_1min_1-_FINAL_H264.mov" fileSize="38628201" type="video/quicktime" medium="video" duration="60" height="720" width="1280">
+        <media:title type="plain">DustyWeek_1min_1-_FINAL_H264</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/action-sports/1280x720/DustyWeek_1min_1-_FINAL_H264.mov" />
+      </media:content>
+    </item>
+    <item>
+      <title>Ski_RipRaw_MacedoniaAir_1min_8-_FINAL_H264</title>
+      <guid isPermaLink="false">1M-9gvFAz6YSeFFpS7Sb5Q2</guid>
+      <pubDate>Sun, 07 Dec 2014 00:00:00 GMT</pubDate>
+      <category>Action Sports</category>
+      <enclosure length="38639126" type="video/quicktime" url="http://samples.screenfeed.com/public/action-sports/1280x720/Ski_RipRaw_MacedoniaAir_1min_8-_FINAL_H264.mov" />
+      <media:content url="http://samples.screenfeed.com/public/action-sports/1280x720/Ski_RipRaw_MacedoniaAir_1min_8-_FINAL_H264.mov" fileSize="38639126" type="video/quicktime" medium="video" duration="60" height="720" width="1280">
+        <media:title type="plain">Ski_RipRaw_MacedoniaAir_1min_8-_FINAL_H264</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/action-sports/1280x720/Ski_RipRaw_MacedoniaAir_1min_8-_FINAL_H264.mov" />
+      </media:content>
+    </item>
+    <item>
+      <title>IndoSearch_1min_1-_FINAL_H264</title>
+      <guid isPermaLink="false">mq_UW8nHAqhG6g3fuY6VMw2</guid>
+      <pubDate>Sun, 07 Dec 2014 00:00:00 GMT</pubDate>
+      <category>Action Sports</category>
+      <enclosure length="38548301" type="video/quicktime" url="http://samples.screenfeed.com/public/action-sports/1280x720/IndoSearch_1min_1-_FINAL_H264.mov" />
+      <media:content url="http://samples.screenfeed.com/public/action-sports/1280x720/IndoSearch_1min_1-_FINAL_H264.mov" fileSize="38548301" type="video/quicktime" medium="video" duration="60" height="720" width="1280">
+        <media:title type="plain">IndoSearch_1min_1-_FINAL_H264</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/action-sports/1280x720/IndoSearch_1min_1-_FINAL_H264.mov" />
+      </media:content>
+    </item>
+    <item>
+      <title>Moto_Redbull_XFighters_1min_2-_FINAL_H264</title>
+      <guid isPermaLink="false">IzMA_1bRkgn-_RuTWm5hTQ2</guid>
+      <pubDate>Sun, 07 Dec 2014 00:00:00 GMT</pubDate>
+      <category>Action Sports</category>
+      <enclosure length="39056952" type="video/quicktime" url="http://samples.screenfeed.com/public/action-sports/1280x720/Moto_Redbull_XFighters_1min_2-_FINAL_H264.mov" />
+      <media:content url="http://samples.screenfeed.com/public/action-sports/1280x720/Moto_Redbull_XFighters_1min_2-_FINAL_H264.mov" fileSize="39056952" type="video/quicktime" medium="video" duration="60" height="720" width="1280">
+        <media:title type="plain">Moto_Redbull_XFighters_1min_2-_FINAL_H264</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/action-sports/1280x720/Moto_Redbull_XFighters_1min_2-_FINAL_H264.mov" />
+      </media:content>
+    </item>
+    <item>
+      <title>Nuremburg_1min_1-_FINAL_H264</title>
+      <guid isPermaLink="false">SeD23tMCBokENe6DdSUfTg2</guid>
+      <pubDate>Sun, 07 Dec 2014 00:00:00 GMT</pubDate>
+      <category>Action Sports</category>
+      <enclosure length="38574737" type="video/quicktime" url="http://samples.screenfeed.com/public/action-sports/1280x720/Nuremburg_1min_1-_FINAL_H264.mov" />
+      <media:content url="http://samples.screenfeed.com/public/action-sports/1280x720/Nuremburg_1min_1-_FINAL_H264.mov" fileSize="38574737" type="video/quicktime" medium="video" duration="60" height="720" width="1280">
+        <media:title type="plain">Nuremburg_1min_1-_FINAL_H264</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/action-sports/1280x720/Nuremburg_1min_1-_FINAL_H264.mov" />
+      </media:content>
+    </item>
+    <item>
+      <title>Skate_MannyMania_1min_1-_FINAL_H264</title>
+      <guid isPermaLink="false">7-PCmwxQHGyAQT6_6ozFAw2</guid>
+      <pubDate>Sun, 07 Dec 2014 00:00:00 GMT</pubDate>
+      <category>Action Sports</category>
+      <enclosure length="38846405" type="video/quicktime" url="http://samples.screenfeed.com/public/action-sports/1280x720/Skate_MannyMania_1min_1-_FINAL_H264.mov" />
+      <media:content url="http://samples.screenfeed.com/public/action-sports/1280x720/Skate_MannyMania_1min_1-_FINAL_H264.mov" fileSize="38846405" type="video/quicktime" medium="video" duration="60" height="720" width="1280">
+        <media:title type="plain">Skate_MannyMania_1min_1-_FINAL_H264</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/action-sports/1280x720/Skate_MannyMania_1min_1-_FINAL_H264.mov" />
+      </media:content>
+    </item>
+    <item>
+      <title>Ski_AK Attack_1min_2-_FINAL_H264</title>
+      <guid isPermaLink="false">AYGDh8kdr285Ftq7pOwAog2</guid>
+      <pubDate>Sun, 07 Dec 2014 00:00:00 GMT</pubDate>
+      <category>Action Sports</category>
+      <enclosure length="38534594" type="video/quicktime" url="http://samples.screenfeed.com/public/action-sports/1280x720/Ski_AK%20Attack_1min_2-_FINAL_H264.mov" />
+      <media:content url="http://samples.screenfeed.com/public/action-sports/1280x720/Ski_AK%20Attack_1min_2-_FINAL_H264.mov" fileSize="38534594" type="video/quicktime" medium="video" duration="60" height="720" width="1280">
+        <media:title type="plain">Ski_AK Attack_1min_2-_FINAL_H264</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/action-sports/1280x720/Ski_AK%20Attack_1min_2-_FINAL_H264.mov" />
+      </media:content>
+    </item>
+    <item>
+      <title>Parkour_Redbull_1min_1-_FINAL_H264</title>
+      <guid isPermaLink="false">Wq6OHJ-RS6UXW3_J0NE1oA2</guid>
+      <pubDate>Sun, 07 Dec 2014 00:00:00 GMT</pubDate>
+      <category>Action Sports</category>
+      <enclosure length="38558257" type="video/quicktime" url="http://samples.screenfeed.com/public/action-sports/1280x720/Parkour_Redbull_1min_1-_FINAL_H264.mov" />
+      <media:content url="http://samples.screenfeed.com/public/action-sports/1280x720/Parkour_Redbull_1min_1-_FINAL_H264.mov" fileSize="38558257" type="video/quicktime" medium="video" duration="60" height="720" width="1280">
+        <media:title type="plain">Parkour_Redbull_1min_1-_FINAL_H264</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/action-sports/1280x720/Parkour_Redbull_1min_1-_FINAL_H264.mov" />
+      </media:content>
+    </item>
+    <item>
+      <title>Parkour_1min_2-_FINAL_H264</title>
+      <guid isPermaLink="false">jLRMm-A3nyW8A9RDqTPyXQ2</guid>
+      <pubDate>Sun, 07 Dec 2014 00:00:00 GMT</pubDate>
+      <category>Action Sports</category>
+      <enclosure length="38632914" type="video/quicktime" url="http://samples.screenfeed.com/public/action-sports/1280x720/Parkour_1min_2-_FINAL_H264.mov" />
+      <media:content url="http://samples.screenfeed.com/public/action-sports/1280x720/Parkour_1min_2-_FINAL_H264.mov" fileSize="38632914" type="video/quicktime" medium="video" duration="60" height="720" width="1280">
+        <media:title type="plain">Parkour_1min_2-_FINAL_H264</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/action-sports/1280x720/Parkour_1min_2-_FINAL_H264.mov" />
+      </media:content>
+    </item>
+  </channel>
+</rss>

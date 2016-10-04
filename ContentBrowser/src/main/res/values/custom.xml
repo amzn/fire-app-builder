@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+
+    <bool name="override_all_contents_subscription_flag">true</bool>
+    <bool name="is_iap_disabled">false</bool>
+    <bool name="is_launcher_integration_enabled">false</bool>
+    <string name="launcher_integration_partner_id">Your_partner_id</string>
+    <string name="launcher_integration_content_id_key">content_id</string>
+    <string name="launcher_integration_app_display_name">Calypso</string>
+    <string name="launcher_integration_intent_package_value">com.amazon.android.calypso</string>
+    <string name="launcher_integration_intent_class_value">"com.amazon.android.tv.tenfoot.ui.activities.SplashActivity</string>
+
+</resources>

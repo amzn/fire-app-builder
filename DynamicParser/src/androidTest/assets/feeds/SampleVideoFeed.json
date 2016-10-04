@@ -1,0 +1,496 @@
+{
+  "company": "SampleCompany",
+  "videos": [{
+    "type": "video",
+    "videoId": "1",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "2",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "3",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "4",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "5",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "6",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "7",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "8",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "9",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "10",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "11",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "12",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "13",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "14",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "15",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "16",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "17",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "18",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "19",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "20",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "21",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "22",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "23",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }, {
+    "type": "video",
+    "videoId": "24",
+    "videoInfo": {
+      "videoURL": "wwww.samplevideourl.com/whatever",
+      "videoDuration": 7200000,
+      "title": "A Wonderful Movie",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "tags": [
+        "Sample", "Movie", "Wonderful"
+      ],
+      "imageUrls": {
+        "backgroundImage": "http://www.sampleimages.com",
+        "cardImage": "http://www.sampleimages.com",
+        "thumbnailImage": "http://www.sampleimages.com"
+      }
+    }
+  }
+
+  ],
+  "categories": [{
+    "type": "category",
+    "categoryId": "1",
+    "info": {
+      "title": "Category 1",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "videos": [
+        "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"
+      ],
+      "long": 228930314431312345,
+      "short": "10000",
+      "char": "c",
+      "double": 1.1,
+      "float": "1.5f",
+      "boolean": true,
+      "byte": "100"
+
+    }
+  }, {
+    "type": "category",
+    "categoryId": "2",
+    "info": {
+      "title": "Category 2",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "videos": [
+        "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"
+      ],
+      "long": 228930314431312345,
+      "short": "10000",
+      "char": "c",
+      "double": 1.1,
+      "float": "1.5f",
+      "boolean": true,
+      "byte": "100"
+    }
+  }, {
+    "type": "category",
+    "categoryId": "3",
+    "info": {
+      "title": "Category 3",
+      "subtitle": "",
+      "description": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+      "videos": [
+        "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"
+      ],
+      "long": "228930314431312345",
+      "short": "10000",
+      "char": "c",
+      "double": "1.1",
+      "float": "1.5f",
+      "boolean": "true",
+      "byte": "100"
+
+    }
+
+  }]
+}

@@ -1,0 +1,8 @@
+{
+  "urls": [
+    "http://www.lightcast.com/api/firetv/channels.php?app_id=263&app_key=4rghy65dcsqa&action=channels_videos",
+    "http://www.lightcast.com/api/firetv/channels.php?app_id=249&app_key=gtn89uj3dsw&action=channels_videos",
+    "http://www.lightcast.com/api/firetv/channels.php?app_id=267&app_key=6tgbfr4edc2x&action=channels_videos",
+    "http://www.lightcast.com/api/firetv/channels.php?app_id=273&app_key=u8jnsaq2rfgy&action=channels_videos"
+  ]
+}

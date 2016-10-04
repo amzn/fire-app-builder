@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+
+    <!-- Playback fragment customization -->
+    <dimen name="lb_playback_controls_z">4dp</dimen>
+    <dimen name="lb_playback_description_margin_end">56dp</dimen>
+    <dimen name="lb_playback_description_margin_start">56dp</dimen>
+    <dimen name="lb_playback_description_margin_top">24dp</dimen>
+    <dimen name="lb_playback_controls_time_text_size">14sp</dimen>
+    <dimen name="lb_playback_current_time_margin_start">8dp</dimen>
+    <dimen name="lb_playback_total_time_margin_end">8dp</dimen>
+    <dimen name="lb_playback_controls_margin_bottom">16dp</dimen>
+    <dimen name="lb_playback_controls_card_height">64dp</dimen>
+    <dimen name="lb_playback_controls_align_bottom">58dp</dimen>
+    <dimen name="lb_playback_controls_padding_bottom">28dp</dimen>
+    <dimen name="lb_playback_major_fade_translate_y">200dp</dimen>
+    <dimen name="lb_playback_minor_fade_translate_y">36dp</dimen>
+    <dimen name="playback_video_details_margin">36dp</dimen>
+    <dimen name="playback_video_title_margin">3dp</dimen>
+    <dimen name="playback_video_details_min_width">396dp</dimen>
+    <dimen name="playback_video_title_text_size">20sp</dimen>
+    <dimen name="playback_video_subtitle_text_size">16sp</dimen>
+    <!-- NOTE: This value was calculated by error and trial to keep the controls in centre, if you
+    add/delete anything you need to re-calculate this value -->
+    <dimen name="playback_control_left_margin">40dp</dimen>
+    <!-- Spinner dimensions-->
+    <dimen name="spinner_thickness">5dp</dimen>
+
+</resources>

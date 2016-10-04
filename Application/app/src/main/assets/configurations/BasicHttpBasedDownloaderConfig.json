@@ -1,0 +1,3 @@
+{
+  "url_generator_impl": "com.amazon.dataloader.datadownloader.BasicFileBasedUrlGenerator"
+}

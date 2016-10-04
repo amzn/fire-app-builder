@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:feedLoc="urn:Feeds:Location">
+  <channel>
+    <title>Content Mix for Destinations 1920x1080</title>
+    <link>http://www.screenfeed.com/</link>
+    <description>Screenfeed Content Server</description>
+    <docs>http://www.rssboard.org/rss-specification</docs>
+    <generator>Screenfeed Content Server</generator>
+    <lastBuildDate>Tue, 08 Jan 2013 16:05:28 GMT</lastBuildDate>
+    <ttl>5</ttl>
+    <item>
+      <title>Hudson Bay, Canada</title>
+      <guid isPermaLink="false">8296jzCPJ2yxw89TOrf4cw2</guid>
+      <pubDate>Sun, 04 Jan 2015 00:00:00 GMT</pubDate>
+      <category>Destinations</category>
+      <enclosure length="290827296" type="video/mp4" url="http://samples.screenfeed.com/public/destinations/1920x1080/hudson_bay_HD.mp4" />
+      <media:content url="http://samples.screenfeed.com/public/destinations/1920x1080/hudson_bay_HD.mp4" fileSize="290827296" type="video/mp4" medium="video" duration="120" height="1080" width="1920">
+        <media:title type="plain">Hudson Bay, Canada</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/destinations/1920x1080/hudson_bay_HD.mp4" />
+      </media:content>
+    </item>
+    <item>
+      <title>The Badlands</title>
+      <guid isPermaLink="false">RTBQWWoB7d5mCeW1J0Fr6Q2</guid>
+      <pubDate>Sun, 04 Jan 2015 00:00:00 GMT</pubDate>
+      <category>Destinations</category>
+      <enclosure length="48123979" type="video/mp4" url="http://samples.screenfeed.com/public/destinations/1920x1080/badlands_HD.mp4" />
+      <media:content url="http://samples.screenfeed.com/public/destinations/1920x1080/badlands_HD.mp4" fileSize="48123979" type="video/mp4" medium="video" duration="120" height="1080" width="1920">
+        <media:title type="plain">The Badlands</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/destinations/1920x1080/badlands_HD.mp4" />
+      </media:content>
+    </item>
+    <item>
+      <title>Switzerland</title>
+      <guid isPermaLink="false">9CeOQo6e3DUIGoCO4jFRMA2</guid>
+      <pubDate>Sun, 04 Jan 2015 00:00:00 GMT</pubDate>
+      <category>Destinations</category>
+      <enclosure length="48047862" type="video/mp4" url="http://samples.screenfeed.com/public/destinations/1920x1080/switzerland_HD.mp4" />
+      <media:content url="http://samples.screenfeed.com/public/destinations/1920x1080/switzerland_HD.mp4" fileSize="48047862" type="video/mp4" medium="video" duration="120" height="1080" width="1920">
+        <media:title type="plain">Switzerland</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/destinations/1920x1080/switzerland_HD.mp4" />
+      </media:content>
+    </item>
+    <item>
+      <title>Serengeti</title>
+      <guid isPermaLink="false">LPqqeKZ8nTqMabbUlshxKQ2</guid>
+      <pubDate>Sun, 04 Jan 2015 00:00:00 GMT</pubDate>
+      <category>Destinations</category>
+      <enclosure length="229617923" type="video/mp4" url="http://samples.screenfeed.com/public/destinations/1920x1080/serengeti_HD.mp4" />
+      <media:content url="http://samples.screenfeed.com/public/destinations/1920x1080/serengeti_HD.mp4" fileSize="229617923" type="video/mp4" medium="video" duration="120" height="1080" width="1920">
+        <media:title type="plain">Serengeti</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/destinations/1920x1080/serengeti_HD.mp4" />
+      </media:content>
+    </item>
+  </channel>
+</rss>

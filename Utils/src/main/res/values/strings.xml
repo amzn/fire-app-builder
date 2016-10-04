@@ -1,0 +1,58 @@
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+    <string name="app_name">Utils</string>
+
+
+    <!-- Error messages -->
+    <string name="feed_error_message">Service is unavailable. Please try again later.</string>
+    <string name="network_error_message">Network is currently unavailable. Please try again later.</string>
+    <string name="registration_code_error_message">Error obtaining the registration code. Please dismiss this message and retry. </string>
+    <string name="authentication_error_message">Error authenticating your details.\r\nPlease try entering your information again or contact your cable provider to get access to this content.</string>
+    <string name="authorization_error_message">You are not authorized to view this content.\r\nPlease contact your cable provider to get access to this content.</string>
+    <string name="logout_success_message">Logout Successful.You shall soon be redirected to the details page.</string>
+    <string name="logout_failure_message">Logout UnSuccessful. Please retry.</string>
+    <string name="playback_error_message">Playback failed. Please retry.</string>
+    <!-- Error button labels -->
+    <string name="try_again_label">Try Again</string>
+    <string name="exit_app_label">Exit the Application</string>
+    <string name="go_to_network_settings_label">Go to Network Settings</string>
+    <string name="dismiss_label">Dismiss</string>
+
+    <string name="login_label">Login</string>
+    <string name="logout_label">Logout</string>
+    <string name="slideshow_label">Slide Show Setting</string>
+    <string name="auto_play_speed">Slide speed</string>
+
+    <string name="terms_title">Terms of Use</string>
+    <string name="terms_description">Review the Legal Notices.</string>
+    <string name="slideshow_title">Slide show speed</string>
+    <string name="slideshow_description">Set slide show speed.</string>
+
+    <string name="logout_description">Log out of your account.</string>
+    <string name="login_description">Log into your account.</string>
+    <string name="logout_dialog_description">Are you sure you want to logout?</string>
+    <string name="login_dialog_description">You are not logged in. Select and play any video to log in.</string>
+    <string name="logout_dialog_option_1">Yes</string>
+    <string name="logout_dialog_option_2">No</string>
+
+    <!-- Second Screen Authentication -->
+    <string name="btn_submit">SUBMIT</string>
+    <string name="btn_get_new_code">GET NEW CODE</string>
+    <string name="second_screen_login_instruction_line_1">Go to your computer or mobile device</string>
+    <string name="second_screen_login_instruction_line_3">Enter the following case-sensitive code:</string>
+    <string name="second_screen_login_instruction_line_4">Loading…</string>
+    <!-- End Second Screen Authentication -->
+</resources>

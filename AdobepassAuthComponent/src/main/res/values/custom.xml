@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+    <!--Adobe pass clientless API variables -->
+
+    <!--Adobe pass clientless API Requestor ID -->
+    <string name="adobe_pass_requestor_id">YOUR REQUESTOR ID</string>
+    <!-- Encrypted Adobe pass public key for your application, encrypt it using ResourceObfuscationStandaloneUtility -->
+    <string name="encrypted_adobe_pass_public_key">YOUR ENCRYPTED PUBLIC KEY</string>
+    <!-- Encrypted Adobe pass secret key for your application, encrypt it using ResourceObfuscationStandaloneUtility -->
+    <string name="encrypted_adobe_pass_private_key">YOUR ENCRYPTED PRIVATE KEY</string>
+    <!--Adobe pass clientless API registration URL for second screen login -->
+    <string name="adobe_pass_registration_url">YOUR REGISTRATION URL</string>
+    <!--Adobe pass clientless API time to live value for the registration token -->
+    <string name="adobe_pass_registration_code_ttl">YOUR TIME TO LIVE VALUE</string>
+    <!-- URL used by user to authenticate -->
+    <string name="adobepass_login_instruction_line_2">Visit YOUR_AUTHENTICATION_URL</string>
+    <!-- PseudoRandom strings, used to generate random key for encrypting/decrypting resources. These keys should always remain in sync with the keys used by encrypting utility -->
+    <string name="adobepass_key_1">adobepass_random_key_1</string>
+    <string name="adobepass_key_2">adobepass_random_key_2</string>
+    <string name="adobepass_key_3">adobepass_random_key_3</string>
+    <string name="adobepass_key_4">adobepass_random_key_4</string>
+</resources>

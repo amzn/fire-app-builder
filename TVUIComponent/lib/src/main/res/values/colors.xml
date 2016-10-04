@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+
+<resources>
+    <!-- Overriding Android Leanback color resources -->
+    <color name="lb_details_description_color">@color/details_description_title</color>
+    <color name="lb_details_description_subtitle_color">@color/details_description_subtitle</color>
+    <color name="lb_details_description_body_color">@color/details_description_body</color>
+
+    <color name="lb_playback_background_color">@color/playback_background</color>
+    <color name="lb_playback_background_progress_color">@color/playback_background_progress_bar
+    </color>
+    <color name="lb_playback_secondary_progress_color">@color/playback_buffered_progress</color>
+    <color name="lb_playback_progress_color_no_theme">@color/progress_bar</color>
+    <color name="lb_playback_controls_time_text_color">@color/playback_time_text</color>
+
+    <color name="lb_browse_header_color">@color/browse_header</color>
+    <color name="lb_browse_header_selected_color">@color/browse_header_selected</color>
+    <color name="lb_browse_row_header_color">@color/browse_row_header</color>
+    <color name="lb_basic_card_info_bg_color">@color/card_info_bg</color>
+    <color name="lb_basic_card_title_text_color">@color/card_info_title_text</color>
+    <color name="lb_basic_card_content_text_color">@color/card_info_content_text</color>
+
+    <color name="lb_search_bar_hint_speech_mode">@color/search_edit_text_hint_color</color>
+    <color name="lb_search_bar_hint">@color/search_edit_text_hint_color</color>
+    <color name="lb_search_bar_text">@color/search_edit_text_color</color>
+    <!-- text color in edit text when keyboard is up -->
+    <color name="lb_search_bar_text_speech_mode">#FF888888</color>
+    <color name="lb_speech_orb_not_recording">@color/search_orb_background</color>
+    <color name="lb_speech_orb_not_recording_icon">@color/search_orb_not_recording_color</color>
+    <color name="lb_speech_orb_not_recording_pulsed">@color/search_orb_background</color>
+    <color name="lb_speech_orb_recording">#ff4343</color>
+
+    <color name="search_edit_text_color">#99FFFFFF</color>
+    <color name="search_edit_text_hint_color">#99FFFFFF</color>
+    <color name="search_edit_text_bg_color">#4DFFFFFF</color>
+    <color name="search_edit_text_bg_color_unfocused">#1AFFFFFF</color>
+    <color name="search_orb_not_recording_color">#FFEEEEEE</color>
+
+    <color name="lb_playback_controls_background_dark">#c0000000</color>
+    <color name="lb_playback_controls_background_light">#80000000</color>
+    <color name="playback_video_details_text_color">#FFFFFF</color>
+
+
+    <color name="error_dialog_bg_color">#13181F</color>
+</resources>

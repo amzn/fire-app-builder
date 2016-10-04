@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+
+    <!-- Text color for unfocused action button -->
+    <color name="action_button_text_color">#E6FFFFFF</color>
+    <!-- Text color for focused action button -->
+    <color name="action_button_text_color_focused">#E6FFFFFF</color>
+    <!-- Background color for focused action button -->
+    <drawable name="action_button_focused">@drawable/btn_generic_focused</drawable>
+    <!-- Background color for normal state of action button -->
+    <drawable name="action_button_normal">@drawable/btn_normal</drawable>
+    <!-- URL the end user must visit to authenticate their device for second screen login -->
+    <string name="second_screen_login_instruction_line_2">Visit YOUR_AUTHENTICATION_URL</string>
+    <!-- The company logo to display on the second screen login screen -->
+    <drawable name="company_logo">@drawable/logo</drawable>
+    <!-- terms of use file -->
+    <string name="terms_of_use_file">terms_of_use.html</string>
+    <!-- A default light device font used for body text -->
+    <string name="default_light_font">Roboto Light</string>
+    <!-- A default bold device font used for titles -->
+    <string name="default_bold_font">Roboto Bold</string>
+    <!-- A default regular device font used for buttons and subtitles -->
+    <string name="default_regular_font">Roboto Regular</string>
+
+</resources>

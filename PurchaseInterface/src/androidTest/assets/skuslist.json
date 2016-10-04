@@ -1,0 +1,18 @@
+{
+  "skusList": [
+    {
+      "sku": "testSubSku",
+      "productType": "SUBSCRIBE",
+      "purchaseSku": "testSubSku"
+    },
+    {
+      "sku": "RentUnPurchased",
+      "productType": "RENT",
+      "purchaseSku": "RentUnPurchased"
+    }
+  ],
+  "actions": {
+    "CONTENT_ACTION_DAILY_PASS": "RentUnPurchased",
+    "CONTENT_ACTION_SUBSCRIPTION": "testSubSku"
+  }
+}

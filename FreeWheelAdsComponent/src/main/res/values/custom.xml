@@ -1,0 +1,26 @@
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+    <!-- FreeWheel server url -->
+    <string name="ad_url">your_ad_url</string>
+    <!-- FreeWheel network id -->
+    <integer name="ad_network_id">1111</integer>
+    <!-- FreeWheel profile -->
+    <string name="profile">your_profile</string>
+    <!-- FreeWheel site section -->
+    <string name="site_section_id">your_site_section_id</string>
+    <!-- FreeWheel current video ad id type -->
+    <string name="video_id_type">your_video_id_type</string>
+</resources>

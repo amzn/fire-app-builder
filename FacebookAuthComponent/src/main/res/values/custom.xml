@@ -1,0 +1,41 @@
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+    <!--Name assigned to the app in facebook account-->
+    <string name="facebook_app_name">SampleFireTvLogin</string>
+    <!-- Encrypted Fb client token for your application, encrypt it using ResourceObfuscationStandaloneUtility -->
+    <string name="encrypted_authentication_client_token">YOUR_ENCRYPTED_FB_APP_CLIENT_TOKEN</string>
+    <!-- Encrypted FB app id for your application, encrypt it using ResourceObfuscationStandaloneUtility -->
+    <string name="encrypted_authentication_app_id">YOUR_ENCRYPTED_FB_APP_ID</string>
+    <!-- PseudoRandom strings, used to generate random key for encrypting/decrypting Facebook resources.
+    These keys should always remain in sync with the keys used by ResourceObfuscationStandaloneUtility -->
+    <string name="fb_key_1">fb_random_key_1</string>
+    <string name="fb_key_2">fb_random_key_2</string>
+    <string name="fb_key_3">fb_random_key_3</string>
+    <string name="fb_key_4">fb_random_key_4</string>
+    <string name="fb_key_5">fb_random_key_5</string>
+    <string name="fb_key_6">fb_random_key_6</string>
+
+    <!-- Is authentication optional? -->
+    <bool name="is_authentication_can_be_done_later">true</bool>
+
+    <!-- URL used to request user registration code -->
+    <string name="facebook_registration_url">https://graph.facebook.com/v2.6/device/login</string>
+    <!-- URL used to check the login status after end user logged in -->
+    <string name="facebook_login_status_url">https://graph.facebook.com/v2.6/device/login_status
+    </string>
+    <!-- URL used to check the access token -->
+    <string name="facebook_check_token_url">https://graph.facebook.com/me?access_token=</string>
+</resources>

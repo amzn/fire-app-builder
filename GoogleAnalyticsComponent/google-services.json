@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "your_project_number",
+    "project_id": "your_project_id"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "your_mobilesdk_app_id",
+        "android_client_info": {
+          "package_name": "com.amazon.analytics.google"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "your_current_key"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "your_tracking_id"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

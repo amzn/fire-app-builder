@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+    <!-- Encrypted Flurry API key, override this with your own encrypted API key -->
+    <string name="encrypted_flurry_api_key">YOUR_ENCRYPTED_FLURRY_API_KEY</string>
+    <!-- PseudoRandom strings, used to generate random key for encrypting/decrypting Flurry
+    resources. These keys should always remain in sync with the keys used by
+    ResourceObfuscationStandaloneUtility -->
+    <string name="flurry_key_1">flurry_random_key_1</string>
+    <string name="flurry_key_2">flurry_random_key_2</string>
+    <string name="flurry_key_3">flurry_random_key_3</string>
+    <string name="flurry_key_4">flurry_random_key_4</string>
+    <string name="flurry_key_5">flurry_random_key_5</string>
+    <string name="flurry_key_6">flurry_random_key_6</string>
+</resources>

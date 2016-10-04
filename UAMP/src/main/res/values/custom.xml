@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+
+    <!-- Playback Overlay Customization -->
+
+    <!-- Background color of the playback overlay -->
+    <color name="playback_background">#FF292929</color>
+    <!-- Background color of the progress bar -->
+    <color name="playback_background_progress_bar">#FF373737</color>
+    <!-- Color of buffered progress bar -->
+    <color name="playback_buffered_progress">#FF5A5A5A</color>
+    <!-- Color of the progress bar -->
+    <color name="progress_bar">#FFDADADA</color>
+    <!-- Text color of the playback time -->
+    <color name="playback_time_text">#FFFFFFFF</color>
+    <!-- Hide More options status activation status-->
+    <bool name="hide_more_options">true</bool>
+
+    <!-- End of Playback Overlay Customization -->
+    <!--La url required for Drm-->
+    <string name="la_url"></string>
+
+    <!-- Drm encryption schema, Allowed options are ENCRYPTION_DEFAULT, ENCRYPTION_PLAYREADY,
+    ENCRYPTION_WIDEVINE-->
+    <string name="drm_encryption_schema">ENCRYPTION_DEFAULT</string>
+
+</resources>

@@ -1,0 +1,63 @@
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:launchMode="singleTop"
+                android:background="@drawable/splash_background"
+                tools:context=".ui.activities.SplashActivity">
+
+    <ImageView
+            android:id="@+id/main_logo"
+            android:layout_width="256dp"
+            android:layout_height="166dp"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="24dp"
+            android:src="@drawable/splash_logo"
+            />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/feed_progress"
+            android:layout_above="@+id/feed_progress"
+            android:id="@+id/feed_loader"
+            android:textColor="@color/feed_loading"
+            android:textSize="@dimen/feed_loading_text_size"
+            android:layout_marginBottom="@dimen/feed_loading_margin_bottom"/>
+
+    <ProgressBar
+            android:id="@+id/feed_progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_below="@id/main_logo"
+            android:layout_centerInParent="true"
+            android:indeterminateDrawable="@drawable/custom_progress"/>
+
+    <TextView
+            android:id="@+id/copyright"
+            android:text="@string/copyright"
+            android:textSize="@dimen/copyright_font_size"
+            android:textColor="@color/copyright"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/copyright_margin_bottom"/>
+</RelativeLayout>

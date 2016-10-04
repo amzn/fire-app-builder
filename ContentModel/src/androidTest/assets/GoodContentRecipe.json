@@ -1,0 +1,13 @@
+{
+  "recipeCooker": "com.amazon.dynamicparser.DynamicParser",
+  "format": "json",
+  "model": "com.amazon.android.model.content.Content",
+  "modelType": "array",
+  "conversionType": "com.amazon.android.model.translators.ContentTranslator",
+  "query": "$.videos[?(@.type == 'video')]",
+  "matchList": ["id@id", "title@title", "subtitle@subtitle", "description@description",
+                "urls/url@url", "urls/cardImageUrl@cardImageUrl",
+                "urls/backgroundImageUrl@backgroundImageUrl", "tags@tags", "key1@key1",
+                "urls/url@key2"],
+  "keyDataPath": ""
+}

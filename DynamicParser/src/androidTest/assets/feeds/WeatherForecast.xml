@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:feedLoc="urn:Feeds:Location">
+  <channel>
+    <title>Content Mix for Weather Video Forecast</title>
+    <link>http://www.screenfeed.com/</link>
+    <description>Screenfeed Content Server</description>
+    <docs>http://www.rssboard.org/rss-specification</docs>
+    <generator>Screenfeed Content Server</generator>
+    <lastBuildDate>Thu, 12 Feb 2015 17:22:32 GMT</lastBuildDate>
+    <ttl>5</ttl>
+    <item>
+      <title>National Forecast Video</title>
+      <guid isPermaLink="false">yhSqcmpIKOa4zFV7egcsLw2</guid>
+      <pubDate>Thu, 12 Feb 2015 17:01:13 GMT</pubDate>
+      <category>Weather Video : National</category>
+      <enclosure length="71371735" type="video/mp4" url="http://samples.screenfeed.com/public/weather-forecast-videos/1280x720/bhvq4jDDHUuveZ6SCQb2yg-1280x720-1.mp4" />
+      <media:content url="http://samples.screenfeed.com/public/weather-forecast-videos/1280x720/bhvq4jDDHUuveZ6SCQb2yg-1280x720-1.mp4" fileSize="71371735" type="video/mp4" medium="video" duration="120.06" height="720" width="1280">
+        <media:title type="plain">National Forecast Video</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/weather-forecast-videos/1280x720/bhvq4jDDHUuveZ6SCQb2yg-1280x720-1.mp4" />
+      </media:content>
+    </item>
+    <item>
+      <title>Northcentral Regional Forecast Video</title>
+      <guid isPermaLink="false">FbdfsjoXgmgKwwKpCgczMw2</guid>
+      <pubDate>Thu, 12 Feb 2015 17:22:32 GMT</pubDate>
+      <category>Weather Video : North Central</category>
+      <enclosure length="89136769" type="video/mp4" url="http://samples.screenfeed.com/public/weather-forecast-videos/1280x720/rGCJbAht506hl1jKke5aOA-1280x720-1.mp4" />
+      <media:content url="http://samples.screenfeed.com/public/weather-forecast-videos/1280x720/rGCJbAht506hl1jKke5aOA-1280x720-1.mp4" fileSize="89136769" type="video/mp4" medium="video" duration="120.106" height="720" width="1280">
+        <media:title type="plain">Northcentral Regional Forecast Video</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/weather-forecast-videos/1280x720/rGCJbAht506hl1jKke5aOA-1280x720-1.mp4" />
+      </media:content>
+    </item>
+    <item>
+      <title>Northwest Regional Forecast Video</title>
+      <guid isPermaLink="false">rEiZw-h7saxDhK4qjLhVww2</guid>
+      <pubDate>Thu, 12 Feb 2015 05:50:43 GMT</pubDate>
+      <category>Weather Video : North West</category>
+      <enclosure length="84025815" type="video/mp4" url="http://samples.screenfeed.com/public/weather-forecast-videos/1280x720/GZHXpxdMWEyOJN42t3wf5g-1280x720-1.mp4" />
+      <media:content url="http://samples.screenfeed.com/public/weather-forecast-videos/1280x720/GZHXpxdMWEyOJN42t3wf5g-1280x720-1.mp4" fileSize="84025815" type="video/mp4" medium="video" duration="120.269" height="720" width="1280">
+        <media:title type="plain">Northwest Regional Forecast Video</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/weather-forecast-videos/1280x720/GZHXpxdMWEyOJN42t3wf5g-1280x720-1.mp4" />
+      </media:content>
+    </item>
+    <item>
+      <title>Northeast Regional Forecast Video</title>
+      <guid isPermaLink="false">m0Za1xqijY496-7Zy1FB1A2</guid>
+      <pubDate>Thu, 12 Feb 2015 06:12:39 GMT</pubDate>
+      <category>Weather Video : North East</category>
+      <enclosure length="83613383" type="video/mp4" url="http://samples.screenfeed.com/public/weather-forecast-videos/1280x720/0PQn-hlCXEOz3vJmWLt1Lg-1280x720-1.mp4" />
+      <media:content url="http://samples.screenfeed.com/public/weather-forecast-videos/1280x720/0PQn-hlCXEOz3vJmWLt1Lg-1280x720-1.mp4" fileSize="83613383" type="video/mp4" medium="video" duration="120.338" height="720" width="1280">
+        <media:title type="plain">Northeast Regional Forecast Video</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/weather-forecast-videos/1280x720/0PQn-hlCXEOz3vJmWLt1Lg-1280x720-1.mp4" />
+      </media:content>
+    </item>
+    <item>
+      <title>Southeast Regional Forecast Video</title>
+      <guid isPermaLink="false">g2X_D8o6cQOsveowXO8wnw2</guid>
+      <pubDate>Thu, 12 Feb 2015 06:13:00 GMT</pubDate>
+      <category>Weather Video : South East</category>
+      <enclosure length="83977508" type="video/mp4" url="http://samples.screenfeed.com/public/weather-forecast-videos/1280x720/aLCk4pL-wke3nUAMZMW3JA-1280x720-1.mp4" />
+      <media:content url="http://samples.screenfeed.com/public/weather-forecast-videos/1280x720/aLCk4pL-wke3nUAMZMW3JA-1280x720-1.mp4" fileSize="83977508" type="video/mp4" medium="video" duration="120.292" height="720" width="1280">
+        <media:title type="plain">Southeast Regional Forecast Video</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/weather-forecast-videos/1280x720/aLCk4pL-wke3nUAMZMW3JA-1280x720-1.mp4" />
+      </media:content>
+    </item>
+    <item>
+      <title>Southcentral Regional Forecast Video</title>
+      <guid isPermaLink="false">kraeCxv0tAcl-8T98mrfWg2</guid>
+      <pubDate>Thu, 12 Feb 2015 05:51:00 GMT</pubDate>
+      <category>Weather Video : South Central</category>
+      <enclosure length="85299890" type="video/mp4" url="http://samples.screenfeed.com/public/weather-forecast-videos/1280x720/EaegYzzbh0SlGkPS5w8pGQ-1280x720-1.mp4" />
+      <media:content url="http://samples.screenfeed.com/public/weather-forecast-videos/1280x720/EaegYzzbh0SlGkPS5w8pGQ-1280x720-1.mp4" fileSize="85299890" type="video/mp4" medium="video" duration="120.501" height="720" width="1280">
+        <media:title type="plain">Southcentral Regional Forecast Video</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/weather-forecast-videos/1280x720/EaegYzzbh0SlGkPS5w8pGQ-1280x720-1.mp4" />
+      </media:content>
+    </item>
+    <item>
+      <title>Southwest Regional Forecast Video</title>
+      <guid isPermaLink="false">yqg3Dms3RTzNNVcyRx1DWw2</guid>
+      <pubDate>Thu, 12 Feb 2015 06:13:18 GMT</pubDate>
+      <category>Weather Video : South West</category>
+      <enclosure length="85624791" type="video/mp4" url="http://samples.screenfeed.com/public/weather-forecast-videos/1280x720/1n1HHLIsSUW1hY6t0Ueqog-1280x720-1.mp4" />
+      <media:content url="http://samples.screenfeed.com/public/weather-forecast-videos/1280x720/1n1HHLIsSUW1hY6t0Ueqog-1280x720-1.mp4" fileSize="85624791" type="video/mp4" medium="video" duration="120.733" height="720" width="1280">
+        <media:title type="plain">Southwest Regional Forecast Video</media:title>
+        <media:credit />
+        <media:thumbnail url="http://samples.screenfeed.com/public/weather-forecast-videos/1280x720/1n1HHLIsSUW1hY6t0Ueqog-1280x720-1.mp4" />
+      </media:content>
+    </item>
+  </channel>
+</rss>
