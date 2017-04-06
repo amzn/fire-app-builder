@@ -18,17 +18,9 @@ buildscript {
     repositories {
         mavenCentral()
         jcenter()
-        // Uncomment when using CrashlyticsComponent
-        //maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
-        classpath 'me.tatarka:gradle-retrolambda:3.2.3'
-        // Uncomment when using CrashlyticsComponent
-        //classpath 'io.fabric.tools:gradle:1.+'
-
-        // Uncomment when using Google Analytics component
-        //classpath 'com.google.gms:google-services:3.0.0'
+        classpath 'com.android.tools.build:gradle:2.2.3'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -39,8 +31,5 @@ allprojects {
     repositories {
         jcenter()
         mavenCentral()
-        maven { url 'http://repo.brightcove.com/releases' }
-        // Uncomment when using CrashlyticsComponent
-        //maven { url 'https://maven.fabric.io/public' }
     }
 }

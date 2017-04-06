@@ -14,7 +14,6 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-  <string name="app_name">Utils</string>
   <string name="feed_error_message">Service is unavailable. Please try again later.</string>
   <string name="network_error_message">Network is currently unavailable. Please try again later.</string>
   <string name="registration_code_error_message">Error obtaining the registration code. Please dismiss this message and try again. </string>
@@ -41,7 +40,6 @@ permissions and limitations under the License.
   <string name="login_dialog_description">You are not logged in. Select and play any video to log in.</string>
   <string name="logout_dialog_option_1">Yes</string>
   <string name="logout_dialog_option_2">No</string>
-  <string name="powered_by">Powered by:</string>
   <string name="btn_submit">SUBMIT</string>
   <string name="btn_get_new_code">GET NEW CODE</string>
   <string name="second_screen_login_instruction_line_1">Go to your computer or mobile device</string>

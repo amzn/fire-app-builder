@@ -14,6 +14,7 @@
  */
 package com.amazon.analytics.flurry;
 
+import com.amazon.analytics.CustomAnalyticsTags;
 import com.amazon.utils.security.ResourceObfuscator;
 import com.flurry.android.FlurryAgent;
 
@@ -21,7 +22,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -30,9 +30,8 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.Map;
 
-import com.amazon.analytics.AnalyticsConstants;
+import com.amazon.analytics.AnalyticsTags;
 import com.amazon.analytics.IAnalytics;
 
 import javax.crypto.BadPaddingException;
@@ -66,6 +65,8 @@ public class FlurryAnalytics implements IAnalytics {
      */
     static final String IMPL_CREATOR_NAME = FlurryAnalytics.class.getSimpleName();
 
+    private CustomAnalyticsTags mCustomTags = new CustomAnalyticsTags();
+
     /**
      * {@inheritDoc}
      */
@@ -86,6 +87,7 @@ public class FlurryAnalytics implements IAnalytics {
         catch (Exception e) {
             throw new RuntimeException("Could not configure FlurryAgent ", e);
         }
+        mCustomTags.init(context, R.string.flurry_analytics_custom_tags);
         Log.d(TAG, "Flurry configuration complete.");
     }
 
@@ -168,25 +170,29 @@ public class FlurryAnalytics implements IAnalytics {
     @Override
     public void trackAction(HashMap<String, Object> data) {
         // Get the action name.
-        String action = (String) data.get(AnalyticsConstants.ACTION_NAME);
+        String action = (String) data.get(AnalyticsTags.ACTION_NAME);
         // Get the attributes map.
         try {
-            Map<String, String> contextData = new HashMap<>();
-            Map<String, Object> contextDataObjectMap = (Map<String, Object>) data.get
-                    (AnalyticsConstants.ATTRIBUTES);
+            HashMap<String, String> contextData = new HashMap<>();
+            HashMap<String, Object> contextDataObjectMap =
+                    (HashMap<String, Object>) data.get(AnalyticsTags.ATTRIBUTES);
             for (String key : contextDataObjectMap.keySet()) {
                 contextData.put(key, String.valueOf(contextDataObjectMap.get(key)));
             }
             // Record action.
-            FlurryAgent.logEvent(action, contextData);
+            FlurryAgent.logEvent(mCustomTags.getCustomTag(action),
+                    mCustomTags.getCustomTags(contextData));
+
+            Log.d(TAG, "Tracking action " + mCustomTags.getCustomTag(action) + " with attributes: "
+                    + mCustomTags.getCustomTags(contextData));
         }
         catch (Exception e) {
             Log.e(TAG, "The params map was not of type <String, String> for action " + action +
                     ", dropping the map and just logging the event", e);
             // Record action.
-            FlurryAgent.logEvent(action);
+            FlurryAgent.logEvent(mCustomTags.getCustomTag(action));
+            Log.d(TAG, "Tracking action " + mCustomTags.getCustomTag(action));
         }
-        Log.d(TAG, "Tracking action " + action);
     }
 
     /**

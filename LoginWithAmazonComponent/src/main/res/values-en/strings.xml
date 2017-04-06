@@ -14,7 +14,6 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-    <string name="app_name">LoginWithAmazon</string>
     <string name="default_message">Welcome to Log In with Amazon!\nIf this is your first time
         logging
         in, you will be asked to give permission for this application to access your profile data.

@@ -35,6 +35,9 @@ android {
             testCoverageEnabled true
         }
     }
+    packagingOptions {
+        pickFirst  'META-INF/LICENSE'
+    }
 }
 
 apply plugin: 'jacoco'

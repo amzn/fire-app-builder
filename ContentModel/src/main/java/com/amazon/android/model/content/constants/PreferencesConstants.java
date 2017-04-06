@@ -23,14 +23,4 @@ public class PreferencesConstants {
      * Constant for the content id.
      */
     public static final String CONTENT_ID = "content_id";
-
-    /**
-     * Constant for the seek position.
-     */
-    public static final String SEEK_POSITION = "seek_position";
-
-    /**
-     * Constant for the final position.
-     */
-    public static final String FINAL_POSITION = "final_position";
 }

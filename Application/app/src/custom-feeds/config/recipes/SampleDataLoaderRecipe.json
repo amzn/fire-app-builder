@@ -1,0 +1,8 @@
+{
+  "task" : "load_data",
+  "data_file_path" : "SampleFormatB.json",
+  "url_generator" : {
+    "base_url" : "http://example.com",
+    "token_generation_url" : "http://example.com"
+  }
+}

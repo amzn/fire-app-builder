@@ -14,7 +14,6 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-    <string name="app_name">コンテンツブラウザ</string>
     <string name="watch_now_1">今すぐ</string>
     <string name="watch_now_2">観る</string>
     <string name="watch_from_beginning_1">最初から</string>

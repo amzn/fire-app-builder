@@ -1,0 +1,21 @@
+{
+  "cooker" : "DynamicParser",
+  "format" : "json",
+  "model" : "com.amazon.android.model.content.Content",
+  "translator" : "ContentTranslator",
+  "modelType"    : "array",
+  "query"        : "$.assets[?(@.type == 'awe.Video' && @.assetId in $$par0$$)]",
+  "matchList"    : [
+    "common/title@title",
+    "assetId@id",
+    "common/subtitle@subtitle",
+    "common/description@description",
+    "video/videoURL@url",
+    "common/imageUrls/V_1_1044x788@cardImageUrl",
+    "common/imageUrls/V_1_1536x866@backgroundImageUrl",
+    "common/tags@tags",
+    "video/closedCaptionURL@closeCaptionUrls",
+    "video/seasonNumber@seasonNumber",
+    "video/episodeNumber@episodeNumber"
+  ]
+}

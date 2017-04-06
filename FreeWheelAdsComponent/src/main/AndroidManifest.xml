@@ -16,8 +16,7 @@ permissions and limitations under the License.
           package="com.amazon.ads.android.freewheel">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-            android:allowBackup="true"
-            android:label="@string/app_name">
+            android:allowBackup="true">
         <meta-data android:name="AMZNAP@FreeWheelAds"
                    android:value="IAds@com.amazon.ads.android.freewheel.FreeWheelAdsImplCreator"/>
     </application>

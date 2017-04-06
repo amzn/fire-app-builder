@@ -59,7 +59,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.android.support:leanback-v17:23.1.1'
     compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.android.support:support-v4:23.1.1'
 
     compile 'com.fasterxml.jackson.core:jackson-core:2.6.0'
@@ -93,4 +92,13 @@ dependencies {
     compile project(':ContentBrowser')
     // Global font support
     compile project(':Calligraphy')
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'me.tatarka:gradle-retrolambda:3.2.3'
+    }
 }

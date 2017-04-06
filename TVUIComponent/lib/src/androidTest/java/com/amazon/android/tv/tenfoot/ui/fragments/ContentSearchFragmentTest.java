@@ -14,9 +14,11 @@
  */
 package com.amazon.android.tv.tenfoot.ui.fragments;
 
+import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.model.content.Content;
 import com.amazon.android.model.content.ContentContainer;
 import com.amazon.android.tv.tenfoot.ui.activities.ContentSearchActivity;
+import com.amazon.android.utils.Preferences;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -39,9 +41,6 @@ public class ContentSearchFragmentTest extends
     // Create the Robotium driver
     private Solo solo;
 
-    // This Content Container will be passed into the ContentSearchFragment
-    private ContentContainer mContentContainer;
-
     /**
      * Creates an {@link ActivityInstrumentationTestCase2}.
      */
@@ -60,12 +59,12 @@ public class ContentSearchFragmentTest extends
         // Setup the Robotium driver with the current activity and instrumentation
         solo = new Solo(getInstrumentation(), getActivity());
 
+        // Set the context for the Preferences so ContentBrowser can be initialized properly.
+        Preferences.setContext(getActivity());
+
         // Initialize and populate the test container that we will send to the
         // ContentSearchFragment.
         initContentContainer();
-
-        // Set the test content in the ContentSearchFragment.
-        // todo: revisit getActivity().mFragment.addTestContent(mContentContainer);
     }
 
     /**
@@ -73,12 +72,9 @@ public class ContentSearchFragmentTest extends
      */
     private void initContentContainer() {
 
-        // Init the Content Container
-        mContentContainer = new ContentContainer();
-
         // Create three items of content
         Content item1 = new Content();
-        item1.setId((long) 2323);
+        item1.setId("2323");
         item1.setTitle("Cooking Show 1");
         item1.setDescription("a great cooking show!");
         item1.setExtraValue("duration", "358");
@@ -89,7 +85,7 @@ public class ContentSearchFragmentTest extends
         item1.setExtraValue("channelId", 6341);
 
         Content item2 = new Content();
-        item2.setId((long) 232323);
+        item2.setId("232323");
         item2.setTitle("Cooking Show 2");
         item2.setDescription("a better cooking show!");
         item1.setExtraValue("duration", "358");
@@ -100,7 +96,7 @@ public class ContentSearchFragmentTest extends
         item2.setExtraValue("channelId", 6341);
 
         Content item3 = new Content();
-        item3.setId((long) 232323232);
+        item3.setId("232323232");
         item3.setTitle("Penne arrabbiata");
         item3.setDescription("A cooking show where they make Penne arrabbiata");
         item3.setExtraValue("duration", "127");
@@ -110,11 +106,11 @@ public class ContentSearchFragmentTest extends
                 ("International Cuisine")));
         item3.setExtraValue("channelId", 6341);
 
+        // Add the items to the ContentBrowser root container
+        ContentBrowser.getInstance(getActivity()).getRootContentContainer().addContent(item1);
+        ContentBrowser.getInstance(getActivity()).getRootContentContainer().addContent(item2);
+        ContentBrowser.getInstance(getActivity()).getRootContentContainer().addContent(item3);
 
-        // Add the items to the container
-        mContentContainer.addContent(item1);
-        mContentContainer.addContent(item2);
-        mContentContainer.addContent(item3);
     }
 
     /**
@@ -146,7 +142,6 @@ public class ContentSearchFragmentTest extends
         solo.sendKey(Solo.LEFT);
         solo.sendKey(Solo.LEFT);
         solo.sendKey(Solo.ENTER);
-
         // Delay check for a bit.
         solo.sleep(3000);
 

@@ -1,0 +1,12 @@
+{
+  "cooker": "DynamicParser",
+  "format": "json",
+  "model": "com.amazon.android.model.content.ContentContainer",
+  "translator": "ContentContainerTranslator",
+  "modelType": "array",
+  "query": "$.containers[?(@.type == 'awe.Container')]",
+  "matchList": [
+    "common/title@name"
+  ],
+  "keyDataType": "container/assets@keyDataPath"
+}

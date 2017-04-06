@@ -18,23 +18,36 @@ package com.amazon.android.contentbrowser.helper;
 import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.contentbrowser.R;
 import com.amazon.android.module.ModuleManager;
+import com.amazon.android.ui.constants.PreferencesConstants;
 import com.amazon.android.ui.fragments.ErrorDialogFragment;
 import com.amazon.android.ui.fragments.LogoutSettingsFragment;
 import com.amazon.android.utils.ErrorUtils;
+import com.amazon.android.utils.GlideHelper;
+import com.amazon.android.utils.NetworkUtils;
+import com.amazon.android.utils.Preferences;
 import com.amazon.auth.AuthenticationConstants;
 import com.amazon.auth.IAuthentication;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.github.droibit.rxactivitylauncher.RxLauncher;
 
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -89,11 +102,6 @@ public class AuthHelper {
     public static final int AUTH_ON_ACTIVITY_RESULT_REQUEST_CODE = 0x0AFEBABE;
 
     /**
-     * Powered by logo URL preference's key.
-     */
-    public static final String AUTH_POWERED_BY_LOGO_URL_PREFERENCES_KEY = "powered_by_logo_url";
-
-    /**
      * The key to retrieve the "login later" preferences.
      */
     public static final String LOGIN_LATER_PREFERENCES_KEY = "LOGIN_LATER_PREFERENCES_KEY";
@@ -107,6 +115,21 @@ public class AuthHelper {
      * Result from activity key.
      */
     public static final String RESULT_FROM_ACTIVITY = "RESULT_FROM_ACTIVITY";
+
+    /**
+     * String constant to get the white list object from the MVPD JSONObject.
+     */
+    private static final String MVPD_WHITE_LIST = "mvpdWhitelist";
+
+    /**
+     * String constant to get the logged-in image URL for the MVPD JSONObject.
+     */
+    private static final String LOGGED_IN_IMAGE = "loggedInImage";
+
+    /**
+     * String constant to compare the default MVPD string value in custom.xml to.
+     */
+    private static final String DEFAULT_MVPD_URL = "DEFAULT_MVPD_URL";
 
     /**
      * Authentication implementation reference.
@@ -184,7 +207,6 @@ public class AuthHelper {
 
         mContentBrowser.onAuthenticationStatusUpdateEvent(
                 new AuthenticationStatusUpdateEvent(authenticationStatus));
-
         EventBus.getDefault().post(new AuthenticationStatusUpdateEvent(authenticationStatus));
     }
 
@@ -286,7 +308,7 @@ public class AuthHelper {
                 @Override
                 public void onSuccess(Bundle extras) {
 
-                    Log.d(TAG, "Account login success");
+                    Log.d(TAG, "User is authenticated");
                     broadcastAuthenticationStatus(true);
                     handleSuccessCase(subscriber, extras);
                 }
@@ -294,7 +316,7 @@ public class AuthHelper {
                 @Override
                 public void onFailure(Bundle extras) {
 
-                    Log.e(TAG, "Account login failed");
+                    Log.e(TAG, "User is not authenticated");
                     broadcastAuthenticationStatus(false);
                     handleFailureCase(subscriber, extras);
                 }
@@ -338,7 +360,25 @@ public class AuthHelper {
      * @param bundle Activity result bundle.
      */
     private void handleAuthenticationActivityResultBundle(Bundle bundle) {
-        // TODO: Handle MVPD logo here.
+
+        Bundle mvpdBundle = null;
+        if(bundle != null) {
+            mvpdBundle = (Bundle) bundle.get(AuthenticationConstants.MVPD_BUNDLE);
+        }
+
+        if (mvpdBundle == null) {
+            Log.w(TAG, "No MVPD bundle found when handling authentication result");
+            return;
+        }
+        String mvpd = mvpdBundle.getString(AuthenticationConstants.MVPD);
+
+        String mvpdLogoUrl = mContentBrowser.getPoweredByLogoUrlByName(mvpd);
+        if (mvpdLogoUrl == null || mvpdLogoUrl.isEmpty()) {
+            Log.d(TAG, "MVPD url not found for:" + mvpd);
+        }
+        Preferences.setString(PreferencesConstants.MVPD_LOGO_URL, mvpdLogoUrl);
+        Log.d(TAG, "MVPD in details:" + mvpd + " logo url:" + mvpdLogoUrl);
+
     }
 
     /**
@@ -346,7 +386,7 @@ public class AuthHelper {
      *
      * @return RX Observable.
      */
-    private Observable<Bundle> authenticateWithActivity() {
+    public Observable<Bundle> authenticateWithActivity() {
 
         return mRxLauncher.from(mContentBrowser.getNavigator()
                                                .getActiveActivity())
@@ -358,17 +398,13 @@ public class AuthHelper {
                                                   AuthHelper.AUTH_ON_ACTIVITY_RESULT_REQUEST_CODE,
                                                   null)
                           .map(activityResult -> {
-                              Bundle resultBundle;
-                              if (activityResult.isOk()) {
+                              Bundle resultBundle = null;
+                              if (activityResult.isOk() && activityResult.data == null) {
                                   resultBundle = new Bundle();
                               }
-                              else {
-                                  resultBundle = null;
-                                  if (activityResult.data != null) {
-                                      resultBundle = activityResult.data.getExtras();
-                                  }
+                              else if (activityResult.data != null) {
+                                  resultBundle = activityResult.data.getExtras();
                               }
-
                               handleAuthenticationActivityResultBundle(resultBundle);
 
                               if (resultBundle != null) {
@@ -398,8 +434,8 @@ public class AuthHelper {
                                                   isAuthorized(),
                                                   // If isAuthenticated failed then do
                                                   // authenticateWithActivity.
-                                                  // Warning!!! After this point all the upcoming
-                                                  // tasks needs to be handled
+                                                  // Warning!!! After this point all the
+                                                  // upcoming tasks needs to be handled
                                                   // in upcoming activity!!!
                                                   authenticateWithActivity()
                                           )
@@ -412,13 +448,17 @@ public class AuthHelper {
      *
      * @param iAuthorizedHandler Authorized handler.
      */
+
     public void handleAuthChain(IAuthorizedHandler iAuthorizedHandler) {
 
         // Check authentication first.
         authenticate()
                 .subscribe(resultBundle -> {
+                    if(resultBundle == null) {
+                        Log.w(TAG, "resultBundle is null, user probably pressed back on login screen");
+                    }
                     // If we got a login screen and login was success
-                    if (resultBundle.getBoolean(RESULT_FROM_ACTIVITY)) {
+                    else if (resultBundle.getBoolean(RESULT_FROM_ACTIVITY)) {
                         // Check if we are authorized in upcoming activity context.
                         mContentBrowser
                                 .getNavigator()
@@ -440,8 +480,8 @@ public class AuthHelper {
                     else {
                         // If everything failed then show error.
                         mContentBrowser.getNavigator()
-                                       .runOnUpcomingActivity(() -> handleErrorBundle(resultBundle)
-                                       );
+                                       .runOnUpcomingActivity(() -> handleErrorBundle
+                                               (resultBundle));
                     }
                 }, throwable -> Log.e(TAG, "handleAuthChain failed:", throwable));
     }
@@ -525,7 +565,7 @@ public class AuthHelper {
      *
      * @param extras Extras bundle.
      */
-    private void handleErrorBundle(Bundle extras) {
+    public void handleErrorBundle(Bundle extras) {
 
         Bundle bundle = extras.getBundle(AuthenticationConstants.ERROR_BUNDLE);
         Activity activity = mContentBrowser.getNavigator()
@@ -561,5 +601,85 @@ public class AuthHelper {
         );
     }
 
+    /**
+     * Retrieves the list of possible MVPD providers from the URL found at R.string.mvpd_url in
+     * custom.xml and gives them to ContentBrowser.
+     */
+    public void setupMvpdList() {
 
+        try {
+
+            String mvpdUrl = mAppContext.getResources().getString(R.string.mvpd_url);
+
+            // The user has no MVPD URL set up.
+            if (mvpdUrl.equals(DEFAULT_MVPD_URL)) {
+                Log.d(TAG, "MVPD feature not used.");
+                return;
+            }
+            String jsonStr = NetworkUtils.getDataLocatedAtUrl(mvpdUrl);
+
+            JSONObject json = new JSONObject(jsonStr);
+            JSONArray mvpdWhiteList = json.getJSONArray(MVPD_WHITE_LIST);
+
+            for (int i = 0; i < mvpdWhiteList.length(); i++) {
+
+                JSONObject mvpdItem = mvpdWhiteList.getJSONObject(i);
+                mContentBrowser.addPoweredByLogoUrlByName(
+                        mvpdItem.getString(PreferencesConstants.MVPD_LOGO_URL),
+                        mvpdItem.getString(LOGGED_IN_IMAGE));
+            }
+
+        }
+        catch (Exception e) {
+            Log.e(TAG, "Get MVPD logo urls failed!!!", e);
+
+        }
+    }
+
+    /**
+     * Load powered by logo from preferences with Glide.
+     *
+     * @param context                The context to use.
+     * @param poweredByLogoImageView The image view to use.
+     */
+    public void loadPoweredByLogo(Context context, ImageView poweredByLogoImageView) {
+
+        try {
+            String mvpdUrl = Preferences.getString(PreferencesConstants.MVPD_LOGO_URL);
+
+            if (poweredByLogoImageView == null || mvpdUrl.isEmpty()) {
+                Log.d(TAG, "No MVPD image view or URL found.");
+                return;
+            }
+            poweredByLogoImageView.setVisibility(View.INVISIBLE);
+
+            RequestListener listener = new RequestListener<String, GlideDrawable>() {
+                @Override
+                public boolean onException(Exception e, String model, Target<GlideDrawable>
+                        target, boolean isFirstResource) {
+
+                    poweredByLogoImageView.setVisibility(View.INVISIBLE);
+                    Log.e(TAG, "Get image with glide failed for powered by logo!!!", e);
+                    return false;
+                }
+
+                @Override
+                public boolean onResourceReady(GlideDrawable resource, String model,
+                                               Target<GlideDrawable> target, boolean
+                                                       isFromMemoryCache, boolean isFirstResource) {
+
+                    poweredByLogoImageView.setVisibility(View.VISIBLE);
+                    return false;
+                }
+            };
+
+            GlideHelper.loadImageIntoView(
+                    poweredByLogoImageView, context, mvpdUrl, listener, android.R.color.transparent,
+                    new ColorDrawable(ContextCompat.getColor(context,
+                                                             android.R.color.transparent)));
+        }
+        catch (Exception e) {
+            Log.e(TAG, "loadPoweredByLogo failed, activity may not include it.", e);
+        }
+    }
 }

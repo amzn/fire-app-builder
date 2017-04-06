@@ -21,9 +21,12 @@ import android.util.Log;
 import com.adobe.mobile.Analytics;
 import com.adobe.mobile.Config;
 import com.amazon.analytics.AnalyticsActionBuilder;
-import com.amazon.analytics.AnalyticsConstants;
+import com.amazon.analytics.AnalyticsTags;
+import com.amazon.analytics.CustomAnalyticsTags;
 import com.amazon.analytics.IAnalytics;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 
 
@@ -34,10 +37,7 @@ public class OmnitureAnalytics implements IAnalytics {
 
     private static final String TAG = OmnitureAnalytics.class.getSimpleName();
 
-    /**
-     * Name used for implementation creator registration to Module Manager.
-     */
-    static final String IMPL_CREATOR_NAME = OmnitureAnalytics.class.getSimpleName();
+    private CustomAnalyticsTags mCustomTags = new CustomAnalyticsTags();
 
     /**
      * {@inheritDoc}
@@ -46,6 +46,18 @@ public class OmnitureAnalytics implements IAnalytics {
     public void configure(Context context) {
 
         Config.setContext(context);
+        try {
+            InputStream configInput = context.getAssets().open(
+                    context.getString(R.string.omniture_analytics_config_file));
+            Config.overrideConfigStream(configInput);
+            Log.d(TAG, "ADBMobileConfig file found");
+        }
+        catch (IOException e) {
+            Log.d(TAG, "ADBMobileConfig file not found");
+        }
+
+        mCustomTags.init(context, R.string.omniture_analytics_custom_tags);
+
         Log.d(TAG, "Omniture configuration complete");
     }
 
@@ -69,24 +81,25 @@ public class OmnitureAnalytics implements IAnalytics {
     @Override
     public void trackAction(HashMap<String, Object> data) {
 
-        if (data.get(AnalyticsConstants.ACTION_NAME) != null
-                && data.get(AnalyticsConstants.ATTRIBUTES) != null) {
+        if (data.get(AnalyticsTags.ACTION_NAME) != null
+                && data.get(AnalyticsTags.ATTRIBUTES) != null) {
 
             // Get the action name.
-            String action = data.get(AnalyticsConstants.ACTION_NAME).toString();
+            String action = data.get(AnalyticsTags.ACTION_NAME).toString();
 
             // Get the attributes map
             HashMap<String, Object> contextData =
-                    (HashMap<String, Object>) data.get(AnalyticsConstants.ATTRIBUTES);
+                    (HashMap<String, Object>) data.get(AnalyticsTags.ATTRIBUTES);
 
             // Add time and data attributes
             contextData.putAll(AnalyticsActionBuilder.buildTimeDateData());
 
             // Record action
-            Analytics.trackAction(action, contextData);
+            Analytics.trackAction(mCustomTags.getCustomTag(action),
+                    mCustomTags.getCustomTags(contextData));
 
-            Log.d(TAG, "Tracking action " + action + " with context data: " + contextData
-                    .toString());
+            Log.d(TAG, "Tracking action " + mCustomTags.getCustomTag(action)
+                    + " with context data: " + mCustomTags.getCustomTags(contextData));
         }
         else {
             Log.e(TAG, "Error tracking action. Data map not set properly.");
@@ -101,9 +114,11 @@ public class OmnitureAnalytics implements IAnalytics {
     public void trackState(String screen) {
 
         HashMap<String, Object> data = AnalyticsActionBuilder.buildTimeDateData();
-        Log.d(TAG, "Tracking state for screen " + screen + " with context data: " + data.toString
-                ());
-        Analytics.trackState(screen, data);
+
+        Log.d(TAG, "Tracking state for screen " + screen + " with context data: "
+                   + mCustomTags.getCustomTags(data).toString());
+
+        Analytics.trackState(screen, mCustomTags.getCustomTags(data));
     }
 
     /**
@@ -117,12 +132,12 @@ public class OmnitureAnalytics implements IAnalytics {
         Log.d(TAG, "Tracking a caught error.");
 
         HashMap<String, Object> data = new HashMap<>();
-        data.put(AnalyticsConstants.ACTION_NAME, AnalyticsConstants.ACTION_ERROR);
+        data.put(AnalyticsTags.ACTION_NAME, AnalyticsTags.ACTION_ERROR);
 
         HashMap<String, Object> attributes = new HashMap<>();
-        attributes.put(AnalyticsConstants.ATTRIBUTE_ERROR_MSG, errorMessage +
-                t.getLocalizedMessage());
-        data.put(AnalyticsConstants.ATTRIBUTES, attributes);
+        attributes.put(AnalyticsTags.ATTRIBUTE_ERROR_MSG,
+                       errorMessage + t.getLocalizedMessage());
+        data.put(AnalyticsTags.ATTRIBUTES, attributes);
 
         trackAction(data);
     }

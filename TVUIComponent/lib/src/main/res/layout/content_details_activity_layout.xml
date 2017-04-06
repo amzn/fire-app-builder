@@ -29,7 +29,6 @@ permissions and limitations under the License.
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
           android:name="com.amazon.android.tv.tenfoot.ui.fragments.ContentDetailsFragment"
           android:id="@+id/content_details_fragment"

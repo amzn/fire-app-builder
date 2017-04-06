@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -104,6 +105,8 @@ public class AnalyticsManager implements Application.ActivityLifecycleCallbacks 
         LocalBroadcastManager.getInstance(mAppContext)
                              .registerReceiver(mLocalBroadcastReceiver,
                                                intentFilter);
+
+        ExtraContentAttributes.init(context);
     }
 
     /**
@@ -116,6 +119,9 @@ public class AnalyticsManager implements Application.ActivityLifecycleCallbacks 
 
         synchronized (sLock) {
             if (sInstance == null) {
+                if (context == null) {
+                    return null;
+                }
                 sInstance = new AnalyticsManager(context.getApplicationContext());
             }
             return sInstance;
@@ -263,12 +269,14 @@ public class AnalyticsManager implements Application.ActivityLifecycleCallbacks 
     }
 
     /**
-     * Gets the analytics constant for an Activity - used for testing.
+     * Returns the analytics constant given an Activity name.
+     * Used for testing and not intended for production.
      *
      * @param activityName Activity name.
      * @return The analytics constant if it exists or an empty String if it doesn't.
      */
-    String getConstant(String activityName) {
+    @VisibleForTesting
+    public String getConstant(String activityName) {
 
         if (mAnalyticsConstantMap.keySet().contains(activityName)) {
             return mAnalyticsConstantMap.get(activityName);
@@ -279,8 +287,9 @@ public class AnalyticsManager implements Application.ActivityLifecycleCallbacks 
     }
 
     /**
-     * Resets the singleton - for test only.
+     * Resets the singleton. Used for testing and not intended for production.
      */
+    @VisibleForTesting
     void reset() {
 
         sInstance = null;

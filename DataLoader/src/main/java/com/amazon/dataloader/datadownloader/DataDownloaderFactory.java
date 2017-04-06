@@ -70,8 +70,8 @@ public class DataDownloaderFactory {
 
         }
         catch (Exception e) {
-            throw new DownloaderInitializationFailedException("Could not register data " +
-                                                                      "downloader", e);
+            throw new DownloaderInitializationFailedException("Could not register data downloader"
+                    + " for classpath " + dataDownloaderClassPath, e);
         }
     }
 }

@@ -25,9 +25,11 @@ import com.amazon.android.tv.tenfoot.ui.activities.FullContentBrowseActivity;
 import com.amazon.android.tv.tenfoot.ui.activities.SplashActivity;
 
 import android.content.res.Resources;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-import com.amazon.analytics.AnalyticsConstants;
+import com.amazon.android.uamp.ui.PlaybackActivity;
+import com.amazon.analytics.AnalyticsTags;
 
 /**
  * TenFoot Application class.
@@ -57,9 +59,7 @@ public class TenFootApp extends ContentBrowserApplication {
                                      getResources().getInteger(R.integer.spinner_alpha))
                     .setIntegerValue(com.amazon.android.ui.constants.ConfigurationConstants
                                              .CONFIG_SPINNER_COLOR,
-                                     getResources().getColor(R.color.spinner_color))
-                    .setBooleanValue(ConfigurationConstants.CONFIG_SHOW_RECOMMENDATIONS,
-                                     getResources().getBoolean(R.bool.show_recommendations))
+                                     ContextCompat.getColor(this, R.color.spinner_color))
                     .setIntegerValue(ConfigurationConstants.CONFIG_TIME_TO_RELOAD_FEED,
                                      getResources().getInteger(R.integer.time_to_reload_content));
         }
@@ -69,18 +69,21 @@ public class TenFootApp extends ContentBrowserApplication {
 
         // Add analytics constant of embedded activities.
         mAnalyticsManager.addAnalyticsConstantForActivity(SplashActivity.class.getSimpleName(),
-                                                          AnalyticsConstants.SCREEN_SPLASH)
+                                                          AnalyticsTags.SCREEN_SPLASH)
                          .addAnalyticsConstantForActivity(ContentBrowseActivity.class
                                                                   .getSimpleName(),
-                                                          AnalyticsConstants.SCREEN_BROWSE)
+                                                          AnalyticsTags.SCREEN_BROWSE)
                          .addAnalyticsConstantForActivity(FullContentBrowseActivity.class
                                                                   .getSimpleName(),
-                                                          AnalyticsConstants.SCREEN_BROWSE)
+                                                          AnalyticsTags.SCREEN_BROWSE)
                          .addAnalyticsConstantForActivity(ContentSearchActivity.class
                                                                   .getSimpleName(),
-                                                          AnalyticsConstants.SCREEN_SEARCH)
+                                                          AnalyticsTags.SCREEN_SEARCH)
                          .addAnalyticsConstantForActivity(ContentDetailsActivity.class
                                                                   .getSimpleName(),
-                                                          AnalyticsConstants.SCREEN_DETAILS);
+                                                          AnalyticsTags.SCREEN_DETAILS)
+                         .addAnalyticsConstantForActivity(PlaybackActivity.class
+                                                                  .getSimpleName(),
+                                                          AnalyticsTags.SCREEN_PLAYBACK);
     }
 }

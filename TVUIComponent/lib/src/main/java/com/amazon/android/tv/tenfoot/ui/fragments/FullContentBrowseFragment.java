@@ -59,7 +59,10 @@ import android.support.v17.leanback.widget.RowPresenter;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import java.util.List;
 
@@ -91,6 +94,28 @@ public class FullContentBrowseFragment extends BrowseFragment {
         setupEventListeners();
     }
 
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+            savedInstanceState) {
+
+        final View view = super.onCreateView(inflater, container, savedInstanceState);
+
+        if (view != null) {
+            // Hiding these views because we want to use our own search widget instead
+            // of Leanback's SearchOrb that's part of the BrowseFragment.
+            View searchOrb = view.findViewById(R.id.search_orb);
+            if (searchOrb != null) {
+                searchOrb.setVisibility(View.GONE);
+            }
+            ImageView icon = (ImageView) view.findViewById(R.id.icon);
+            if (icon != null) {
+                icon.setVisibility(View.GONE);
+            }
+        }
+        return view;
+    }
+
     private void prepareBackgroundManager() {
 
         mBackgroundManager = BackgroundManager.getInstance(getActivity());
@@ -107,16 +132,12 @@ public class FullContentBrowseFragment extends BrowseFragment {
         setHeadersTransitionOnBackEnabled(true);
 
         // Set headers and rows background color
-        setBrandColor(getResources().getColor(R.color.browse_headers_bar));
-        setDefaultBackground(R.drawable.default_background);
-        mBackgroundManager.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable
-                .browse_background_no_preview));
+        setBrandColor(ContextCompat.getColor(getActivity(), R.color.browse_headers_bar));
+        mBackgroundManager.setColor(ContextCompat.getColor(getActivity(),
+                                                           R.color.browse_background_color));
 
         // Disables the scaling of rows when Headers bar is in open state.
         enableRowScaling(false);
-
-        // Set search icon color
-        setSearchAffordanceColor(getResources().getColor(R.color.search_orb));
 
         // Here is where a header presenter can be set to customize the look
         // of the headers list.

@@ -65,7 +65,7 @@ public class ErrorHelper {
                             });
         }
         else {
-            Log.d(TAG, "Experiencing a none network error");
+            Log.d(TAG, "Experiencing a non-network error");
             errorDialogFragment = ErrorDialogFragment.newInstance(activity, error_category,
                                                                   errorDialogFragmentListener);
         }

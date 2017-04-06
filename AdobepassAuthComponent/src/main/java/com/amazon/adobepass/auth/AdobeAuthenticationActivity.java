@@ -57,8 +57,22 @@ public class AdobeAuthenticationActivity extends SecondScreenAuthenticationActiv
 
                                 super.onSuccess(statusCode, headers, response);
                                 Log.i(TAG, "getAuthenticationTokenRequest succeeded");
-                                setResult(RESULT_OK);
                                 getSubmitButton().setEnabled(true);
+                                try {
+                                    String mvpd = response.getString(AuthenticationConstants.MVPD);
+                                    Log.d(TAG, "Logged in with the following provider: " + mvpd);
+                                    Intent intent = new Intent();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString(AuthenticationConstants.MVPD, mvpd);
+                                    setResult(RESULT_OK,
+                                              intent.putExtra(AuthenticationConstants.MVPD_BUNDLE,
+                                                              bundle));
+                                }
+                                catch (Exception e) {
+                                    Log.e(TAG, "There was an exception when getting mvpd name.", e);
+                                    setResult(RESULT_OK);
+                                }
+
                                 finish();
                             }
 
@@ -69,8 +83,7 @@ public class AdobeAuthenticationActivity extends SecondScreenAuthenticationActiv
 
                                 super.onFailure(statusCode, headers, throwable, errorResponse);
                                 Log.e(TAG, "There was an error authenticating the user on second " +
-                                              "screen. " +
-                                              "Status code: " + statusCode + " Error: " +
+                                              "screen. Status code: " + statusCode + " Error: " +
                                               errorResponse,
                                       throwable);
                                 getSubmitButton().setEnabled(true);
@@ -137,6 +150,7 @@ public class AdobeAuthenticationActivity extends SecondScreenAuthenticationActiv
 
                     /**
                      * Actions to be performed on failure
+                     *
                      * @param statusCode status code of failure
                      * @param errorResponseMsg error message
                      * @param throwable throwable thrown

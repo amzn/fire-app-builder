@@ -30,7 +30,6 @@ permissions and limitations under the License.
      limitations under the License.
 -->
 <resources>
-    <string name="app_name"><![CDATA[TenFootUI]]></string>
     <string name="browse_title"><![CDATA[TenFootUI]]></string>
     <string name="feed_reloading">再読込中</string>
     <string name="feed_loading">読み込み中</string>

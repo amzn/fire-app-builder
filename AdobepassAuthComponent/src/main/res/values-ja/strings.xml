@@ -14,7 +14,6 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-    <string name="app_name">AdobepassAuthComponent</string>
     <string name="title_activity_adobe_authentication">認証</string>
     <string name="adobepass_login_instruction_line_1">コンピューターまたはモバイル端末を使用します。</string>
     <string name="adobepass_login_instruction_line_3">以下のコード（大文字小文字を区別）を入力します。</string>

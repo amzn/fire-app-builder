@@ -11,6 +11,7 @@
     "description@description",
     "videoURL@url",
     "imgURL@cardImageUrl",
-    "imgURL@backgroundImageUrl"
+    "imgURL@backgroundImageUrl",
+    "channel_id@channelId"
   ]
 }

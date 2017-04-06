@@ -1,7 +1,7 @@
 {
   "config": {
-    "showRecommendedContent": true,
-    "categoryDefaultRecommendation": true,
+    "showRelatedContent": true,
+    "useCategoryAsDefaultRelatedContent": true,
     "searchAlgo": "basic"
   },
   "branding": {
@@ -18,16 +18,6 @@
       },
       "contents": {
         "dataLoader": "recipes/LightCastDataLoaderRecipe1.json",
-        "dynamicParser": "recipes/LightCastContentsRecipe.json"
-      }
-    },
-    {
-      "categories": {
-        "dataLoader": "recipes/LightCastDataLoaderRecipe2.json",
-        "dynamicParser": "recipes/LightCastCategoriesRecipe.json"
-      },
-      "contents": {
-        "dataLoader": "recipes/LightCastDataLoaderRecipe2.json",
         "dynamicParser": "recipes/LightCastContentsRecipe.json"
       }
     },

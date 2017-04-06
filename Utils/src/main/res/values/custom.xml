@@ -14,11 +14,13 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-
-    <!-- Text color for unfocused action button -->
-    <color name="action_button_text_color">#E6FFFFFF</color>
-    <!-- Text color for focused action button -->
-    <color name="action_button_text_color_focused">#E6FFFFFF</color>
+    <!-- The color of button highlights and widgets. -->
+    <color name="accent">#EE962D</color>
+    <!-- Used for the text of a selected item's title and description.
+         Also used for button text, Splash screen text, and read more dialog text. -->
+    <color name="primary_text">#E6FFFFFF</color>
+    <!-- Used for the text on the card views and playback progress bar text. -->
+    <color name="secondary_text">#FFFFFFFF</color>
     <!-- Background color for focused action button -->
     <drawable name="action_button_focused">@drawable/btn_generic_focused</drawable>
     <!-- Background color for normal state of action button -->

@@ -13,9 +13,6 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-    <string name="app_name">Utils</string>
-
-
     <!-- Error messages -->
     <string name="feed_error_message">Service is unavailable. Please try again later.</string>
     <string name="network_error_message">Network is currently unavailable. Please try again later.</string>
@@ -55,4 +52,5 @@ permissions and limitations under the License.
     <string name="second_screen_login_instruction_line_3">Enter the following case-sensitive code:</string>
     <string name="second_screen_login_instruction_line_4">Loading…</string>
     <!-- End Second Screen Authentication -->
+
 </resources>

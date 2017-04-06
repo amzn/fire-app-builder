@@ -111,24 +111,21 @@ public class SplashActivity extends BaseActivity implements ICancellableLoad {
         isLoadingCancelled = false;
         if (!getIntent().hasExtra(ContentBrowser.CONTENT_WILL_UPDATE)) {
             Log.d(TAG, "First loading");
-
             new AsyncTask<Activity, Void, Void>() {
+
                 @Override
-
-
                 protected Void doInBackground(Activity... activity) {
 
+                    ContentBrowser contentBrowser = ContentBrowser.getInstance(activity[0]);
                     try {
-                        ContentBrowser mContentBrowser =
-                                ContentBrowser.getInstance(activity[0].getApplicationContext());
-
-                        configureFonts(mContentBrowser);
-                        mContentBrowser.onAllModulesLoaded();
-                        mContentBrowser.runGlobalRecipes(activity[0], (SplashActivity) activity[0]);
+                        configureFonts(contentBrowser);
+                        contentBrowser.onAllModulesLoaded();
+                        contentBrowser.runGlobalRecipes(activity[0], (SplashActivity) activity[0]);
                     }
                     catch (Exception e) {
                         Log.e(TAG, "Failed to put data in cache for recipe ", e);
                     }
+
                     return null;
                 }
             }.execute(this);
@@ -214,4 +211,6 @@ public class SplashActivity extends BaseActivity implements ICancellableLoad {
 
         return fontPath;
     }
+
+
 }

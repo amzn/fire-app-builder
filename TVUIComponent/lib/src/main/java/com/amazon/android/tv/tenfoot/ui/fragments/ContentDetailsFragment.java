@@ -32,13 +32,13 @@ import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.model.Action;
 import com.amazon.android.model.content.Content;
 import com.amazon.android.model.content.ContentContainer;
+import com.amazon.android.utils.GlideHelper;
 import com.amazon.android.utils.Helpers;
 import com.amazon.android.tv.tenfoot.R;
 import com.amazon.android.tv.tenfoot.presenter.CardPresenter;
 import com.amazon.android.tv.tenfoot.presenter.DetailsDescriptionPresenter;
 import com.amazon.android.tv.tenfoot.ui.activities.ContentDetailsActivity;
 import com.amazon.android.tv.tenfoot.utils.LeanbackHelpers;
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
@@ -94,8 +94,6 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     private static final int DETAIL_THUMB_WIDTH = 264;
     private static final int DETAIL_THUMB_HEIGHT = 198;
 
-    private static final int NO_NOTIFICATION = -1;
-
     private Content mSelectedContent;
 
     private ArrayObjectAdapter mAdapter;
@@ -104,7 +102,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     private BackgroundManager mBackgroundManager;
     private Drawable mDefaultBackground;
     private DisplayMetrics mMetrics;
-    private boolean mShowRecommendations;
+    private boolean mShowRelatedContent;
 
     SparseArrayObjectAdapter mActionAdapter = new SparseArrayObjectAdapter();
 
@@ -120,7 +118,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         prepareBackgroundManager();
 
         mSelectedContent = ContentBrowser.getInstance(getActivity()).getLastSelectedContent();
-        mShowRecommendations = ContentBrowser.getInstance(getActivity()).isShowRecommendations();
+        mShowRelatedContent = ContentBrowser.getInstance(getActivity()).isShowRelatedContent();
     }
 
     @Override
@@ -129,13 +127,11 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         Log.v(TAG, "onStart called.");
         super.onStart();
         if (mSelectedContent != null || checkGlobalSearchIntent()) {
-            removeNotification(getActivity().getIntent()
-                                            .getIntExtra(ContentDetailsActivity.NOTIFICATION_ID,
-                                                         NO_NOTIFICATION));
+
             setupAdapter();
             setupDetailsOverviewRow();
             setupDetailsOverviewRowPresenter();
-            if (mShowRecommendations) {
+            if (mShowRelatedContent) {
                 setupRelatedContentRow();
             }
             setupContentListRowPresenter();
@@ -158,16 +154,6 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                                 Bundle savedInstanceState) {
 
         return null;
-    }
-
-    private void removeNotification(int notificationId) {
-
-        Log.v(TAG, "removeNotification:" + notificationId);
-        if (notificationId != NO_NOTIFICATION) {
-            NotificationManager notificationManager = (NotificationManager) getActivity()
-                    .getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.cancel(notificationId);
-        }
     }
 
     /**
@@ -218,24 +204,23 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         if (Helpers.DEBUG) {
             Log.v(TAG, "updateBackground called: " + uri);
         }
-        Glide.with(getActivity())
-             .load(uri)
-             .asBitmap()
-             .listener(new Helpers.LoggingListener<>())
-             .centerCrop()
-             .error(mDefaultBackground)
-             .into(new SimpleTarget<Bitmap>(mMetrics.widthPixels, mMetrics.heightPixels) {
-                 @Override
-                 public void onResourceReady(Bitmap resource,
-                                             GlideAnimation<? super Bitmap>
-                                                     glideAnimation) {
 
-                     Bitmap bitmap = Helpers.adjustOpacity(resource, getResources().getInteger(
-                             R.integer.content_details_fragment_bg_opacity));
+        SimpleTarget<Bitmap> bitmapTarget = new SimpleTarget<Bitmap>(mMetrics.widthPixels,
+                                                                     mMetrics.heightPixels) {
+            @Override
+            public void onResourceReady(Bitmap resource,
+                                        GlideAnimation<? super Bitmap> glideAnimation) {
 
-                     mBackgroundManager.setBitmap(bitmap);
-                 }
-             });
+                Bitmap bitmap = Helpers.adjustOpacity(resource, getResources().getInteger(
+                        R.integer.content_details_fragment_bg_opacity));
+
+                mBackgroundManager.setBitmap(bitmap);
+            }
+        };
+
+        GlideHelper.loadImageIntoSimpleTargetBitmap(getActivity(), uri,
+                                                    new GlideHelper.LoggingListener(),
+                                                    android.R.color.transparent, bitmapTarget);
     }
 
     private void setupAdapter() {
@@ -274,28 +259,31 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                                              DETAIL_THUMB_WIDTH);
         int height = Helpers.convertDpToPixel(getActivity().getApplicationContext(),
                                               DETAIL_THUMB_HEIGHT);
-        Glide.with(getActivity())
-             .load(mSelectedContent.getCardImageUrl())
-             .asBitmap()
-             .listener(new Helpers.LoggingListener<>())
-             .centerCrop()
-             .error(android.R.color.transparent)
-             .into(new SimpleTarget<Bitmap>(width, height) {
-                       @Override
-                       public void onResourceReady(Bitmap resource,
-                                                   GlideAnimation<? super Bitmap> glideAnimation) {
 
-                           Log.d(TAG, "content_details_activity_layout overview card image url " +
-                                   "ready: " + resource);
-                           row.setImageBitmap(
-                                   getActivity(),
-                                   Helpers.roundCornerImage(getActivity(), resource, getResources()
-                                      .getInteger(R.integer.details_overview_image_corner_radius)));
 
-                           mAdapter.notifyArrayItemRangeChanged(0, mAdapter.size());
-                       }
-                   }
-             );
+        SimpleTarget<Bitmap> bitmapTarget = new SimpleTarget<Bitmap>(width, height) {
+            @Override
+            public void onResourceReady(Bitmap resource,
+                                        GlideAnimation<? super Bitmap> glideAnimation) {
+
+                Log.d(TAG,
+                      "content_details_activity_layout overview card image url ready: " + resource);
+
+                int cornerRadius =
+                        getResources().getInteger(R.integer.details_overview_image_corner_radius);
+
+                row.setImageBitmap(getActivity(),
+                                   Helpers.roundCornerImage(getActivity(), resource, cornerRadius));
+
+                mAdapter.notifyArrayItemRangeChanged(0, mAdapter.size());
+            }
+        };
+
+        GlideHelper.loadImageIntoSimpleTargetBitmap(getActivity(),
+                                                    mSelectedContent.getCardImageUrl(),
+                                                    new GlideHelper.LoggingListener<>(),
+                                                    android.R.color.transparent,
+                                                    bitmapTarget);
 
         updateActions();
         row.setActionsAdapter(mActionAdapter);

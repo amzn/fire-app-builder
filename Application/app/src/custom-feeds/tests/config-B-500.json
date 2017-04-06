@@ -1,0 +1,36 @@
+[
+	{
+		"componentName": "Application",
+		"dir": "../Application/app",
+		"files": [
+			{
+				"src":"../Application/app/src/custom-feeds/config/Navigator.json",
+				"dest":"../Application/app/src/main/assets/Navigator.json"
+			},
+			{
+				"src":"../Application/app/src/custom-feeds/samples/SampleFormatB-500.json",
+				"dest":"../Application/app/src/main/assets/SampleFormatB.json"
+			},
+			{
+				"src":"../Application/app/src/custom-feeds/config/configurations/DataLoadManagerConfig.json",
+				"dest":"../Application/app/src/main/assets/configurations/DataLoadManagerConfig.json"
+			},
+			{
+				"src":"../Application/app/src/custom-feeds/config/configurations/BasicFileBasedDownloaderConfig.json",
+				"dest":"../Application/app/src/main/assets/configurations/BasicFileBasedDownloaderConfig.json"
+			},
+			{
+				"src":"../Application/app/src/custom-feeds/config/recipes/SampleCategoriesRecipe.json",
+				"dest":"../Application/app/src/main/assets/recipes/SampleCategoriesRecipe.json"
+			},
+			{
+				"src":"../Application/app/src/custom-feeds/config/recipes/SampleContentsRecipe.json",
+				"dest":"../Application/app/src/main/assets/recipes/SampleContentsRecipe.json"
+			},
+			{
+				"src":"../Application/app/src/custom-feeds/config/recipes/SampleDataLoaderRecipe.json",
+				"dest":"../Application/app/src/main/assets/recipes/SampleDataLoaderRecipe.json"
+			}
+		]
+	}
+]

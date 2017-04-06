@@ -16,10 +16,12 @@ package com.amazon.android.ui.fragments;
 
 import com.amazon.android.configuration.ConfigurationManager;
 import com.amazon.android.model.Action;
+import com.amazon.android.ui.constants.PreferencesConstants;
 import com.amazon.android.ui.interfaces.ASettingsFragment;
 import com.amazon.android.ui.constants.ConfigurationConstants;
 
 import com.amazon.android.ui.interfaces.SingleViewProvider;
+import com.amazon.android.utils.Preferences;
 import com.amazon.utils.R;
 
 import android.app.Activity;
@@ -28,10 +30,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyUtils;
@@ -238,9 +242,24 @@ public class LogoutSettingsFragment extends ASettingsFragment {
             @Override
             public void onClick(View v) {
 
+                // Remove MVPD logo from preferences.
+                Preferences.setString(PreferencesConstants.MVPD_LOGO_URL, "");
+
+                // Hide MVPD logo because the user logged out.
+                try {
+                    ImageView poweredByLogoImage =
+                            (ImageView) fragment.getActivity().findViewById(R.id.mvpd_logo);
+
+                    poweredByLogoImage.setVisibility(View.INVISIBLE);
+                }
+                catch (Exception e) {
+                    Log.e(TAG, "Couldn't hide the powered by layout!!!", e);
+                }
+
                 LocalBroadcastManager.getInstance(context)
                                      .sendBroadcast(new Intent().setAction
                                              (LOGOUT_BUTTON_BROADCAST_INTENT_ACTION));
+
                 fragment.dismiss();
             }
         });

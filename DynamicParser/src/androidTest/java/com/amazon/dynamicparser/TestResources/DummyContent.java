@@ -150,23 +150,23 @@ public class DummyContent {
     }
 
     /**
-     * Get content id as long value.
+     * Get content id.
      *
-     * @return Id as a long value.
+     * @return Content id.
      */
-    public long getId() {
+    public String getId() {
 
-        return Long.valueOf(mId);
+        return mId;
     }
 
     /**
      * Set content id.
      *
-     * @param id Content id as long.
+     * @param id Content id.
      */
-    public void setId(Long id) {
+    public void setId(String id) {
 
-        mId = String.valueOf(id);
+        mId = id;
     }
 
     /**
@@ -487,7 +487,8 @@ public class DummyContent {
 
         DummyContent content = (DummyContent) o;
 
-        if (getId() != content.getId())
+        if (getId() != null ? !getId().equals(content.getId()) : content.getId() !=
+                null)
             return false;
         if (getTitle() != null ? !getTitle().equals(content.getTitle()) : content.getTitle() !=
                 null)

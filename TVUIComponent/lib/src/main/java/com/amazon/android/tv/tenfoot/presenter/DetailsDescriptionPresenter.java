@@ -17,6 +17,7 @@ package com.amazon.android.tv.tenfoot.presenter;
 import com.amazon.android.configuration.ConfigurationManager;
 import com.amazon.android.model.content.Content;
 import com.amazon.android.tv.tenfoot.base.TenFootApp;
+import com.amazon.android.tv.tenfoot.utils.ContentHelper;
 import com.amazon.android.ui.constants.ConfigurationConstants;
 import com.amazon.android.ui.widget.EllipsizedTextView;
 import com.amazon.android.tv.tenfoot.R;
@@ -132,7 +133,7 @@ public class DetailsDescriptionPresenter extends Presenter {
                                              config.getTypefacePath(ConfigurationConstants
                                                                             .BOLD_FONT));
 
-        viewHolder.getSubtitle().setText(content.getSubtitle());
+        viewHolder.getSubtitle().setText(ContentHelper.getDescriptiveSubtitle(mContext, content));
 
         viewHolder.getBody().setText(content.getDescription().trim());
         CalligraphyUtils.applyFontToTextView(TenFootApp.getInstance(), viewHolder.getBody(),

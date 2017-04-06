@@ -24,7 +24,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import android.app.Activity;
@@ -42,7 +42,7 @@ import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 /**
  * Tests for {@link FlurryAnalytics}
  */
-@RunWith(RobolectricGradleTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 18, manifest = Config.NONE)
 @PowerMockIgnore({"org.mockito.*", "org.robolectric.*", "android.*"})
 @PrepareForTest(FlurryAgent.class)
@@ -87,7 +87,8 @@ public class FlurryAnalyticsTest {
         map.put("action", "testAction");
 
         //Test for valid attribute Map
-        Map<String, String> contextData = Collections.singletonMap("key", "value");
+        HashMap<String, String> contextData = new HashMap<>();
+        contextData.put("key", "value");
         map.put("attributes", contextData);
         mFlurryAnalytics.trackAction(map);
         verifyStatic();

@@ -26,7 +26,6 @@ import android.support.v17.leanback.widget.HorizontalGridView;
 import android.support.v17.leanback.widget.OnChildViewHolderSelectedListener;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
@@ -130,5 +129,6 @@ public class BaseActivity extends Activity {
                             (BaseActivity.this, mSelectedAction));
         }
     }
+
 }
 

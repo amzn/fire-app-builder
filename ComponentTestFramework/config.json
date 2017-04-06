@@ -1,0 +1,112 @@
+[
+	{
+		"componentName": "Utils",
+		"dir": "../Utils"
+	},
+	{
+		"componentName": "TVUIComponent",
+		"dir": "../TVUIComponent/lib"
+	},
+	{
+		"componentName": "LoginWithAmazonComponent",
+		"dir": "../LoginWithAmazonComponent",
+		"files": [
+			{
+				"src": "apiKeys/LoginWithAmazonComponent_api_key.txt",
+				"dest": "../LoginWithAmazonComponent/src/androidTest/assets/api_key.txt"
+			}
+		]
+	},
+	{
+		"componentName": "AuthInterface",
+		"dir": "../AuthInterface"
+	},
+	{
+		"componentName": "ContentModel",
+		"dir": "../ContentModel"
+	},
+	{
+		"componentName": "DataLoader",
+		"dir": "../DataLoader"
+	},
+	{
+		"componentName": "DynamicParser",
+		"dir": "../DynamicParser"
+	},
+	{
+		"componentName": "FacebookAuthComponent",
+		"dir": "../FacebookAuthComponent"
+	},
+	{
+		"componentName": "LoggerAnalyticsComponent",
+		"dir": "../LoggerAnalyticsComponent"
+	},
+	{
+		"componentName": "ModuleInterface",
+		"dir": "../ModuleInterface"
+	},
+	{
+		"componentName": "PassThroughAdsComponent",
+		"dir": "../PassThroughAdsComponent"
+	},
+	{
+		"componentName": "PurchaseInterface",
+		"dir": "../PurchaseInterface"
+	},
+	{
+		"componentName": "AnalyticsInterface",
+		"dir": "../AnalyticsInterface"
+	},
+	{
+		"componentName": "CrashlyticsComponent",
+		"dir": "../CrashlyticsComponent"
+	},
+	{
+		"componentName": "FreeWheelAdsComponent",
+		"dir": "../FreeWheelAdsComponent"
+	},
+	{
+		"componentName": "GoogleAnalyticsComponent",
+		"dir": "../GoogleAnalyticsComponent"
+	},
+	{
+		"componentName": "AMZNMediaPlayerComponent",
+		"dir": "../AMZNMediaPlayerComponent"
+	},
+	{
+		"componentName": "AdobepassAuthComponent",
+		"dir": "../AdobepassAuthComponent"
+	},
+	{
+		"componentName": "UAMP",
+		"dir": "../UAMP"
+	},
+	{
+		"componentName": "VastAdsComponent",
+		"dir": "../VastAdsComponent"
+	},
+	{
+		"componentName": "ContentBrowser",
+		"dir": "../ContentBrowser"
+	},
+	{
+		"componentName": "ImageViewerComponent",
+		"dir": "../ImageViewerComponent"
+	},
+	{
+		"componentName": "AmazonInAppPurchaseComponent",
+		"dir": "../AmazonInAppPurchaseComponent"
+	},
+	{
+		"componentName": "FlurryAnalyticsComponent",
+		"dir": "../FlurryAnalyticsComponent"
+	},
+	{
+		"componentName": "BrightCoveMediaPlayerComponent",
+		"dir": "../BrightCoveMediaPlayerComponent"
+	},
+	{
+		"componentName": "Application",
+		"dir": "../Application/app"
+	}
+]

@@ -17,6 +17,7 @@ package com.amazon.dynamicparser;
 import android.os.Bundle;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import com.amazon.dynamicparser.testResources.AlbumModel;
 import com.amazon.dynamicparser.testResources.AlbumTranslator;
@@ -87,11 +88,11 @@ public class DynamicParserTest {
 
         // Get the json format sample video feed feed as a string.
         mJsonSampleFeed = FileHelper.readFile(InstrumentationRegistry.getContext(),
-                                          "feeds/SampleVideoFeed.json");
+                                              "feeds/SampleVideoFeed.json");
 
         // Get the xml format sample video feed as a string.
         mXmlSampleFeed = FileHelper.readFile(InstrumentationRegistry.getContext(),
-                                          "feeds/SampleVideoFeed.xml");
+                                             "feeds/SampleVideoFeed.xml");
     }
 
     /**
@@ -431,6 +432,7 @@ public class DynamicParserTest {
         dynamicParser.cookRecipe(createXmlSampleVideoContainterReflectionRecipe(), mXmlSampleFeed,
                                  new IRecipeCookerCallbacks() {
                                      int cookedCount = 0;
+
                                      @Override
                                      public void onPreRecipeCook(Recipe recipe, Object output,
                                                                  Bundle bundle) {
@@ -440,6 +442,7 @@ public class DynamicParserTest {
                                      @Override
                                      public void onRecipeCooked(Recipe recipe, Object output,
                                                                 Bundle bundle, boolean done) {
+
                                          cookedCount++;
                                          assertNotNull(output);
                                          assertEquals(output.getClass(), DummyContainer.class);
@@ -459,10 +462,10 @@ public class DynamicParserTest {
                                                                String msg) {
                                          // Force failure if this happens.
                                          assertTrue("Recipe should have been cooked without " +
-                                                 "error", false);
+                                                            "error", false);
                                      }
-                                },
-                                null, null);
+                                 },
+                                 null, null);
     }
 
 
@@ -789,14 +792,14 @@ public class DynamicParserTest {
         recipe.getMap().put(DynamicParser.COOKER_TAG, "someCooker");
 
         dynamicParser.cookRecipe(recipe, mJsonSampleFeed, getCallbackWithExpectedException(
-                                         DynamicParser.InvalidParserRecipeException.class, false),
+                DynamicParser.InvalidParserRecipeException.class, false),
                                  null, null);
 
         Recipe recipe2 = createXmlSampleVideoContainterReflectionRecipe();
         recipe2.getMap().put(DynamicParser.COOKER_TAG, "someCooker");
 
         dynamicParser.cookRecipe(recipe2, mXmlSampleFeed, getCallbackWithExpectedException(
-                                         DynamicParser.InvalidParserRecipeException.class, false),
+                DynamicParser.InvalidParserRecipeException.class, false),
                                  null, null);
     }
 
@@ -1052,39 +1055,39 @@ public class DynamicParserTest {
 
         // Test cook recipe using translation
         dynamicParser.cookRecipe(translationRecipe, feed,
-                getCallbackForExpectedResult(UserModel.class), null, null);
+                                 getCallbackForExpectedResult(UserModel.class), null, null);
 
         // Test cook recipe using reflection
         dynamicParser.cookRecipe(reflectionRecipe, feed,
-                getCallbackForExpectedResult(UserModel.class), null, null);
+                                 getCallbackForExpectedResult(UserModel.class), null, null);
 
         // Test cook recipe using translation and reflection, but with batch and multithread
         // settings set to true.
         dynamicParser.configureSettings(true, true);
         dynamicParser.cookRecipe(translationRecipe, feed,
-                getCallbackForExpectedResultList(10, UserModel.class), null,
-                null);
+                                 getCallbackForExpectedResultList(10, UserModel.class), null,
+                                 null);
         dynamicParser.cookRecipe(reflectionRecipe, feed,
-                getCallbackForExpectedResultList(10, UserModel.class), null,
-                null);
+                                 getCallbackForExpectedResultList(10, UserModel.class), null,
+                                 null);
 
         // Test cook recipe using translation and reflection, but with batch and multithread
         // settings set to false.
         dynamicParser.configureSettings(false, false);
         dynamicParser.cookRecipe(translationRecipe, feed,
-                getCallbackForExpectedResult(UserModel.class), null, null);
+                                 getCallbackForExpectedResult(UserModel.class), null, null);
         dynamicParser.cookRecipe(reflectionRecipe, feed,
-                getCallbackForExpectedResult(UserModel.class), null, null);
+                                 getCallbackForExpectedResult(UserModel.class), null, null);
 
         // Test cook recipe using translation and reflection, but with batch true and
         // multithread false.
         dynamicParser.configureSettings(true, false);
         dynamicParser.cookRecipe(translationRecipe, feed,
-                getCallbackForExpectedResultList(10, UserModel.class), null,
-                null);
+                                 getCallbackForExpectedResultList(10, UserModel.class), null,
+                                 null);
         dynamicParser.cookRecipe(reflectionRecipe, feed,
-                getCallbackForExpectedResultList(10, UserModel.class), null,
-                null);
+                                 getCallbackForExpectedResultList(10, UserModel.class), null,
+                                 null);
     }
 
     /**
@@ -1157,7 +1160,8 @@ public class DynamicParserTest {
                                    "albums/album", // query
                                    null, // query result type
                                    null, // key data path
-                                   new ArrayList<>(Arrays.asList("userId/#text@userId", // match list
+                                   new ArrayList<>(Arrays.asList("userId/#text@userId", // match
+                                                                 // list
                                                                  "id/#text@id",
                                                                  "title/#text@title")));
 
@@ -1170,11 +1174,11 @@ public class DynamicParserTest {
 
         // Test cook recipe using translation
         dynamicParser.cookRecipe(translationRecipe, feed,
-                getCallbackForExpectedResult(AlbumModel.class), null, null);
+                                 getCallbackForExpectedResult(AlbumModel.class), null, null);
 
         // Test cook recipe using reflection
         dynamicParser.cookRecipe(reflectionRecipe, feed,
-                getCallbackForExpectedResult(AlbumModel.class), null, null);
+                                 getCallbackForExpectedResult(AlbumModel.class), null, null);
 
 
     }
@@ -1248,7 +1252,8 @@ public class DynamicParserTest {
                                    "comments/comment", // query
                                    null, // query result type
                                    null, // key data path
-                                   new ArrayList<>(Arrays.asList("postId/#text@mPostId", // match list
+                                   new ArrayList<>(Arrays.asList("postId/#text@mPostId", // match
+                                                                 // list
                                                                  "id/#text@mId",
                                                                  "name/#text@mName",
                                                                  "email/#text@mEmail",
@@ -1338,11 +1343,11 @@ public class DynamicParserTest {
                                    null, // query result type
                                    null, // key data path
                                    new ArrayList<>(Arrays.asList( // match list
-                                                                 "albumId/#text@albumId",
-                                                                 "id/#text@id",
-                                                                 "title/#text@title",
-                                                                 "url/#text@url",
-                                                                 "thumbnailUrl/#text@thumbnailUrl")));
+                                                                  "albumId/#text@albumId",
+                                                                  "id/#text@id",
+                                                                  "title/#text@title",
+                                                                  "url/#text@url",
+                                                                  "thumbnailUrl/#text@thumbnailUrl")));
 
         Recipe translationRecipe = new Recipe();
         translationRecipe.setMap(reflectionRecipe.getMap());
@@ -1436,11 +1441,11 @@ public class DynamicParserTest {
                                    null, // query result type
                                    null, // key data path
                                    new ArrayList<>(Arrays.asList( // match list
-                                                                 "albumId/#text@albumId",
-                                                                 "id/#text@id",
-                                                                 "title/#text@title",
-                                                                 "url/#text@url",
-                                                                 "thumbnailUrl/#text@thumbnailUrl")));
+                                                                  "albumId/#text@albumId",
+                                                                  "id/#text@id",
+                                                                  "title/#text@title",
+                                                                  "url/#text@url",
+                                                                  "thumbnailUrl/#text@thumbnailUrl")));
 
         dynamicParser.cookRecipe(reflectionRecipe, feed,
                                  new IRecipeCookerCallbacks() {
@@ -1465,7 +1470,7 @@ public class DynamicParserTest {
 
                                      @Override
                                      public void onRecipeError(Recipe recipe, Exception e, String
-                                                               msg) {
+                                             msg) {
 
                                          assertTrue("Should not have reached this", false);
 
@@ -1495,7 +1500,8 @@ public class DynamicParserTest {
         Recipe reflectionRecipe =
                 createParserRecipe("DynamicParser", // cooker
                                    "xml", // format
-                                   "com.amazon.dynamicparser.testResources.ScreenFeedContainer", // model
+                                   "com.amazon.dynamicparser.testResources.ScreenFeedContainer",
+                                   // model
                                    "array", // model type
                                    null, // translator
                                    "rss/channel", // query
@@ -1524,6 +1530,55 @@ public class DynamicParserTest {
         dynamicParser.cookRecipe(reflectionRecipe, feed,
                                  getCallbackForExpectedResult(ScreenFeedContainer.class), null,
                                  null);
+    }
+
+    /**
+     * Tests parsing json file containing a list of strings to a String object.
+     * @throws Exception
+     */
+    @Test
+    public void testParseToString() throws Exception {
+
+        DynamicParser dynamicParser = new DynamicParser();
+        dynamicParser.setBatchMode(true);
+
+        Recipe recipe = Recipe.newInstance(InstrumentationRegistry.getContext(),
+                                           "recipes/ParseStringObjectRecipe.json");
+
+        String feed = FileHelper.readFile(InstrumentationRegistry.getContext(),
+                                          "feeds/ContentIdFeed.json");
+
+        dynamicParser.cookRecipe(
+                recipe, feed,
+                new IRecipeCookerCallbacks() {
+                    @Override
+                    public void onPreRecipeCook(Recipe recipe, Object output,
+                                                Bundle bundle) {
+
+                    }
+
+                    @Override
+                    public void onRecipeCooked(Recipe recipe, Object output,
+                                               Bundle bundle, boolean done) {
+
+                        assertNotNull(output);
+
+                        List<String> ids = (List<String>) output;
+                        assertEquals("Should have returned 3 items", 3, ids.size());
+                    }
+
+                    @Override
+                    public void onPostRecipeCooked(Recipe recipe, Object output, Bundle bundle) {
+
+                    }
+
+                    @Override
+                    public void onRecipeError(Recipe recipe, Exception e, String msg) {
+
+                        // Force failure if this happens.
+                        assertTrue("Recipe should have been cooked without error", false);
+                    }
+                }, null, null);
     }
 
     /**
@@ -1594,7 +1649,8 @@ public class DynamicParserTest {
         Recipe reflectionRecipe =
                 createParserRecipe("DynamicParser", // cooker
                                    "xml", // format
-                                   "com.amazon.dynamicparser.testResources.ScreenFeedContent", // model
+                                   "com.amazon.dynamicparser.testResources.ScreenFeedContent", //
+                                   // model
                                    "array", // model type
                                    null, // translator
                                    "rss/channel/item", // query
@@ -1625,7 +1681,7 @@ public class DynamicParserTest {
 
         // Test cook recipe using reflection
         dynamicParser.cookRecipe(reflectionRecipe, feed,
-                getCallbackForExpectedResult(ScreenFeedContent.class), null, null);
+                                 getCallbackForExpectedResult(ScreenFeedContent.class), null, null);
     }
 
     /**
@@ -1645,7 +1701,8 @@ public class DynamicParserTest {
         Recipe reflectionRecipe =
                 createParserRecipe("DynamicParser", // cooker
                                    "xml", // format
-                                   "com.amazon.dynamicparser.testResources.ScreenFeedContent", // model
+                                   "com.amazon.dynamicparser.testResources.ScreenFeedContent", //
+                                   // model
                                    "array", // model type
                                    null, // translator
                                    "rss/channel/item", // query
@@ -1697,7 +1754,8 @@ public class DynamicParserTest {
         Recipe reflectionRecipe =
                 createParserRecipe("DynamicParser", // cooker
                                    "xml", // format
-                                   "com.amazon.dynamicparser.testResources.ScreenFeedContent", // model
+                                   "com.amazon.dynamicparser.testResources.ScreenFeedContent", //
+                                   // model
                                    "array", // model type
                                    null, // translator
                                    "rss/channel/item", // query
@@ -1749,7 +1807,8 @@ public class DynamicParserTest {
         Recipe reflectionRecipe =
                 createParserRecipe("DynamicParser", // cooker
                                    "xml", // format
-                                   "com.amazon.dynamicparser.testResources.ScreenFeedContent", // model
+                                   "com.amazon.dynamicparser.testResources.ScreenFeedContent", //
+                                   // model
                                    "array", // model type
                                    null, // translator
                                    "rss/channel/item", // query
@@ -1835,11 +1894,11 @@ public class DynamicParserTest {
                                    "[]$", // query result type
                                    null, // key data path
                                    new ArrayList<>(Collections.singletonList
-                                   ("StringKey@name"))); // match list
+                                           ("StringKey@name"))); // match list
 
         dynamicParser.cookRecipe(recipe, feed,
-                getCallbackForExpectedResult(DummyLightCastContainer.class),
-                null, null);
+                                 getCallbackForExpectedResult(DummyLightCastContainer.class),
+                                 null, null);
 
     }
 
@@ -1896,8 +1955,8 @@ public class DynamicParserTest {
                                            ("#text@name"))); // match list
 
         dynamicParser.cookRecipe(recipe, feed,
-                getCallbackForExpectedResult(DummyLightCastContainer.class),
-                null, null);
+                                 getCallbackForExpectedResult(DummyLightCastContainer.class),
+                                 null, null);
 
     }
 
@@ -2084,16 +2143,17 @@ public class DynamicParserTest {
                                   null, // query result type
                                   null, // key data path
                                   new ArrayList<>(Arrays.asList( // match list
-                                                                "info/title/#text@mName",
-                                                                "categoryId/#text@mId",
-                                                                "info/long/#text@mLong",
-                                                                "info/char/#text@mChar",
-                                                                "info/double/#text@mDouble",
-                                                                "info/boolean/#text@mBoolean",
-                                                                "info/float/#text@mFloat",
-                                                                "info/short/#text@mShort",
-                                                                "info/byte/#text@mByte")));
+                                                                 "info/title/#text@mName",
+                                                                 "categoryId/#text@mId",
+                                                                 "info/long/#text@mLong",
+                                                                 "info/char/#text@mChar",
+                                                                 "info/double/#text@mDouble",
+                                                                 "info/boolean/#text@mBoolean",
+                                                                 "info/float/#text@mFloat",
+                                                                 "info/short/#text@mShort",
+                                                                 "info/byte/#text@mByte")));
     }
+
     /**
      * Create a parser recipe to use with testing.
      *

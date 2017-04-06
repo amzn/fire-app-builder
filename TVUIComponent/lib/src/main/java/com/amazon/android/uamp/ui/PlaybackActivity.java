@@ -31,7 +31,11 @@
 package com.amazon.android.uamp.ui;
 
 import com.amazon.ads.IAds;
-import com.amazon.analytics.AnalyticsConstants;
+import com.amazon.analytics.AnalyticsTags;
+import com.amazon.android.contentbrowser.ContentBrowser;
+import com.amazon.android.contentbrowser.database.ContentDatabaseHelper;
+import com.amazon.android.contentbrowser.database.RecentRecord;
+import com.amazon.android.contentbrowser.helper.AnalyticsHelper;
 import com.amazon.android.model.content.Content;
 import com.amazon.android.module.ModuleManager;
 
@@ -49,6 +53,7 @@ import com.amazon.mediaplayer.AMZNMediaPlayer;
 import com.amazon.mediaplayer.AMZNMediaPlayer.PlayerState;
 import com.amazon.mediaplayer.playback.text.Cue;
 import com.amazon.mediaplayer.tracks.TrackType;
+import com.amazon.utils.DateAndTimeHelper;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -72,14 +77,9 @@ import android.widget.ProgressBar;
 
 import java.util.List;
 
-
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-import static com.amazon.android.contentbrowser.helper.AnalyticsHelper.trackAdEnded;
-import static com.amazon.android.contentbrowser.helper.AnalyticsHelper.trackAdStarted;
-import static com.amazon.android.contentbrowser.helper.AnalyticsHelper.trackContentAction;
-import static com.amazon.android.contentbrowser.helper.AnalyticsHelper.trackContentFinished;
-import static com.amazon.android.contentbrowser.helper.AnalyticsHelper.trackError;
+import static com.amazon.android.model.content.Content.AD_ID_FIELD_NAME;
 
 /**
  * PlaybackOverlayActivity for content playback that loads PlaybackOverlayFragment
@@ -122,14 +122,12 @@ public class PlaybackActivity extends Activity implements
     private AudioFocusState mAudioFocusState = AudioFocusState.NoFocusNoDuck;
     private PlaybackOverlayFragment mPlaybackOverlayFragment;
     private ErrorDialogFragment mErrorDialogFragment = null;
-    private long mContentIdFromPreferences;
 
     private Handler mTransportControlsUpdateHandler;
     private ContinualFwdUpdater mContinualFwdUpdater;
     private ContinualRewindUpdater mContinualRewindUpdater;
     private boolean mIsLongPress;
     private boolean mAutoPlay = false;
-    private long mSelectedContentId;
     private boolean mIsNetworkError;
 
     /**
@@ -189,8 +187,8 @@ public class PlaybackActivity extends Activity implements
                     // If player exists and playing then set video position to ads implementation.
                     if (mPlayer != null && isPlaying()) {
                         if (mAdsImplementation != null) {
-                            mAdsImplementation.setCurrentVideoPosition(mPlayer.getCurrentPosition
-                                    ());
+                            mAdsImplementation.setCurrentVideoPosition(
+                                    mPlayer.getCurrentPosition());
                         }
                     }
                 }
@@ -220,15 +218,9 @@ public class PlaybackActivity extends Activity implements
         mSelectedContent =
                 (Content) getIntent().getSerializableExtra(Content.class.getSimpleName());
 
-        mContentIdFromPreferences = getIntent().getLongExtra(com.amazon.android.model.content
-                                                                     .constants
-                                                                     .PreferencesConstants
-                                                                     .CONTENT_ID, 0);
-        mSelectedContentId = mSelectedContent.getId();
-
         if (mSelectedContent == null || TextUtils.isEmpty(mSelectedContent.getUrl())) {
-            trackError(TAG, "Received an Intent to play content without a content object or " +
-                    "content URL");
+            AnalyticsHelper.trackError(TAG, "Received an Intent to play content without a " +
+                    "content object or content URL");
             finish();
         }
 
@@ -255,7 +247,7 @@ public class PlaybackActivity extends Activity implements
         super.onStart();
         registerHDMIUnpluggedStateChangeBroadcast();
         requestAudioFocus();
-        openContent(mSelectedContent);
+        openSelectedContent();
 
         // Let ads implementation track player activity lifecycle.
         if (mAdsImplementation != null) {
@@ -284,16 +276,17 @@ public class PlaybackActivity extends Activity implements
         }
 
         // Get persisted state of CC.
-        mIsCloseCaptionEnabled = Preferences.getBoolean(PreferencesConstants
-                                                                .IS_CLOSE_CAPTION_FLAG_PERSISTED);
+        mIsCloseCaptionEnabled =
+                Preferences.getBoolean(PreferencesConstants.IS_CLOSE_CAPTION_FLAG_PERSISTED);
 
-        long recentContentSeekPosition = Preferences.getLong(
-                com.amazon.android.model.content.constants.PreferencesConstants.SEEK_POSITION);
+        // Reset playback position to 0.
+        mCurrentPlaybackPosition = 0;
 
-        if (mContentIdFromPreferences == mSelectedContentId && recentContentSeekPosition > 0 &&
-                !isContentLive(mSelectedContent)) {
-            mCurrentPlaybackPosition = recentContentSeekPosition;
+        // Live content can't be resumed.
+        if (!isContentLive(mSelectedContent)) {
+            loadContentPlaybackState();
         }
+
         mIsActivityResumed = true;
         Log.d(TAG, "onResume() current state is " + mCurrentState);
         switch (mCurrentState) {
@@ -328,16 +321,19 @@ public class PlaybackActivity extends Activity implements
         super.onPause();
 
         // Persist CC state.
-        Preferences.setBoolean(PreferencesConstants
-                                       .IS_CLOSE_CAPTION_FLAG_PERSISTED, mIsCloseCaptionEnabled);
-        Log.d(TAG, "Close captioning enable status is " + mIsCloseCaptionEnabled);
+        Preferences.setBoolean(PreferencesConstants.IS_CLOSE_CAPTION_FLAG_PERSISTED,
+                               mIsCloseCaptionEnabled);
+
         if (mPlayer.getCurrentPosition() > 0) {
-            Preferences.setLong(com.amazon.android.model.content.constants.PreferencesConstants
-                                        .FINAL_POSITION, mPlayer.getDuration());
-            Preferences.setLong(com.amazon.android.model.content.constants.PreferencesConstants
-                                        .CONTENT_ID, mSelectedContentId);
-            Preferences.setLong(com.amazon.android.model.content.constants.PreferencesConstants
-                                        .SEEK_POSITION, mPlayer.getCurrentPosition());
+
+            storeContentPlaybackState();
+            // After the user has stopped watching the content, send recommendations for related
+            // content of the selected content if any exist.
+            if (mSelectedContent.getRecommendations().size() > 0) {
+                ContentBrowser.getInstance(this).getRecommendationManager()
+                              .executeRelatedRecommendationsTask(getApplicationContext(),
+                                                                 mSelectedContent);
+            }
         }
         mIsActivityResumed = false;
         pause();
@@ -358,6 +354,7 @@ public class PlaybackActivity extends Activity implements
     protected void onStop() {
 
         super.onStop();
+
         unregisterHDMIUnpluggedStateChangeBroadcast();
         abandonAudioFocus();
         mIsContentChangeRequested = false;
@@ -563,12 +560,84 @@ public class PlaybackActivity extends Activity implements
         if (!mIsContentChangeRequested && !content.equals(mSelectedContent)) {
             Log.d(TAG, "In changeContent");
             showProgress();
+
+            // Save previous content's state before changing.
+            storeContentPlaybackState();
+
+            // Since the user is done watching this content, send recommendations for related
+            // content of the selected content (if any exist) before changing to the next content.
+            if (mSelectedContent.getRecommendations().size() > 0) {
+                ContentBrowser.getInstance(this).getRecommendationManager()
+                              .executeRelatedRecommendationsTask(getApplicationContext(),
+                                                                 mSelectedContent);
+            }
+
             mIsContentChangeRequested = true;
             mCurrentPlaybackPosition = 0;
             mSelectedContent = content;
+
+            loadContentPlaybackState();
+
             if (mPlayer != null) {
                 mPlayer.close();
             }
+        }
+    }
+
+    /**
+     * Uses the {@link ContentDatabaseHelper} to check the database for a stored playback state
+     * of the current selected content. If the state exists and playback is not complete,
+     * it loads the content's current playback position.
+     */
+    private void loadContentPlaybackState() {
+
+        ContentDatabaseHelper database = ContentDatabaseHelper.getInstance(getApplicationContext());
+        if (database != null) {
+            // Check database for content's previously watched position.
+            if (database.recentRecordExists(mSelectedContent.getId())) {
+
+                RecentRecord record = database.getRecent(mSelectedContent.getId());
+                // Set the playback position to the stored position if a recent position
+                // exists for this content and playback is not complete.
+                if (record != null && !record.isPlaybackComplete()) {
+                    mCurrentPlaybackPosition = record.getPlaybackLocation();
+                }
+            }
+        }
+        else {
+            Log.e(TAG, "Unable to load content playback state because database is null");
+        }
+    }
+
+    /**
+     * Store the current playback state of the selected content to the database. Calculates if
+     * playback was finished or not using the  {@link ContentBrowser#GRACE_TIME_MS}.
+     * If the content playback is finished, recommendation manager will dismiss the recommendation
+     * for this content (if it exists).
+     */
+    private void storeContentPlaybackState() {
+
+        // Save the recently played content to database
+        ContentDatabaseHelper database = ContentDatabaseHelper.getInstance(getApplicationContext());
+        if (database != null) {
+            // Calculate if the content has finished playing
+            boolean isFinished = (mPlayer.getDuration() - ContentBrowser.GRACE_TIME_MS)
+                    <= mPlayer.getCurrentPosition();
+
+            if (isFinished) {
+                // Dismiss the notification for content (if exists)
+                if (database.recommendationWithContentIdExists(mSelectedContent.getId())) {
+                    ContentBrowser.getInstance(this).getRecommendationManager()
+                                  .dismissRecommendation(mSelectedContent.getId());
+                    AnalyticsHelper.trackDismissRecommendationForCompleteContent(mSelectedContent);
+                }
+            }
+
+            database.addRecent(mSelectedContent.getId(), mPlayer.getCurrentPosition(), isFinished,
+                               DateAndTimeHelper.getCurrentDate().getTime());
+        }
+        else {
+            Log.e(TAG, "Cannot update recent content playback state. Database is null");
         }
     }
 
@@ -758,6 +827,7 @@ public class PlaybackActivity extends Activity implements
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
 
+
         // If ad is in focus then don't respond to key events.
         if (mAdsView.getVisibility() == View.VISIBLE) {
             return super.onKeyUp(keyCode, event);
@@ -768,24 +838,24 @@ public class PlaybackActivity extends Activity implements
         switch (keyCode) {
             case KeyEvent.KEYCODE_MEDIA_PLAY:
                 playbackOverlayFragment.togglePlayback(false);
-                trackContentAction(AnalyticsConstants.ACTION_PLAYBACK_CONTROL_PLAY,
-                                   mSelectedContent);
+                AnalyticsHelper.trackContentAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_PLAY,
+                                                   mSelectedContent, getCurrentPosition());
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 playbackOverlayFragment.togglePlayback(false);
-                trackContentAction(AnalyticsConstants.ACTION_PLAYBACK_CONTROL_PAUSE,
-                                   mSelectedContent);
+                AnalyticsHelper.trackContentAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_PAUSE,
+                                                   mSelectedContent, getCurrentPosition());
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
                 if (mPlaybackState == LeanbackPlaybackState.PLAYING) {
                     playbackOverlayFragment.togglePlayback(false);
-                    trackContentAction(AnalyticsConstants.ACTION_PLAYBACK_CONTROL_PAUSE,
-                                       mSelectedContent);
+                    AnalyticsHelper.trackContentAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_PAUSE,
+                                                       mSelectedContent, getCurrentPosition());
                 }
                 else {
                     playbackOverlayFragment.togglePlayback(true);
-                    trackContentAction(AnalyticsConstants.ACTION_PLAYBACK_CONTROL_PLAY,
-                                       mSelectedContent);
+                    AnalyticsHelper.trackContentAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_PLAY,
+                                                       mSelectedContent, getCurrentPosition());
                 }
                 return true;
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
@@ -795,19 +865,18 @@ public class PlaybackActivity extends Activity implements
                 else {
                     playbackOverlayFragment.fastForward();
                 }
-                trackContentAction(AnalyticsConstants.ACTION_PLAYBACK_CONTROL_FF,
-                                   mSelectedContent);
+                AnalyticsHelper.trackContentAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_FF,
+                                                   mSelectedContent, getCurrentPosition());
                 return true;
             case KeyEvent.KEYCODE_MEDIA_REWIND:
                 if (mIsLongPress) {
                     stopTransportControlAction();
-
                 }
                 else {
                     playbackOverlayFragment.fastRewind();
                 }
-                trackContentAction(AnalyticsConstants.ACTION_PLAYBACK_CONTROL_REWIND,
-                                   mSelectedContent);
+                AnalyticsHelper.trackContentAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_REWIND,
+                                                   mSelectedContent, getCurrentPosition());
                 return true;
             case KeyEvent.KEYCODE_BUTTON_R1:
                 if (mIsLongPress) {
@@ -816,8 +885,8 @@ public class PlaybackActivity extends Activity implements
                 else {
                     playbackOverlayFragment.fastForward();
                 }
-                trackContentAction(AnalyticsConstants.ACTION_PLAYBACK_CONTROL_FF,
-                                   mSelectedContent);
+                AnalyticsHelper.trackContentAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_FF,
+                                                   mSelectedContent, getCurrentPosition());
                 return true;
             case KeyEvent.KEYCODE_BUTTON_L1:
                 if (mIsLongPress) {
@@ -826,8 +895,8 @@ public class PlaybackActivity extends Activity implements
                 else {
                     playbackOverlayFragment.fastRewind();
                 }
-                trackContentAction(AnalyticsConstants.ACTION_PLAYBACK_CONTROL_REWIND,
-                                   mSelectedContent);
+                AnalyticsHelper.trackContentAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_REWIND,
+                                                   mSelectedContent, getCurrentPosition());
                 return true;
             default:
                 return super.onKeyUp(keyCode, event);
@@ -848,24 +917,22 @@ public class PlaybackActivity extends Activity implements
     private BroadcastReceiver mHDMIUnpluggedStateChangeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
+            Log.d(TAG, "mHDMIUnpluggedStateChangeReceiver "+intent);
             if (isInitialStickyBroadcast()) {
                 // Ignore initial sticky broadcast.
                 return;
             }
 
             int plugState = intent.getIntExtra(AudioManager.EXTRA_AUDIO_PLUG_STATE, -1);
-
             if (plugState == HDMI_AUDIO_STATE_UNPLUGGED) {
                 if (mPlayer != null) {
                     if (!isContentLive(mSelectedContent)) {
                         mCurrentPlaybackPosition = getCurrentPosition();
                     }
-                    mPlayer.close();
+                    if (isPlaying()) {
+                        pause();// No audio focus, pause media!
+                    }
                 }
-            }
-            else if (plugState == HDMI_AUDIO_STATE_PLUGGED) {
-                openContent(mSelectedContent);
             }
         }
     };
@@ -939,13 +1006,12 @@ public class PlaybackActivity extends Activity implements
         mSubtitleLayout.setCues(cues);
     }
 
-    private Content mCurrentContent;
     private IAds.IAdsEvents mIAdsEvents = new IAds.IAdsEvents() {
         @Override
         public void onAdSlotStarted(Bundle extras) {
 
             Log.d(TAG, "onAdSlotStarted");
-            trackAdStarted(mCurrentContent);
+            AnalyticsHelper.trackAdStarted(mSelectedContent, getCurrentPosition());
             // Hide media controller.
             if (mPlaybackOverlayFragment != null && mPlaybackOverlayFragment.getView() != null) {
                 mPlaybackOverlayFragment.getView().setVisibility(View.INVISIBLE);
@@ -988,16 +1054,16 @@ public class PlaybackActivity extends Activity implements
                 }
                 else {
                     // Open Movie.
-                    openContentHelper(mCurrentContent);
+                    openContentHelper(mSelectedContent);
                 }
 
                 Log.d(TAG, "Ad Played for " + duration + " ms");
             }
             else {
                 // Open Movie.
-                openContentHelper(mCurrentContent);
+                openContentHelper(mSelectedContent);
             }
-            trackAdEnded(mCurrentContent, duration);
+            AnalyticsHelper.trackAdEnded(mSelectedContent, duration, getCurrentPosition());
         }
     };
 
@@ -1010,20 +1076,22 @@ public class PlaybackActivity extends Activity implements
     private Bundle getVideoExtrasBundle(Content content) {
 
         Bundle videoExtras = new Bundle();
-        videoExtras.putLong("id", content.getId());
-        try {
-            videoExtras.putLong("duration", Long.valueOf(content.getDuration()));
+        videoExtras.putString(Content.ID_FIELD_NAME, content.getId());
+        String adId = (String) content.getExtraValue(Content.AD_ID_FIELD_NAME);
+
+        // Adding this to keep the code backward compatible
+        if (adId == null) {
+            adId = content.getId();
         }
-        catch (Exception e) {
-            videoExtras.putLong("duration", 0);
-            trackError(TAG, "Failed to get the duration of the content: ", e);
-        }
+        videoExtras.putString(Content.AD_ID_FIELD_NAME, adId);
+        videoExtras.putLong(Content.DURATION_FIELD_NAME, content.getDuration());
+
         if (content.getAdCuePoints() != null) {
             int[] adCuePoints = new int[content.getAdCuePoints().size()];
             for (int i = 0; i < adCuePoints.length; i++) {
                 adCuePoints[i] = content.getAdCuePoints().get(i);
             }
-            videoExtras.putIntArray("adCuePoints", adCuePoints);
+            videoExtras.putIntArray(Content.AD_CUE_POINTS_FIELD_NAME, adCuePoints);
         }
         return videoExtras;
     }
@@ -1033,7 +1101,7 @@ public class PlaybackActivity extends Activity implements
         if (mPlayer != null && mPlayer.getPlayerState() == PlayerState.IDLE) {
             String url = content.getUrl();
             if (TextUtils.isEmpty(url)) {
-                trackError(TAG, "Content URL is either null or empty for content " +
+                AnalyticsHelper.trackError(TAG, "Content URL is either null or empty for content " +
                         content.toString());
                 return;
             }
@@ -1132,10 +1200,10 @@ public class PlaybackActivity extends Activity implements
         }
     }
 
-    private void openContent(Content content) {
+    private void openSelectedContent() {
 
+        AnalyticsHelper.trackContentStarted(mSelectedContent, getDuration());
         Log.d(TAG, "Open content");
-        mCurrentContent = content;
 
         mAdsImplementation.setIAdsEvents(mIAdsEvents);
 
@@ -1150,7 +1218,7 @@ public class PlaybackActivity extends Activity implements
         showProgress();
 
         // Get video extras bundle.
-        Bundle videoExtras = getVideoExtrasBundle(content);
+        Bundle videoExtras = getVideoExtrasBundle(mSelectedContent);
         // We need to pass id, duration and adCuePoints to player interface.
         // Usually required by ads support.
         // As Player interface doesn't know about video model, we are using Bundles.
@@ -1190,12 +1258,16 @@ public class PlaybackActivity extends Activity implements
             // Just to catch this while under dev
             Log.w(TAG, "Duplicate state change message!!! ");
         }
-        Log.d(TAG, "State change event! OldState= " + oldState + " NewState= " + newState);
+        // If buffering stopped
+        if (mPrevState == PlayerState.BUFFERING && mCurrentState != PlayerState.BUFFERING) {
+            AnalyticsHelper.trackContentAction(AnalyticsTags.ACTION_PLAYBACK_BUFFER_END,
+                                               mSelectedContent, getCurrentPosition());
+        }
         switch (newState) {
             case IDLE:
                 mWindow.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 if (mIsContentChangeRequested) {
-                    openContent(mSelectedContent);
+                    openSelectedContent();
                 }
                 break;
             case OPENING:
@@ -1273,6 +1345,8 @@ public class PlaybackActivity extends Activity implements
                 break;
             case BUFFERING:
                 showProgress();
+                AnalyticsHelper.trackContentAction(AnalyticsTags.ACTION_PLAYBACK_BUFFER_START,
+                                                   mSelectedContent, getCurrentPosition());
                 break;
             case SEEKING:
                 showProgress();
@@ -1295,7 +1369,7 @@ public class PlaybackActivity extends Activity implements
                     mPlaybackOverlayFragment.stopProgressAutomation();
                 }
                 if (!isContentLive(mSelectedContent)) {
-                    trackContentFinished(mCurrentContent, mCurrentPlaybackPosition);
+                    AnalyticsHelper.trackContentFinished(mSelectedContent, getCurrentPosition());
                 }
                 break;
             case ERROR:
@@ -1373,6 +1447,7 @@ public class PlaybackActivity extends Activity implements
      * @return True if the content is live, false if not live.
      */
     private boolean isContentLive(Content content) {
+
         return content.getExtraValue(Recipe.LIVE_FEED_TAG) != null &&
                 Boolean.valueOf(content.getExtraValue(Recipe.LIVE_FEED_TAG).toString());
     }

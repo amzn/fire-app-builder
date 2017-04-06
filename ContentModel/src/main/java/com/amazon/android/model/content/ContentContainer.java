@@ -14,6 +14,8 @@
  */
 package com.amazon.android.model.content;
 
+import com.amazon.utils.StringManipulation;
+
 import android.util.Log;
 
 import java.util.HashMap;
@@ -235,13 +237,12 @@ public class ContentContainer implements Iterable<Content> {
      * @param key Key value as a string.
      * @return Value as a string.
      */
-    public Object getExtraStringValue(String key) {
+    public String getExtraStringValue(String key) {
 
-        if (mExtras == null) {
+        if (mExtras == null || mExtras.get(key) == null) {
             return null;
         }
-
-        return mExtras.get(key);
+        return mExtras.get(key).toString();
     }
 
     /**
@@ -249,7 +250,7 @@ public class ContentContainer implements Iterable<Content> {
      * already exists, its value will be overwritten with the newly supplied value.
      *
      * @param key   Key value as string.
-     * @param value Value as string.
+     * @param value Value.
      */
     public void setExtraValue(String key, Object value) {
 
@@ -446,12 +447,15 @@ public class ContentContainer implements Iterable<Content> {
      * @param contentId Id of content to search for
      * @return returns content object if one exists, else null
      */
-    public Content findContentById(long contentId) {
+    public Content findContentById(String contentId) {
 
+        if (contentId == null) {
+            return null;
+        }
         Iterator<Content> contentIterator = iterator();
         while (contentIterator.hasNext()) {
             Content content = contentIterator.next();
-            if (content.getId() == contentId) {
+            if (StringManipulation.areStringsEqual(contentId, content.getId())) {
                 return content;
             }
         }

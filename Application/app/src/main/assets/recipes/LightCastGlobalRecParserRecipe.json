@@ -1,0 +1,10 @@
+{
+  "cooker": "DynamicParser",
+  "format": "json",
+  "model": "java.lang.String",
+  "modelType": "array",
+  "query": "$.globalRecommendations[*]",
+  "matchList": [
+    "StringKey@ModelValue"
+  ]
+}

@@ -16,6 +16,7 @@ package com.amazon.android.module;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -53,6 +54,26 @@ public abstract class ModularApplication extends Application {
 
         super.onCreate();
         Log.d(TAG, "onCreate called.");
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread thread, Throwable exception) {
+
+                Log.e(TAG, "Uncaught Exception in thread " + thread.toString(), exception);
+                PackageManager manager = getPackageManager();
+                Intent intent = manager.getLaunchIntentForPackage(getPackageName());
+                if (intent == null) {
+                    Log.e(TAG, "Could not generate Intent for package " + getPackageName());
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                    System.exit(0);
+                }
+                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                Log.i(TAG, "Launching intent " + intent.toString());
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                        | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                android.os.Process.killProcess(android.os.Process.myPid());
+            }
+        });
     }
 
     /**

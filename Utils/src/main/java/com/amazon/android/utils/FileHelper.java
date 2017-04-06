@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 /**
  * This class is a utility class to help with reading files.
@@ -59,5 +60,27 @@ public class FileHelper {
         }
 
         return stringBuilder.toString();
+    }
+
+    /**
+     * Tests if a file exists.
+     *
+     * @param context  The context to access the assets directory from.
+     * @param filePath The path of the file in the assets directory.
+     * @return True if the file exists; false otherwise.
+     */
+    public static boolean doesFileExist(Context context, String filePath) {
+
+        try {
+            InputStream inputStream = context.getAssets().open(filePath);
+            if (inputStream != null) {
+                inputStream.close();
+            }
+            return true;
+        }
+        catch (IOException e) {
+            Log.d(TAG, "File does not exist or could not be opened: " + filePath);
+        }
+        return false;
     }
 }

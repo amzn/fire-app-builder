@@ -220,7 +220,9 @@ public class ActionWidgetAdapter extends RecyclerView.Adapter {
             public void onFocusChange(View v, boolean hasFocus) {
 
                 if (hasFocus) {
-                    v.getBackground().setColorFilter(Color.rgb(255, 153, 0),
+                    // TODO: Fix up app theme and custom.xml colors. DEVTECH-3009
+                    int color = v.getContext().getResources().getColor(R.color.search_orb);
+                    v.getBackground().setColorFilter(color,
                                                      PorterDuff.Mode.SRC_ATOP);
                     v.invalidate();
                 }

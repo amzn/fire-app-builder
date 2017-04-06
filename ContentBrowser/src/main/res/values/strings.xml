@@ -13,7 +13,6 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-    <string name="app_name">ContentBrowser</string>
     <!-- IMPORTANT: Following 2 strings are concatenated to generate the multi-line title of Watch
     now button, watch_now_1 being the first line of the title and watch_now_2 being the second line
     of the title -->
@@ -53,4 +52,8 @@ permissions and limitations under the License.
 
     <!-- Settings -->
     <string name="settings_start_fragment_tag">"Show settings item"</string>
+
+    <string name="app_name">ContentBrowser</string>
+    <!-- Used in recommendations. Should be no more than 15 characters. -->
+    <string name="app_name_short">@string/app_name</string>
 </resources>

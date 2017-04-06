@@ -14,7 +14,6 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-    <string name="app_name">ContentBrowser</string>
     <string name="watch_now_1">Jetzt</string>
     <string name="watch_now_2">ansehen</string>
     <string name="watch_from_beginning_1">Von Anfang an</string>

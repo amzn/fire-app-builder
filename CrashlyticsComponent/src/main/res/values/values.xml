@@ -16,5 +16,8 @@ permissions and limitations under the License.
 <resources>
     <!-- Crashlytics currently is only able to evaluate the AndroidManifest.xml at build time
          so they don't look at any strings resources, copy the following string to android manifest as well.-->
-    <string name="your_api_key">"your_api_key"</string>
+    <string name="your_api_key">your_api_key</string>
+
+    <!-- File path for the custom analytics tag configuration -->
+    <string name="crashlytics_analytics_custom_tags">configurations/CrashlyticsCustomAnalyticsTags.json</string>
 </resources>

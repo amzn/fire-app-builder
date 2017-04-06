@@ -1,0 +1,5 @@
+{
+  "data_downloader.impl": "com.amazon.dataloader.datadownloader.BasicFileBasedDataDownloader",
+  "is_cache_manager_enabled": true,
+  "data_updater.duration": 14400
+}

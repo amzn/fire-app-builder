@@ -46,6 +46,11 @@ public class NavigatorModel {
     private List<GlobalRecipes> globalRecipes;
 
     /**
+     * Recommendation recipe list.
+     */
+    private List<RecommendationRecipes> recommendationRecipes;
+
+    /**
      * Graph map.
      */
     private Map<String, UINode> graph;
@@ -65,18 +70,30 @@ public class NavigatorModel {
         /**
          * Show recommended flag.
          */
-        public boolean showRecommendedContent;
+        public boolean showRelatedContent;
 
         /**
          * A flag for using items from the same category as recommended content if similar tags has
          * no results.
          */
-        public boolean categoryDefaultRecommendation;
+        public boolean useCategoryAsDefaultRelatedContent;
 
         /**
          * Search algorithm name.
          */
         public String searchAlgo;
+
+        /**
+         * The number of global recommendations that the app should send; assuming there are
+         * global recommendation recipes available.
+         */
+        public int numberOfGlobalRecommendations = -1;
+
+        /**
+         * The number of related recommendations that the ap should send; assuming the content feed
+         * recipe includes the recommendation item in the match list.
+         */
+        public int numberOfRelatedRecommendations = -1;
     }
 
     /**
@@ -250,6 +267,44 @@ public class NavigatorModel {
     }
 
     /**
+     * Recommendation recipes class.
+     */
+    public static class RecommendationRecipes {
+
+        /**
+         * The recipe for the contents.
+         */
+        public GlobalRecipes.Recipes contents;
+
+        /**
+         * Constructor.
+         */
+        public RecommendationRecipes() {
+
+        }
+
+        /**
+         * Get content recipes.
+         *
+         * @return Recipes.
+         */
+        public GlobalRecipes.Recipes getContents() {
+
+            return contents;
+        }
+
+        /**
+         * Set content recipes.
+         *
+         * @param contents Content recipes.
+         */
+        public void setContents(GlobalRecipes.Recipes contents) {
+
+            this.contents = contents;
+        }
+    }
+
+    /**
      * Get config.
      *
      * @return Config.
@@ -327,5 +382,25 @@ public class NavigatorModel {
     public void setGraph(Map<String, UINode> graph) {
 
         this.graph = graph;
+    }
+
+    /**
+     * Get the recommendation recipes.
+     *
+     * @return The recommendation recipes.
+     */
+    public List<RecommendationRecipes> getRecommendationRecipes() {
+
+        return recommendationRecipes;
+    }
+
+    /**
+     * Set the recommendation recipes.
+     *
+     * @param recommendationRecipes The recommendation recipes.
+     */
+    public void setRecommendationRecipes(List<RecommendationRecipes> recommendationRecipes) {
+
+        this.recommendationRecipes = recommendationRecipes;
     }
 }

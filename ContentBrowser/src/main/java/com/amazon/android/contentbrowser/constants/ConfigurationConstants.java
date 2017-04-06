@@ -21,11 +21,6 @@ package com.amazon.android.contentbrowser.constants;
 public class ConfigurationConstants {
 
     /**
-     * Constant to use for configuring recommended content visibility.
-     */
-    public static final String CONFIG_SHOW_RECOMMENDATIONS = "ShowRecommendations";
-
-    /**
      * Constant to use for configuring visibility of ellipsis within the playback overlay fragment.
      */
     public static final String CONFIG_HIDE_MORE_ACTIONS = "HideMoreActions";

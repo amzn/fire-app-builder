@@ -16,10 +16,13 @@ package com.amazon.android.model.translators;
 
 import com.amazon.android.model.content.Content;
 import com.amazon.android.model.AModelTranslator;
+import com.amazon.utils.ListUtils;
 
 import org.json.JSONException;
 
 import android.util.Log;
+
+import java.util.List;
 
 /**
  * This class extends the {@link AModelTranslator} for the {@link Content} class. It provides a way
@@ -53,36 +56,70 @@ public class ContentTranslator extends AModelTranslator<Content> {
     @Override
     public boolean setMemberVariable(Content model, String field, Object value) {
 
-        if (model == null || field == null || field.isEmpty() || value == null) {
+        if (model == null || field == null || field.isEmpty()) {
             Log.e(TAG, "Input parameters should not be null and field cannot be empty.");
             return false;
+        }
+        // This allows for some content to have extra values that others might not have.
+        if (value == null) {
+            Log.w(TAG, "Value for " + field + " was null so not set for Content, this may be " +
+                    "intentional.");
+            return true;
         }
         try {
             switch (field) {
                 case Content.TITLE_FIELD_NAME:
-                    model.setTitle((String) value);
+                    model.setTitle(value.toString());
                     break;
                 case Content.DESCRIPTION_FIELD_NAME:
-                    model.setDescription((String) value);
+                    model.setDescription(value.toString());
                     break;
                 case Content.ID_FIELD_NAME:
-                    model.setId(Long.parseLong((String) value));
+                    model.setId(value.toString());
                     break;
                 case Content.SUBTITLE_FIELD_NAME:
-                    model.setSubtitle((String) value);
+                    model.setSubtitle(value.toString());
                     break;
                 case Content.URL_FIELD_NAME:
-                    model.setUrl((String) value);
+                    model.setUrl(value.toString());
                     break;
                 case Content.CARD_IMAGE_URL_FIELD_NAME:
-                    model.setCardImageUrl((String) value);
+                    model.setCardImageUrl(value.toString());
                     break;
                 case Content.BACKGROUND_IMAGE_URL_FIELD_NAME:
-                    model.setBackgroundImageUrl((String) value);
+                    model.setBackgroundImageUrl(value.toString());
                     break;
                 case Content.TAGS_FIELD_NAME:
                     // Expecting value to be a list.
                     model.setTags(value.toString());
+                    break;
+                case Content.CLOSED_CAPTION_FIELD_NAME:
+                    model.setCloseCaptionUrls((List) value);
+                    break;
+                case Content.RECOMMENDATIONS_FIELD_NAME:
+                    // Expecting value to be a list.
+                    model.setRecommendations(value.toString());
+                    break;
+                case Content.AVAILABLE_DATE_FIELD_NAME:
+                    model.setAvailableDate(value.toString());
+                    break;
+                case Content.SUBSCRIPTION_REQUIRED_FIELD_NAME:
+                    model.setSubscriptionRequired((boolean) value);
+                    break;
+                case Content.CHANNEL_ID_FIELD_NAME:
+                    model.setChannelId(value.toString());
+                    break;
+                case Content.DURATION_FIELD_NAME:
+                    model.setDuration(Long.valueOf((String) value));
+                    break;
+                case Content.AD_CUE_POINTS_FIELD_NAME:
+                    model.setAdCuePoints((List) value);
+                    break;
+                case Content.STUDIO_FIELD_NAME:
+                    model.setStudio(value.toString());
+                    break;
+                case Content.FORMAT_FIELD_NAME:
+                    model.setFormat(value.toString());
                     break;
                 default:
                     model.setExtraValue(field, value);
@@ -93,7 +130,7 @@ public class ContentTranslator extends AModelTranslator<Content> {
             Log.e(TAG, "Error casting value to the required type for field " + field, e);
             return false;
         }
-        catch (JSONException e) {
+        catch (ListUtils.ExpectingJsonArrayException e) {
             Log.e(TAG, "Error creating JSONArray from provided tags string " + value, e);
             return false;
         }
@@ -103,9 +140,9 @@ public class ContentTranslator extends AModelTranslator<Content> {
     /**
      * This method verifies that the {@link Content} model was properly translated and all the
      * mandatory fields were set. A valid {@link Content} model must have non-empty values for
-     * {@link Content#mTitle}, {@link Content#mDescription}, {@link Content#mTags}, {@link
-     * Content#mCardImageUrl},{@link Content#mBackgroundImageUrl}, and {@link Content#mUrl}. Note:
-     * This method does not check the validity of the urls.
+     * {@link Content#mTitle}, {@link Content#mDescription}, {@link Content#mUrl},
+     * {@link Content#mCardImageUrl}, and {@link Content#mBackgroundImageUrl}. Note: This method
+     * does not check the validity of the urls.
      *
      * @param model The {@link Content} model to verify.
      * @return True if the model is valid; false otherwise.
@@ -114,9 +151,11 @@ public class ContentTranslator extends AModelTranslator<Content> {
     public boolean validateModel(Content model) {
 
         try {
-            return !model.getTitle().isEmpty() && !model.getDescription().isEmpty()
-                    && !model.getUrl().isEmpty() && !model.getCardImageUrl().isEmpty()
-                    && !model.getBackgroundImageUrl().isEmpty();
+            return !model.getTitle().isEmpty() &&
+                    !model.getDescription().isEmpty() &&
+                    !model.getUrl().isEmpty() &&
+                    !model.getCardImageUrl().isEmpty() &&
+                    !model.getBackgroundImageUrl().isEmpty();
         }
         catch (NullPointerException e) {
             Log.e(TAG, "Null pointer found during model validation.", e);

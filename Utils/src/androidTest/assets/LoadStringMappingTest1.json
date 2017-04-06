@@ -1,0 +1,9 @@
+{
+  "string": "value",
+  "integer": 4,
+  "boolean": true,
+  "emptyObject": {},
+  "emptyList": [],
+  "object": {"innerKey":"innerValue"},
+  "list": [1, 2, 3]
+}

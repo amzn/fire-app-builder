@@ -113,7 +113,7 @@ public class FreeWheelAds implements IAds {
     /**
      * FreeWheel current video ad id.
      */
-    private String mCurrentVideoId = "3pqa_video";
+    private String mCurrentVideoAdId = "3pqa_video";
 
     /**
      * Current video duration.
@@ -292,7 +292,7 @@ public class FreeWheelAds implements IAds {
         try {
             Bundle videoBundle = mExtras.getBundle("video");
             assert (videoBundle != null);
-            mCurrentVideoId = String.valueOf(videoBundle.getLong("id"));
+            mCurrentVideoAdId = String.valueOf(videoBundle.getString("adId"));
             mCurrentVideoDuration = videoBundle.getLong("duration");
             // Ad cue points are coming from FreeWheel profile for a certain video id.
             // Keeping the code below for reference.
@@ -324,7 +324,7 @@ public class FreeWheelAds implements IAds {
         }
 
         // Set video asset.
-        mAdContext.setVideoAsset(mCurrentVideoId,
+        mAdContext.setVideoAsset(mCurrentVideoAdId,
                                  mCurrentVideoDuration / 1000,
                                  null,
                                  mAdConstants.VIDEO_ASSET_AUTO_PLAY_TYPE_ATTENDED(),

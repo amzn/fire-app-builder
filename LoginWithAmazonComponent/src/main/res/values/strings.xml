@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
@@ -14,7 +15,6 @@ permissions and limitations under the License.
 -->
 <resources>
 
-    <string name="app_name">LoginWithAmazon</string>
     <string name="default_message">Welcome to Login with Amazon!\nIf this is your first time logging
         in, you will be asked to give permission for this application to access your profile data.
     </string>

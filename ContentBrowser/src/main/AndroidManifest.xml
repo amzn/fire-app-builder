@@ -15,10 +15,12 @@ permissions and limitations under the License.
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.amazon.android.contentbrowser">
     <!-- Launcher integration -->
-    <!-- Uncomment the below permission to enable launcher integration -->
     <uses-permission android:name="com.amazon.device.permission.COMRADE_CAPABILITIES"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
-    <application android:allowBackup="true" android:label="@string/app_name">
+    <application android:allowBackup="true">
         <!-- Launcher integration -->
         <!-- Uncomment the below receiver to enable launcher integration -->
         <!--
@@ -29,6 +31,21 @@ permissions and limitations under the License.
             </intent-filter>
         </receiver>
         -->
+        <receiver
+                android:name=".recommendations.BootCompletedReceiver"
+                android:enabled="true"
+                android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
+                <action android:name="android.intent.action.TIME_SET"/>
+            </intent-filter>
+        </receiver>
+        <service
+                android:name=".recommendations.UpdateRecommendationsService"
+                android:enabled="true" />
+        <service android:name=".recommendations.DeleteRecommendationService"
+                 android:enabled="true" />
     </application>
 
 </manifest>

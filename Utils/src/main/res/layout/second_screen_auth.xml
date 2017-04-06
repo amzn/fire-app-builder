@@ -37,7 +37,8 @@ permissions and limitations under the License.
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="100dp"
             android:text="@string/second_screen_login_instruction_line_1"
-            android:textSize="28sp"/>
+            android:textSize="28sp"
+            android:textColor="@color/login_instructions_color"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -45,7 +46,8 @@ permissions and limitations under the License.
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="100dp"
             android:text="@string/second_screen_login_instruction_line_2"
-            android:textSize="28sp"/>
+            android:textSize="28sp"
+            android:textColor="@color/login_instructions_color"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -53,7 +55,8 @@ permissions and limitations under the License.
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="100dp"
             android:text="@string/second_screen_login_instruction_line_3"
-            android:textSize="28sp"/>
+            android:textSize="28sp"
+            android:textColor="@color/login_instructions_color"/>
 
     <TextView
             android:id="@+id/login_instruction_reg_code"
@@ -64,7 +67,8 @@ permissions and limitations under the License.
             android:text="@string/second_screen_login_instruction_line_4"
             android:textAllCaps="true"
             android:textSize="36sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="@color/login_code_color"/>
 
     <LinearLayout
             android:layout_width="match_parent"

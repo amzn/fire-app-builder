@@ -43,17 +43,17 @@ public class AnalyticsActionBuilder {
         HashMap<String, Object> attributes = new HashMap<>();
 
         // Add the action name to the data map.
-        data.put(AnalyticsConstants.ACTION_NAME, AnalyticsConstants.ACTION_START_APP);
+        data.put(AnalyticsTags.ACTION_NAME, AnalyticsTags.ACTION_START_APP);
 
         // Get application name
-        attributes.put(AnalyticsConstants.ATTRIBUTE_APP_NAME,
+        attributes.put(AnalyticsTags.ATTRIBUTE_APP_NAME,
                        context.getApplicationInfo().loadLabel(context.getPackageManager()));
 
         // Save the platform that the app is running on.
-        attributes.put(AnalyticsConstants.ATTRIBUTE_PLATFORM, Build.MODEL);
+        attributes.put(AnalyticsTags.ATTRIBUTE_PLATFORM, Build.MODEL);
 
         // Add the gathered attributes to the data map.
-        data.put(AnalyticsConstants.ATTRIBUTES, attributes);
+        data.put(AnalyticsTags.ATTRIBUTES, attributes);
 
         return data;
     }
@@ -72,18 +72,20 @@ public class AnalyticsActionBuilder {
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
 
         // Save the minute the app was opened (as close as we can)
-        data.put(AnalyticsConstants.ATTRIBUTE_MINUTE, calendar.get(Calendar.MINUTE));
+        data.put(AnalyticsTags.ATTRIBUTE_MINUTE,
+                 calendar.get(Calendar.MINUTE));
 
         // Save the hour the app was opened
-        data.put(AnalyticsConstants.ATTRIBUTE_HOUR, calendar.get(Calendar.HOUR_OF_DAY));
+        data.put(AnalyticsTags.ATTRIBUTE_HOUR,
+                 calendar.get(Calendar.HOUR_OF_DAY));
 
         // Save the day the app was opened.
-        data.put(AnalyticsConstants.ATTRIBUTE_DAY, calendar.getDisplayName(
-                Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()));
+        data.put(AnalyticsTags.ATTRIBUTE_DAY,
+                 calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()));
 
         // Save the day of the week the app was opened.
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        data.put(AnalyticsConstants.ATTRIBUTE_DATE, date.format(new Date()));
+        data.put(AnalyticsTags.ATTRIBUTE_DATE, date.format(new Date()));
 
         return data;
     }
@@ -100,13 +102,13 @@ public class AnalyticsActionBuilder {
         HashMap<String, Object> attributes = new HashMap<>();
 
         // Add the action name to the data map.
-        data.put(AnalyticsConstants.ACTION_NAME, AnalyticsConstants.ACTION_SEARCH);
+        data.put(AnalyticsTags.ACTION_NAME, AnalyticsTags.ACTION_SEARCH);
 
         // Add the search query to the attributes.
-        attributes.put(AnalyticsConstants.ATTRIBUTE_SEARCH_TERM, searchQuery);
+        attributes.put(AnalyticsTags.ATTRIBUTE_SEARCH_TERM, searchQuery);
 
         // Add the gathered attributes to the data map.
-        data.put(AnalyticsConstants.ATTRIBUTES, attributes);
+        data.put(AnalyticsTags.ATTRIBUTES, attributes);
 
         return data;
     }

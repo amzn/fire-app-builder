@@ -14,7 +14,7 @@ permissions and limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.amazon.ads">
-    <application android:allowBackup="true" android:label="@string/app_name">
+    <application android:allowBackup="true">
     </application>
 
 </manifest>

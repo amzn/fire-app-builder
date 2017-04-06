@@ -14,7 +14,6 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-  <string name="app_name">Utils</string>
   <string name="feed_error_message">Dienst nicht verfügbar. Versuchen Sie es später erneut.</string>
   <string name="network_error_message">Netzwerk ist momentan nicht verfügbar. Versuchen Sie es später erneut.</string>
   <string name="registration_code_error_message">Fehler beim Abrufen des Anmeldecodes. Bitte schließen Sie diese Nachricht und versuchen es erneut.</string>
@@ -41,7 +40,6 @@ permissions and limitations under the License.
   <string name="login_dialog_description">Sie sind nicht angemeldet. Wählen und spielen Sie ein Video, um sich anzumelden.</string>
   <string name="logout_dialog_option_1">Ja</string>
   <string name="logout_dialog_option_2">Nein</string>
-  <string name="powered_by">Unterstützt von:</string>
   <string name="btn_submit">SENDEN</string>
   <string name="btn_get_new_code">NEUEN CODE ANFORDERN</string>
   <string name="second_screen_login_instruction_line_1">Gehen Sie zu Ihrem Computer oder Mobilgerät</string>

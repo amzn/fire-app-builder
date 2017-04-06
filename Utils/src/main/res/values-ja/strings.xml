@@ -14,7 +14,6 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-  <string name="app_name">Utils</string>
   <string name="feed_error_message">サービスを使用できません。 後でもう一度お試しください。</string>
   <string name="network_error_message">ネットワークがありません。後でもう一度お試しください。</string>
   <string name="registration_code_error_message">登録コードの取得中にエラーが発生しました。このメッセージを閉じてもう一度お試しください。</string>
@@ -41,7 +40,6 @@ permissions and limitations under the License.
   <string name="login_dialog_description">ログインしていません。ビデオを選択して再生するにはログインしてください。</string>
   <string name="logout_dialog_option_1">はい</string>
   <string name="logout_dialog_option_2">いいえ</string>
-  <string name="powered_by">Powered by:</string>
   <string name="btn_submit">送信</string>
   <string name="btn_get_new_code">新しいコードを取得</string>
   <string name="second_screen_login_instruction_line_1">コンピューターまたはモバイル端末を使用します。</string>

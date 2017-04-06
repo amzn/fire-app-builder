@@ -15,108 +15,84 @@ permissions and limitations under the License.
 -->
 <resources>
 
-    <!-- Splash Screen Customization -->
+    <!-- App colors -->
 
-    <!-- Background to display on Splash Screen -->
-    <drawable name="splash_background">@drawable/bg_generic_nopreview</drawable>
-    <!-- Company logo to show on Splash Screen -->
-    <drawable name="splash_logo">@drawable/fire_app_builder_white</drawable>
-    <!-- Copyright string text color -->
-    <color name="copyright">#E6FFFFFF</color>
-
-    <!-- End of Splash Screen Customization -->
-
-    <!-- Related Content & Recommendations Customization -->
-    <bool name="show_recommendations">true</bool>
-
-    <!-- End of Related Content & Recommendations Customization -->
-
-    <!-- Browse Customization -->
-
-    <!-- The background gradient color, if no background drawable is provided.
-         Used in default_background.xml -->
-    <color name="background_gradient_start">#000000</color>
-    <color name="background_gradient_end">#DDDDDD</color>
-    <!-- The header's bar color (left-hand navigation bar) -->
-    <color name="browse_headers_bar">#0DFFFFFF</color>
-    <!-- Selected header text color -->
-    <color name="browse_header_selected">#FFFFFFFF</color>
-    <!-- Non-selected header text color -->
-    <color name="browse_header">#CCD8D8D8</color>
-    <!-- Header color when left-hand navigation bar is closed
-         and rows are showing full screen -->
-    <color name="browse_row_header">#99FFFFFF</color>
-    <!-- Search orb color (the circle shape around the search icon) -->
-    <color name="search_orb">#EE962D</color>
-    <!-- Header text size -->
-    <dimen name="browse_header_text">16sp</dimen>
-    <!-- Company logo -->
-    <drawable name="company_logo">@drawable/fire_app_builder_white_2</drawable>
-
-    <drawable name="browse_bg_color">@drawable/bg_generic_nopreview</drawable>
-    <!-- End of Browse Customization -->
-
-    <!-- Movie Info Card Customization -->
-
-    <!-- Background color of the card info -->
-    <color name="card_info_bg">#2B2B2B</color>
-    <!-- Card info title text color -->
-    <color name="card_info_title_text">#E6FFFFFF</color>
-    <!-- Card info content text color -->
-    <color name="card_info_content_text">#FFFFFFFF</color>
-    <dimen name="card_info_title_text">8sp</dimen>
-    <!-- Card info content text size -->
-    <dimen name="card_info_content_text">12sp</dimen>
-    <!-- Card info selected title text size -->
-    <dimen name="card_info_selected_title_text">10sp</dimen>
-    <!-- Card info selected content text size -->
-    <dimen name="card_info_selected_content_text">15sp</dimen>
-
-    <!-- End of Movie Info Card Customization -->
-
-    <!-- Details Customization -->
-
-    <!-- Text color for unfocused action button -->
-    <color name="action_button_text_color">#E6FFFFFF</color>
-    <!-- Text color for focused action button -->
-    <color name="action_button_text_color_focused">#E6FFFFFF</color>
-    <!-- Background color for focused action button -->
-    <drawable name="action_button_focused">@drawable/btn_generic_focused</drawable>
-    <!-- Background color for normal state of action button -->
-    <drawable name="action_button_normal">@drawable/btn_normal</drawable>
-    <!-- Details description title text color -->
-    <color name="details_description_title">#E6FFFFFF</color>
-    <!-- Details description body text color -->
-    <color name="details_description_body">#FFFFFFFF</color>
-    <!-- Action button text size -->
-    <dimen name="action_text">14sp</dimen>
-    <!-- Details description title text size -->
-    <dimen name="details_description_title_text">24sp</dimen>
-    <!-- Details description body text size -->
-    <dimen name="details_description_body_text">16sp</dimen>
-
-    <!-- End of Details Customization -->
-
-    <!-- Playback Overlay Customization -->
-
-    <!-- Background color of the playback overlay -->
-    <color name="playback_background">#9922262A</color>
+    <!-- The background color of the screens. -->
+    <color name="background">#22282E</color>
+    <!-- Used for card background -->
+    <color name="card_background">#2B2B2B</color>
     <!-- Background color of the progress bar -->
     <color name="playback_background_progress_bar">#FF373737</color>
     <!-- Color of buffered progress bar -->
     <color name="playback_buffered_progress">#FF5A5A5A</color>
     <!-- Color of the progress bar -->
-    <color name="progress_bar">#FFDADADA</color>
-    <!-- Text color of the playback time -->
-    <color name="playback_time_text">#FFFFFFFF</color>
+    <color name="progress_bar">#99FFFFFF</color>
+    <!-- Color of splash screen spinning loader animation -->
+    <color name="spinner_color">#FFFFFFFF</color>
+    <!-- The color of button highlights and widgets. -->
+    <color name="accent">#EE962D</color>
+    <!-- FullContentBrowser:
+         The header's bar color (left-hand navigation bar). -->
+    <color name="browse_headers_bar">#0DFFFFFF</color>
+    <!-- Used for the text of a selected item's title and description.
+         Also used for button text, Splash screen text, and read more dialog text. -->
+    <color name="primary_text">#E6FFFFFF</color>
+    <!-- Used for the text on the card views and playback progress bar text. -->
+    <color name="secondary_text">#FFFFFFFF</color>
+    <!-- Used for the category titles and content subtitles -->
+    <color name="tertiary_text">#99FFFFFF</color>
+    <!-- End of App Colors -->
+
+    <!-- App Configurations -->
+
+    <!-- Terms of use file -->
+    <string translatable="false" name="terms_of_use_file">terms_of_use.html</string>
+    <!-- Content reload time in milliseconds -->
+    <integer name="time_to_reload_content">14400000</integer>
+    <!-- Is in-app purchase disabled? -->
+    <bool name="is_iap_disabled">true</bool>
+
+    <!-- End of App Configurations -->
+
+    <!-- Splash Screen Customization -->
+
+    <!-- Company logo to show on Splash Screen -->
+    <drawable name="splash_logo">@drawable/fire_app_builder_white</drawable>
+
+    <!-- End of Splash Screen Customization -->
+
+    <!-- Browse Customization -->
+
+    <!-- Company logo -->
+    <drawable name="company_logo">@drawable/fire_app_builder_white_2</drawable>
+    <!-- App icon -->
+    <drawable name="app_logo">@mipmap/ic_launcher</drawable>
+    <!-- Content preview window customization -->
+    <dimen name="content_image_height">350dp</dimen>
+    <dimen name="content_image_width">540dp</dimen>
+    <!-- Size of gradient fade for content preview window -->
+    <dimen name="content_image_gradient_size">100dp</dimen>
+
+    <!-- End of Browse Customization -->
+
+    <!-- Button Customization -->
+
+    <!-- Background color for focused action button -->
+    <drawable name="action_button_focused">@drawable/btn_generic_focused</drawable>
+    <!-- Background color for normal state of action button -->
+    <drawable name="action_button_normal">@drawable/btn_normal</drawable>
+
+    <!-- End of Button Customization -->
+
+    <!-- Playback Overlay Customization -->
+
     <!-- Hide More options status activation status-->
     <bool name="hide_more_options">true</bool>
+
     <!-- End of Playback Overlay Customization -->
 
     <!-- Search Bar Customization -->
 
-    <!-- Background color of search orb -->
-    <color name="search_orb_background">#EE962D</color>
     <!-- Icon to display inside of search orb -->
     <drawable name="search_icon">@drawable/ic_search</drawable>
     <!-- Background color of Search screen -->
@@ -124,31 +100,24 @@ permissions and limitations under the License.
 
     <!-- End of Search Bar Customization -->
 
-    <!-- Content Reload time in milliseconds -->
-
-    <integer name="time_to_reload_content">14400000</integer>
-
-    <!-- End Content Reload time in milliseconds -->
-
     <!-- Authentication Customization -->
 
     <!-- The client token of the Facebook authentication service app -->
-    <string name="encrypted_authentication_client_token">YOUR_FB_APP_CLIENT_TOKEN</string>
+    <string translatable="false" name="encrypted_authentication_client_token">YOUR_FB_APP_CLIENT_TOKEN</string>
     <!-- App id of the Facebook authentication service app -->
-    <string name="encrypted_authentication_app_id">YOUR_FB_APP_ID</string>
+    <string translatable="false" name="encrypted_authentication_app_id">YOUR_FB_APP_ID</string>
     <!-- PseudoRandom strings, used to generate random key for encrypting/decrypting Facebook
          resources. These keys should always remain in sync with the keys used by
          ResourceObfuscationStandaloneUtility -->
-    <string name="fb_key_1">fb_random_key_1</string>
-    <string name="fb_key_2">fb_random_key_2</string>
-    <string name="fb_key_3">fb_random_key_3</string>
-    <string name="fb_key_4">fb_random_key_4</string>
-    <string name="fb_key_5">fb_random_key_5</string>
-    <string name="fb_key_6">fb_random_key_6</string>
+    <string translatable="false" name="fb_key_1">fb_random_key_1</string>
+    <string translatable="false" name="fb_key_2">fb_random_key_2</string>
+    <string translatable="false" name="fb_key_3">fb_random_key_3</string>
+    <string translatable="false" name="fb_key_4">fb_random_key_4</string>
+    <string translatable="false" name="fb_key_5">fb_random_key_5</string>
+    <string translatable="false" name="fb_key_6">fb_random_key_6</string>
     <!-- URL the end user must visit to authenticate their device -->
-    <string name="second_screen_login_instruction_line_2">Visit facebook.com/device</string>
+    <string translatable="false" name="second_screen_login_instruction_line_2">Visit facebook.com/device</string>
 
     <!-- End of Authentication Customization -->
 
-    <bool name="is_iap_disabled">true</bool>
 </resources>

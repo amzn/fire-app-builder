@@ -47,7 +47,6 @@ public class ContentDetailsActivity extends BaseActivity {
     private static final String TAG = ContentDetailsActivity.class.getSimpleName();
 
     public static final String SHARED_ELEMENT_NAME = "hero";
-    public static final String NOTIFICATION_ID = "NotificationId";
 
     public ContentDetailsFragment mContentDetailsFragment;
 

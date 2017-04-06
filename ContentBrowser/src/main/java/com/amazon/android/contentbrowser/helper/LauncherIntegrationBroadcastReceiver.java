@@ -32,6 +32,7 @@ public class LauncherIntegrationBroadcastReceiver extends BroadcastReceiver {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
+        AnalyticsHelper.trackAppAuthenticationStatusRequested();
         boolean userAuthenticated = Preferences.getBoolean(LauncherIntegrationManager
                                                                 .PREFERENCE_KEY_USER_AUTHENTICATED);
         LauncherIntegrationManager.sendAppAuthenticationStatusBroadcast(context, userAuthenticated);

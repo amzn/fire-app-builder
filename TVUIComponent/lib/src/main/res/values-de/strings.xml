@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!--
-This file was modified by Amazon:
+This file was modified by Amazon: 
 Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +30,6 @@ permissions and limitations under the License.
      limitations under the License.
 -->
 <resources>
-    <string name="app_name"><![CDATA[TenFootUI]]></string>
     <string name="browse_title"><![CDATA[TenFootUI]]></string>
     <string name="feed_reloading">Wird neu geladen</string>
     <string name="feed_loading">Wird geladen</string>

@@ -13,8 +13,6 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-    <string name="app_name">AdobepassAuthComponent</string>
-
     <string name="title_activity_adobe_authentication">Authentication</string>
     <string name="adobepass_login_instruction_line_1">Go to your computer or mobile device</string>
     <string name="adobepass_login_instruction_line_3">Enter the following case-sensitive code:

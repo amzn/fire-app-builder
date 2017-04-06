@@ -20,7 +20,7 @@ permissions and limitations under the License.
             android:allowBackup="true"
             android:label="@string/app_name"
             android:name="com.amazon.android.tv.tenfoot.base.TenFootApp"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/app_logo"
             android:theme="@style/AppTheme">
         <activity
                 android:name="com.amazon.android.tv.tenfoot.ui.activities.SplashActivity"

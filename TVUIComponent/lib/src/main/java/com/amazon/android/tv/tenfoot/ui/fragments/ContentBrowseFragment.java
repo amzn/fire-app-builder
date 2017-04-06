@@ -94,13 +94,14 @@ public class ContentBrowseFragment extends RowsFragment {
 
         CustomListRowPresenter customListRowPresenter = new CustomListRowPresenter();
         customListRowPresenter.setHeaderPresenter(new RowHeaderPresenter());
+
         // Uncomment this code to remove shadow from the cards
         //customListRowPresenter.setShadowEnabled(false);
 
         ArrayObjectAdapter mRowsAdapter = new ArrayObjectAdapter(customListRowPresenter);
-        
-        addSettingsActionsToRowAdapter(mRowsAdapter);
+
         loadRootContentContainer(mRowsAdapter);
+        addSettingsActionsToRowAdapter(mRowsAdapter);
 
         setAdapter(mRowsAdapter);
 
@@ -118,7 +119,6 @@ public class ContentBrowseFragment extends RowsFragment {
             }
         }, WAIT_BEFORE_FOCUS_REQUEST_MS);
     }
-
 
     /**
      * Event bus listener method to listen for authentication updates from AUthHelper and update
@@ -155,7 +155,7 @@ public class ContentBrowseFragment extends RowsFragment {
                 listRowAdapter.add(content);
             }
 
-            rowsAdapter.add(rowsAdapter.size() - 1, new ListRow(header, listRowAdapter));
+            rowsAdapter.add(new ListRow(header, listRowAdapter));
         }
     }
 
@@ -179,7 +179,7 @@ public class ContentBrowseFragment extends RowsFragment {
         if (settingsAdapter != null) {
             // Create settings header and row
             HeaderItem header = new HeaderItem(0, getString(R.string.settings_title));
-            arrayObjectAdapter.add(0, new ListRow(header, settingsAdapter));
+            arrayObjectAdapter.add(new ListRow(header, settingsAdapter));
         }
     }
 

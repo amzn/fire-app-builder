@@ -48,7 +48,7 @@ public class DummyContentTranslator extends AModelTranslator<DummyContent> {
 
         switch (field) {
             case DummyContent.ID_FIELD_NAME:
-                model.setId(Long.parseLong(value.toString()));
+                model.setId(value.toString());
                 break;
             case DummyContent.TITLE_FIELD_NAME:
                 model.setTitle(value.toString());
@@ -89,7 +89,7 @@ public class DummyContentTranslator extends AModelTranslator<DummyContent> {
     @Override
     public boolean validateModel(DummyContent model) {
 
-        return model.getId() > 0 && model.getTitle() != null && !model.getTitle().isEmpty()
+        return !model.getId().equals("0") && model.getTitle() != null && !model.getTitle().isEmpty()
                 && model.getUrl() != null && !model.getUrl().isEmpty()
                 && model.getDescription() != null && !model.getDescription().isEmpty()
                 && model.getBackgroundImageUrl() != null && !model.getBackgroundImageUrl().isEmpty()

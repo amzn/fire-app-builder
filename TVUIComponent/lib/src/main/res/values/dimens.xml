@@ -108,4 +108,9 @@ permissions and limitations under the License.
     <!-- Spinner dimensions-->
     <dimen name="spinner_thickness">5dp</dimen>
 
+    <!-- Content preview window -->
+    <dimen name="content_image_gradient_size">100dp</dimen>
+    <dimen name="content_image_width">540dp</dimen>
+    <dimen name="content_image_height">400dp</dimen>
+
 </resources>

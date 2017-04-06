@@ -22,13 +22,11 @@ permissions and limitations under the License.
     <application>
         <activity
                 android:name=".FacebookAuthenticationActivity"
-                android:label="@string/app_name"
                 android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
 
         <activity android:name="com.facebook.FacebookActivity"
                   android:configChanges=
-                          "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-                  android:label="@string/app_name"/>
+                          "keyboard|keyboardHidden|screenLayout|screenSize|orientation"/>
 
         <meta-data
                 android:name="com.facebook.sdk.ApplicationId"

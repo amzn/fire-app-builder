@@ -16,4 +16,8 @@ permissions and limitations under the License.
 <resources>
     <!-- Dispatch period in minutes -->
     <integer name="ga_dispatchPeriod">2</integer>
+
+    <!-- File paths for the custom analytics tag configuration -->
+    <string name="google_analytics_custom_dimension_tags">configurations/GoogleCustomDimensionTags.json</string>
+    <string name="google_analytics_custom_metric_tags">configurations/GoogleCustomMetricTags.json</string>
 </resources>

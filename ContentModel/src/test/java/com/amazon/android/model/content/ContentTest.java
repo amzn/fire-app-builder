@@ -45,11 +45,11 @@ public class ContentTest {
         assertEquals("testTitle", content.getTitle());
 
         // Test getId before setId.
-        assertEquals(0L, getterSetterTestContent.getId());
+        assertEquals("0", getterSetterTestContent.getId());
 
         // Test set/get id.
-        getterSetterTestContent.setId(123L);
-        assertEquals(123L, getterSetterTestContent.getId());
+        getterSetterTestContent.setId("123");
+        assertEquals("123", getterSetterTestContent.getId());
 
         // Test set/get title.
         getterSetterTestContent.setTitle("testTitle");

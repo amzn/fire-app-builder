@@ -12,35 +12,30 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
 package com.amazon.android.contentbrowser.app;
 
 import com.amazon.ads.IAds;
-import com.amazon.android.configuration.ConfigurationManager;
-import com.amazon.android.contentbrowser.ContentBrowser;
-import com.amazon.android.contentbrowser.R;
 import com.amazon.android.contentbrowser.helper.AnalyticsHelper;
-import com.amazon.android.contentbrowser.helper.FontManager;
+import com.amazon.android.contentbrowser.recommendations.UpdateRecommendationsService;
 import com.amazon.android.module.ModularApplication;
 import com.amazon.android.module.Module;
 import com.amazon.android.module.ModuleManager;
 import com.amazon.android.uamp.UAMP;
-import com.amazon.android.ui.constants.ConfigurationConstants;
 import com.amazon.android.utils.Preferences;
 import com.amazon.auth.IAuthentication;
 import com.amazon.purchase.IPurchase;
-import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.amazon.analytics.AnalyticsManager;
 import com.amazon.analytics.IAnalytics;
-
-import java.util.Map;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * Content browser application class.
@@ -51,6 +46,12 @@ public class ContentBrowserApplication extends ModularApplication {
      * Debug tag.
      */
     private static final String TAG = ContentBrowserApplication.class.getSimpleName();
+
+    /**
+     * Delay time for updating recommendations. First update should be in 12 hours since
+     * recommendations will be updated after app initialization is complete.
+     */
+    private static final long INITIAL_DELAY = AlarmManager.INTERVAL_HALF_DAY;
 
     /**
      * Module Manager singleton reference.
@@ -106,8 +107,9 @@ public class ContentBrowserApplication extends ModularApplication {
 
         mAnalyticsManager = AnalyticsManager.getInstance(this);
 
-
         initAllModules(this.getApplicationContext());
+
+        scheduleRecommendationUpdate(this.getApplicationContext(), INITIAL_DELAY);
     }
 
     /**
@@ -131,22 +133,14 @@ public class ContentBrowserApplication extends ModularApplication {
         sInstance.registerActivityLifecycleCallbacks(mAnalyticsManager);
         AnalyticsHelper.trackAppEntry();
 
-        // TODO: When the pass through component is ready remove try catch block.
-        try {
-            // Init authentication module.
-            IAuthentication authentication =
-                    (IAuthentication) ModuleManager.getInstance()
-                                                   .getModule(IAuthentication.class.getSimpleName())
-                                                   .getImpl(true);
-
-            authentication.init(this);
-        }
-        catch (Exception e) {
-            Log.e(TAG, "IAuthentication implementation is not found!!!");
-        }
+        // Init authentication module.
+        IAuthentication authentication =
+                (IAuthentication) ModuleManager.getInstance()
+                                               .getModule(IAuthentication.class.getSimpleName())
+                                               .getImpl(true);
+        authentication.init(this);
 
         // Last call.
-
         postModulesLoaded();
     }
 
@@ -204,7 +198,23 @@ public class ContentBrowserApplication extends ModularApplication {
         Log.e(TAG, "onTerminate!!!");
     }
 
+    /**
+     * Schedule an update for recommendations.
+     *
+     * @param context The context.
+     * @param initialDelay The initial delay for the alarm.
+     */
+    public static void scheduleRecommendationUpdate(Context context, long initialDelay) {
 
+        Log.d(TAG, "Scheduling recommendations update.");
 
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent recommendationIntent = new Intent(context, UpdateRecommendationsService.class);
+        PendingIntent alarmIntent = PendingIntent.getService(context, 0, recommendationIntent, 0);
 
+        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                                         SystemClock.elapsedRealtime() + initialDelay,
+                                         AlarmManager.INTERVAL_HALF_DAY,
+                                         alarmIntent);
+    }
 }

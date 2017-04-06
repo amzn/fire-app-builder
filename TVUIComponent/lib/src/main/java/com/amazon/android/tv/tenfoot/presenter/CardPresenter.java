@@ -31,9 +31,11 @@ package com.amazon.android.tv.tenfoot.presenter;
 
 import com.amazon.android.model.content.Content;
 import com.amazon.android.model.content.ContentContainer;
+import com.amazon.android.tv.tenfoot.utils.ContentHelper;
+import com.amazon.android.utils.GlideHelper;
 import com.amazon.android.utils.Helpers;
 import com.amazon.android.tv.tenfoot.R;
-import com.bumptech.glide.Glide;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -53,7 +55,7 @@ import android.widget.TextView;
  */
 public class CardPresenter extends Presenter {
 
-    private static final String TAG = "CardPresenter";
+    private static final String TAG = CardPresenter.class.getSimpleName();
 
     private int mCardWidthDp;
     private int mCardHeightDp;
@@ -61,21 +63,22 @@ public class CardPresenter extends Presenter {
     private Drawable mDefaultCardImage;
     private static Drawable sFocusedFadeMask;
     private View mInfoField;
+    private Context mContext;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent) {
 
-        Context context = parent.getContext();
+        mContext = parent.getContext();
         try {
-            mDefaultCardImage = ContextCompat.getDrawable(context, R.drawable.movie);
-            sFocusedFadeMask = ContextCompat.getDrawable(context, R.drawable.content_fade_focused);
+            mDefaultCardImage = ContextCompat.getDrawable(mContext, R.drawable.movie);
+            sFocusedFadeMask = ContextCompat.getDrawable(mContext, R.drawable.content_fade_focused);
         }
         catch (Resources.NotFoundException e) {
             Log.e(TAG, "Could not find resource ", e);
             throw e;
         }
 
-        ImageCardView cardView = new ImageCardView(context) {
+        ImageCardView cardView = new ImageCardView(mContext) {
             @Override
             public void setSelected(boolean selected) {
 
@@ -93,10 +96,10 @@ public class CardPresenter extends Presenter {
         cardView.setInfoVisibility(BaseCardView.CARD_REGION_VISIBLE_ALWAYS);
 
         int CARD_WIDTH_PX = 160;
-        mCardWidthDp = Helpers.convertPixelToDp(context, CARD_WIDTH_PX);
+        mCardWidthDp = Helpers.convertPixelToDp(mContext, CARD_WIDTH_PX);
 
         int CARD_HEIGHT_PX = 120;
-        mCardHeightDp = Helpers.convertPixelToDp(context, CARD_HEIGHT_PX);
+        mCardHeightDp = Helpers.convertPixelToDp(mContext, CARD_HEIGHT_PX);
 
         TextView subtitle = (TextView) cardView.findViewById(R.id.content_text);
         if (subtitle != null) {
@@ -120,22 +123,21 @@ public class CardPresenter extends Presenter {
             Content content = (Content) item;
 
             if (content.getCardImageUrl() != null) {
-                if (content.getSubtitle() != null) {
-                    // The word 'Title' is not logically correct in setTitleText,
-                    // the 'TitleText' is actually smaller text compared to 'ContentText',
-                    // so we are using TitleText to show subtitle and ContentText to show the
-                    // actual Title.
-                    cardView.setTitleText(content.getSubtitle());
-                }
+
+                // The word 'Title' is not logically correct in setTitleText,
+                // the 'TitleText' is actually smaller text compared to 'ContentText',
+                // so we are using TitleText to show subtitle and ContentText to show the
+                // actual Title.
+                cardView.setTitleText(ContentHelper.getCardViewSubtitle(mContext, content));
+
 
                 cardView.setContentText(content.getTitle());
                 cardView.setMainImageDimensions(mCardWidthDp, mCardHeightDp);
-                Glide.with(viewHolder.view.getContext())
-                     .load(content.getCardImageUrl())
-                     .listener(new Helpers.LoggingListener<>())
-                     .centerCrop()
-                     .error(mDefaultCardImage)
-                     .into(cardView.getMainImageView());
+                GlideHelper.loadImageIntoView(cardView.getMainImageView(),
+                                              viewHolder.view.getContext(),
+                                              content.getCardImageUrl(),
+                                              new GlideHelper.LoggingListener<>(),
+                                              R.drawable.movie);
             }
         }
         else if (item instanceof ContentContainer) {

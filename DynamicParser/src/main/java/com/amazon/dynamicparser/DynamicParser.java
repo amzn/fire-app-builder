@@ -21,12 +21,14 @@ import com.amazon.android.recipe.Recipe;
 import com.amazon.android.model.AModelTranslator;
 import com.amazon.android.utils.PathHelper;
 import com.amazon.dynamicparser.impl.XmlParser;
+import com.amazon.utils.ListUtils;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -87,6 +89,13 @@ public class DynamicParser implements IRecipeCooker {
      * Constant tag for query result type recipe field.
      */
     public static final String QUERY_RESULT_TAG = "queryResultType";
+
+    /**
+     * Constant tag for specifying in the match list that the value is the model object, for
+     * example item/id@ModelValue would mean that this should translate into a String with the
+     * value found by evaluating the path item/id.
+     */
+    public static final String MODEL_VALUE_TAG = "ModelValue";
 
     /**
      * Debug tag.
@@ -545,40 +554,40 @@ public class DynamicParser implements IRecipeCooker {
 
         List<Map<String, Object>> resultList = new ArrayList<>();
 
-        // Turn the parseResult into a List<Map> for model translation/creation
-        if (parseResult != null && parseResult instanceof List<?>) {
-
-            if (((List) parseResult).size() > 0) {
-                // Create a key to index into the map with.
-                // This key will be used in the match list.
-                String key = ((List) parseResult).get(0).getClass().getSimpleName() + "Key";
-
-                // If it already is a List<Map> directly cast the parseResult
-                if (((List) parseResult).get(0) instanceof Map) {
-                    resultList = (List<Map<String, Object>>) parseResult;
-                }
-
-                // ParseResult was not a List<Map> so lets create it here
-                if (resultList.isEmpty()) {
-                    // For each value, create a Map, add the (key, value) pair, and add the map
-                    // to the result list.
-                    for (Object value : (List) parseResult) {
-
-                        HashMap<String, Object> map = new HashMap<>();
-                        map.put(key, value);
-                        // Only add the map if the result list does not already contain it.
-                        // Gets rid of duplicate results.
-                        if (!resultList.contains(map)) {
-                            resultList.add(map);
-                        }
-                    }
-                }
-            }
+        if (parseResult == null) {
+            return resultList;
         }
-        // If the parseResult is not a List, it must be a single Map and must be added to
-        // the result list for model translation/creation as well.
-        else {
+
+        // Turn the parseResult into a List<Map> for model translation/creation
+        if (!(parseResult instanceof List<?>)) {
+            // If the parseResult is not a List, it must be a single Map and must be added to
+            // the result list for model translation/creation as well.
             resultList.add((Map<String, Object>) parseResult);
+            return resultList;
+        }
+
+        List parseResultList = (List) parseResult;
+
+        if (parseResultList.size() <= 0) {
+            return resultList;
+        }
+
+        // If it already is a List<Map> directly cast the parseResult
+        if (parseResultList.get(0) instanceof Map) {
+            resultList = (List<Map<String, Object>>) parseResult;
+            return ListUtils.removeDuplicates(resultList);
+        }
+
+        // Create a key to index into the map with.
+        // This key will be used in the match list.
+        String key = parseResultList.get(0).getClass().getSimpleName() + "Key";
+
+        // For each value, create a Map, add the (key, value) pair, and add the map
+        // to the result list.
+        for (Object value : parseResultList) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put(key, value);
+            ListUtils.safeAdd(resultList, map);
         }
 
         return resultList;
@@ -702,6 +711,12 @@ public class DynamicParser implements IRecipeCooker {
             // data from the map.
             List<String> matchList = recipe.getItemAsStringList(MATCH_LIST_TAG);
             for (String match : matchList) {
+
+                // The match specifies the value is the whole model object, such as a String.
+                if (match.contains(DynamicParser.MODEL_VALUE_TAG)) {
+                    // Create a new instance of the model with the value and return.
+                    return createClassInstanceWithValue(map, clazz, match);
+                }
                 setClazzFieldByMatchingPathFromMap(map, match, clazz, instance, false);
             }
             // Fill KeyDataPath to mExtras HashMap which needs to be Map<String, Object>
@@ -730,43 +745,61 @@ public class DynamicParser implements IRecipeCooker {
             }
             return instance;
         }
-        catch (InstantiationException | IllegalAccessException e) {
-            if (callbacks != null) {
-                callbacks.onRecipeError(recipe, e, "Error while creating object with reflection");
-            }
-            else {
-                throw new RuntimeException(e);
-            }
+        catch (InstantiationException | IllegalAccessException
+                | NoSuchMethodException | InvocationTargetException e) {
+            throwParserError(callbacks, recipe, e, "Error while creating object with reflection");
         }
         catch (ClassNotFoundException e) {
-            if (callbacks != null) {
-                callbacks.onRecipeError(recipe, e, "Could not find expected model class" +
-                        className);
-            }
-            else {
-                throw new RuntimeException(e);
-            }
+            throwParserError(callbacks, recipe, e, "Could not find expected model class" +
+                    className);
         }
         catch (NoSuchFieldException e) {
-            if (callbacks != null) {
-                callbacks.onRecipeError(recipe, e, "Could not find specified field while creating" +
-                        "object with reflection");
-            }
-            else {
-                throw new RuntimeException(e);
-            }
+            throwParserError(callbacks, recipe, e, "Could not find specified field while creating" +
+                    "object with reflection");
         }
         catch (ValueNotFoundException e) {
-            if (callbacks != null) {
-                callbacks.onRecipeError(recipe, e, "Could not find value by following path while " +
-                        "creating object with reflection");
-            }
-            else {
-                throw new RuntimeException(e);
-            }
+            throwParserError(callbacks, recipe, e, "Could not find value by following path while " +
+                    "creating object with reflection");
         }
 
         return null;
+    }
+
+    /**
+     * Private helper method to throw parser error.
+     *
+     * @param callbacks    The callbacks to use to report the error.
+     * @param recipe       The recipe that caused the error.
+     * @param error        The error.
+     * @param errorMessage A custom error message for the specific error that occurred.
+     */
+    private void throwParserError(IRecipeCookerCallbacks callbacks, Recipe recipe,
+                                  Exception error, String errorMessage) {
+
+        if (callbacks != null) {
+            callbacks.onRecipeError(recipe, error, errorMessage);
+        }
+        else {
+            throw new RuntimeException(error);
+        }
+    }
+
+    /**
+     * Creates an instance of the class passed in with the value that is found by following the
+     * path in the match.
+     *
+     * @param map   The map to use to find the value of the match.
+     * @param clazz The class to instantiate.
+     * @param match The match containing the path to the value.
+     * @return An instantiated Object of the value from evaluating the match.
+     */
+    private Object createClassInstanceWithValue(Map<String, Object> map, Class<?> clazz, String
+            match) throws NoSuchMethodException, IllegalAccessException,
+            InvocationTargetException, InstantiationException {
+
+        String fieldPath = match.substring(0, match.indexOf(PATH_NAME_SEPARATOR));
+        Object value = PathHelper.getValueByPath(map, fieldPath);
+        return clazz.getConstructor(String.class).newInstance(value);
     }
 
     /**

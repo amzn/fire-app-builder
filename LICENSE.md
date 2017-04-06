@@ -8,28 +8,36 @@ THIS PROJECT HAS OPTIONAL DEPENDENCIES ON CERTAIN BRIGHTCOVE PLAYER, FLURRY ANAL
 
 =======================================================================
 
-NOTICES FOR THIRD-PARTY SOFTWARE INCLUDED WITHIN THIS DISTRIBUTION
+## NOTICES FOR THIRD-PARTY SOFTWARE INCLUDED WITHIN THIS DISTRIBUTION
 
 =======================================================================
 
 -------------------------
-Notices for component(s):
+### Notices for component(s):
 -------------------------
 Exoplayer (Copyright (C) 2014 The Android Open Source Project)
+
 dexmaker (Copyright (C) 2011 The Android Open Source Project)
+
 okhttp (Copyright (C) 2014-2015 Square, Inc.)
+
 okio (Copyright (C) 2014 Square, Inc.)
+
 json-smart (Copyright 2011 JSON-SMART authors)
+
 json-path (Copyright 2011)
+
 Calligraphy
+
 Font enumeration (Copyright (C) 2011 George Yunaev @ Ulduzsoft)
 
-***	Licensed under the Apache License, Version 2.0, reproduced below. ***
+***   Licensed under the Apache License, Version 2.0, reproduced below. ***
 
 -------------------------
-Notices for component(s):
+### Notices for component(s):
 -------------------------
 slf4j (Copyright (c) 2004-2013 QOS.ch.  All rights reserved.)
+
 mockito (Copyright (c) 2008-2010 Mockito contributors)
 
 License text:
@@ -55,24 +63,33 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 =======================================================================
 
-NOTICES FOR CERTAIN THIRD-PARTY SOFTWARE DEPENDENCIES DOWNLOADED AT BUILD TIME (NOT INCLUDED WITHIN THIS DISTRIBUTION)
+## NOTICES FOR CERTAIN THIRD-PARTY SOFTWARE DEPENDENCIES DOWNLOADED AT BUILD TIME (NOT INCLUDED WITHIN THIS DISTRIBUTION)
 
 =======================================================================
 
 THE BELOW NOTICES ARE PROVIDED AS A CONVENIENCE ONLY.  AMAZON MAKES NO REPRESENTATIONS AS TO THEIR ACCURACY AND AMAZON WILL NOT BE RESPONSIBLE FOR ANY INACCURACIES.
 
 -------------------------
-Notices for component(s):
+### Notices for component(s):
 -------------------------
 leanback (Copyright (c) 2015-2016 The Android Open Source Project)
+
 Android Support, Design, Appcompat, Recyclerview (Copyright (c) 2005-2013, The Android Open Source Project)
+
 Calligraphy
+
 Jackson-core, Jackson-databind, Jackson-annotations (Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi)
+
 Simple XML Serialization (Copyright (C) 2001-2011, Niall Gallagher <niallg@users.sf.net>)
+
 RxJava (Copyright 2014-2015 Netflix, Inc.)
+
 RxBinding (Copyright (C) 2015 Jake Wharton)
+
 RxLifecycle (Copyright (C) 2015-2016 Trello)
+
 EventBus (Copyright (C) 2012-2016 Markus Junginger, greenrobot (http://greenrobot.org))
+
 Apache Commons Codec
 ### START CONTENTS OF NOTICE FILE ###
 Apache Commons Codec
@@ -105,10 +122,12 @@ The Apache Software Foundation (http://www.apache.org/).
 robotium
 ### START CONTENTS OF NOTICE FILE ###
    =========================================================================
-   ==  NOTICE file corresponding to the section 4 d of                    ==
-   ==  the Apache License, Version 2.0,                                   ==
-   ==  in this case for the Robotium-specific code.                       ==
-   =========================================================================
+  
+   NOTICE file corresponding to the section 4 d of                  
+   the Apache License, Version 2.0,                                   
+   in this case for the Robotium-specific code.                       
+  
+  =========================================================================
 
 Robotium
 Copyright 2010, 2011 Jayway AB
@@ -118,9 +137,11 @@ Jayway AB (http://www.jayway.com/).
 
 
    =========================================================================
-   ==  NOTICE file corresponding to the section 4 d of                    ==
-   ==  the Apache License, Version 2.0,                                   ==
-   ==  in this case for the Android-specific code.                        ==
+   
+   NOTICE file corresponding to the section 4 d of              
+   the Apache License, Version 2.0,                                  
+   in this case for the Android-specific code.                       
+   
    =========================================================================
 
 Android Code
@@ -130,10 +151,10 @@ This product includes software developed as part of
 The Android Open Source Project (http://source.android.com).
 ### END CONTENTS OF NOTICE FILE ###
 
-***	Licensed under the Apache License, Version 2.0, reproduced below. ***
+***   Licensed under the Apache License, Version 2.0, reproduced below. ***
 
 -------------------------
-Notices for component(s):
+### Notices for component(s):
 -------------------------
 Glide
 
@@ -153,7 +174,7 @@ permitted provided that the following conditions are met:
          of conditions and the following disclaimer in the documentation and/or other materials
          provided with the distribution.
 
-THIS SOFTWARE IS PROVIDED BY GOOGLE, INC. ``AS IS'' AND ANY EXPRESS OR IMPLIED
+THIS SOFTWARE IS PROVIDED BY GOOGLE, INC. ''AS IS'' AND ANY EXPRESS OR IMPLIED
 WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL GOOGLE, INC. OR
 CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
@@ -166,6 +187,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 The views and conclusions contained in the software and documentation are those of the
 authors and should not be interpreted as representing official policies, either expressed
 or implied, of Google, Inc.
+
 ---------------------------------------------------------------------------------------------
 License for third_party/disklrucache:
 
@@ -183,6 +205,7 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
 ---------------------------------------------------------------------------------------------
 License for third_party/gif_decoder:
 
@@ -206,6 +229,7 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 ---------------------------------------------------------------------------------------------
 License for third_party/gif_encoder/AnimatedGifEncoder.java and
 third_party/gif_encoder/LZWEncoder.java:
@@ -237,12 +261,12 @@ that this copyright notice remain intact.
 
 =======================================================================
 
-LICENSES 
+## LICENSES 
 
 =======================================================================
 
 -------------------------
-Apache License, Version 2.0
+### Apache License, Version 2.0
 -------------------------
 
 Apache License

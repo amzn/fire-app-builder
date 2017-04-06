@@ -395,7 +395,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
             HeaderItem header = new HeaderItem(getString(R.string.search_results, mQuery));
             mRowsAdapter.add(new ListRow(header, mListRowAdapter));
         }
-        // Add the found content to the mlistRowAdapter
+        // Add the found content to the mListRowAdapter
         else {
             // Only add the content if the adapter does not already contain it.
             if (mListRowAdapter.indexOf(inputContent) == -1) {

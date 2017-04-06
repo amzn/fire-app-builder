@@ -37,4 +37,27 @@ public class StringManipulation {
         }
         return value.substring(dotPos, value.length());
     }
+
+    /**
+     * Method to compare two strings, return true if they are equal, otherwise false.
+     *
+     * @param str1 String one to compare.
+     * @param str2 String two to compare.
+     * @return Result of comparison.
+     */
+    public static boolean areStringsEqual(String str1, String str2) {
+
+        return str1 == null ? str2 == null : str1.equals(str2);
+    }
+
+    /**
+     * Tests if a string is empty. It first verifies that the string is not null.
+     *
+     * @param str The string to test.
+     * @return True if the string is empty or null; false otherwise.
+     */
+    public static boolean isNullOrEmpty(String str) {
+
+        return str == null || str.isEmpty();
+    }
 }

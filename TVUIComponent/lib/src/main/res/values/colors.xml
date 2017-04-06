@@ -28,7 +28,6 @@ permissions and limitations under the License.
     <color name="lb_playback_controls_time_text_color">@color/playback_time_text</color>
 
     <color name="lb_browse_header_color">@color/browse_header</color>
-    <color name="lb_browse_header_selected_color">@color/browse_header_selected</color>
     <color name="lb_browse_row_header_color">@color/browse_row_header</color>
     <color name="lb_basic_card_info_bg_color">@color/card_info_bg</color>
     <color name="lb_basic_card_title_text_color">@color/card_info_title_text</color>
@@ -39,10 +38,9 @@ permissions and limitations under the License.
     <color name="lb_search_bar_text">@color/search_edit_text_color</color>
     <!-- text color in edit text when keyboard is up -->
     <color name="lb_search_bar_text_speech_mode">#FF888888</color>
-    <color name="lb_speech_orb_not_recording">@color/search_orb_background</color>
+    <color name="lb_speech_orb_not_recording">@color/search_orb</color>
     <color name="lb_speech_orb_not_recording_icon">@color/search_orb_not_recording_color</color>
-    <color name="lb_speech_orb_not_recording_pulsed">@color/search_orb_background</color>
-    <color name="lb_speech_orb_recording">#ff4343</color>
+    <color name="lb_speech_orb_not_recording_pulsed">@color/search_orb</color>
 
     <color name="search_edit_text_color">#99FFFFFF</color>
     <color name="search_edit_text_hint_color">#99FFFFFF</color>
@@ -52,8 +50,9 @@ permissions and limitations under the License.
 
     <color name="lb_playback_controls_background_dark">#c0000000</color>
     <color name="lb_playback_controls_background_light">#80000000</color>
-    <color name="playback_video_details_text_color">#FFFFFF</color>
-
+    <color name="playback_video_details_text_color">@color/primary_text</color>
 
     <color name="error_dialog_bg_color">#13181F</color>
+
+
 </resources>

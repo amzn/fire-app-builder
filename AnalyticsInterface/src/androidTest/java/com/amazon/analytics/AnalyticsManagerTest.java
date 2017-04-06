@@ -16,6 +16,7 @@
 package com.amazon.analytics;
 
 import com.amazon.analytics.testresources.SampleActivity;
+import com.amazon.android.utils.Helpers;
 
 import org.junit.After;
 import org.junit.Before;
@@ -29,10 +30,9 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 
+import static com.amazon.android.utils.Helpers.checkConsole;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -53,41 +53,12 @@ public class AnalyticsManagerTest {
     private AnalyticsManager mAnalyticsManager;
 
     private final int CLEAR_LOG_DELAY = 2000;
-
-    /**
-     * Check that console output contains the specified text.
-     *
-     * @param command    Console command
-     * @param outputLine Text to check for
-     */
-    private boolean checkConsole(String command, String outputLine) throws Exception {
-
-        boolean stringFound = false;
-        Process process = Runtime.getRuntime().exec(command);
-        String line;
-        BufferedReader bufferedReader =
-                new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-        while ((line = bufferedReader.readLine()) != null) {
-            if (line.contains(outputLine)) {
-                stringFound = true;
-                break;
-            }
-
-        }
-        return stringFound;
-    }
-
-    /**
-     * Clears LogCat messages
-     */
-    private void clearLogs() throws Exception {
-
-        Runtime.getRuntime().exec("logcat -c");
-        // allow logs to finish clearing, this is not instantaneous;
-        // removing the two-second wait will cause the test to fail
-        Thread.sleep(CLEAR_LOG_DELAY);
-    }
+    private final String LOGCAT_COMMAND_DEBUG = "logcat -d AnalyticsManager:D *:S";
+    private final String LOGCAT_COMMAND_TEST_DEBUG = "logcat -d AnalyticsManagerTest:D *:S";
+    private final String LOG_ACTIVITY_RESUMED = "onActivityResumed, analytics tracking";
+    private final String LOG_ACTIVITY_PAUSED = "onActivityPaused, analytics tracking";
+    private final String LOG_END_TRACKING = "End dummy data collection";
+    private final String LOG_START_TRACKING = "Begin dummy data collection";
 
     @Before
     public void setUp() throws Exception {
@@ -177,12 +148,10 @@ public class AnalyticsManagerTest {
         final String CONSTANT = "sample constant";
         assertEquals("addAnalyticsConstantForActivity() should return AnalyticsManager singleton",
                      mAnalyticsManager.addAnalyticsConstantForActivity(
-                             mActivityRule.getClass().getSimpleName(),
-                             CONSTANT),
+                             mActivityRule.getClass().getSimpleName(), CONSTANT),
                      mAnalyticsManager);
-        assertEquals("Checking analytics constant", CONSTANT, mAnalyticsManager
-                .getConstant(mActivityRule.getClass()
-                                          .getSimpleName()));
+        assertEquals("Checking analytics constant", CONSTANT,
+                     mAnalyticsManager.getConstant(mActivityRule.getClass().getSimpleName()));
     }
 
     /**
@@ -203,10 +172,10 @@ public class AnalyticsManagerTest {
             public void collectLifeCycleData(Activity activity, boolean active) {
 
                 if (active) {
-                    Log.d(TAG, "Begin dummy data collection");
+                    Log.d(TAG, LOG_START_TRACKING);
                 }
                 else {
-                    Log.d(TAG, "End dummy data collection");
+                    Log.d(TAG, LOG_END_TRACKING);
                 }
             }
 
@@ -226,13 +195,14 @@ public class AnalyticsManagerTest {
             }
         };
 
-        clearLogs();
+        Helpers.clearLogs(CLEAR_LOG_DELAY);
         mAnalyticsManager.setAnalyticsInterface(iAnalytics);
         mAnalyticsManager.onActivityResumed(mActivityRule.getActivity());
         assertTrue("onActivityResumed() should record tracking status in logs", checkConsole
-                ("logcat -d AnalyticsManager:D *:S", "onActivityResumed, analytics tracking"));
+                (LOGCAT_COMMAND_DEBUG, LOG_ACTIVITY_RESUMED));
+
         assertTrue("Checking for collectLifeCycleData() execution (active = true):", checkConsole
-                ("logcat -d AnalyticsManagerTest:D *:S", "Begin dummy data collection"));
+                (LOGCAT_COMMAND_TEST_DEBUG, LOG_START_TRACKING));
 
     }
 
@@ -254,10 +224,10 @@ public class AnalyticsManagerTest {
             public void collectLifeCycleData(Activity activity, boolean active) {
 
                 if (active) {
-                    Log.d(TAG, "Begin dummy data collection");
+                    Log.d(TAG, LOG_START_TRACKING);
                 }
                 else {
-                    Log.d(TAG, "End dummy data collection");
+                    Log.d(TAG, LOG_END_TRACKING);
                 }
             }
 
@@ -277,16 +247,14 @@ public class AnalyticsManagerTest {
             }
         };
 
-        clearLogs();
+        Helpers.clearLogs(CLEAR_LOG_DELAY);
         mAnalyticsManager.setAnalyticsInterface(iAnalytics);
         mAnalyticsManager.onActivityPaused(mActivityRule.getActivity());
         assertTrue("onActivityPause() should record tracking status in logs",
-                   checkConsole("logcat -d AnalyticsManager:D *:S",
-                                "onActivityPaused, analytics tracking"));
+                   checkConsole(LOGCAT_COMMAND_DEBUG, LOG_ACTIVITY_PAUSED));
 
         assertTrue("Checking for collectLifeCycleData() execution (active = false):",
-                   checkConsole("logcat -d AnalyticsManagerTest:D *:S",
-                                "End dummy data collection"));
+                   checkConsole(LOGCAT_COMMAND_TEST_DEBUG, LOG_END_TRACKING));
     }
 
 }

@@ -120,3 +120,12 @@ dependencies {
     testCompile 'com.android.support.test:runner:0.4'
     compile project(':Calligraphy')
 }
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'me.tatarka:gradle-retrolambda:3.2.3'
+    }
+}

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * A copy of the License is located at
  *
- *     http://aws.amazon.com/apache2.0/
+ * http://aws.amazon.com/apache2.0/
  *
  * or in the "license" file accompanying this file. This file is distributed
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
@@ -47,7 +47,7 @@ public class Navigator implements Application.ActivityLifecycleCallbacks {
     /**
      * Navigator file name.
      */
-    private static final String NAVIGATOR_FILE = "Navigator.json";
+    public static final String NAVIGATOR_FILE = "Navigator.json";
 
     /**
      * Context.
@@ -134,41 +134,21 @@ public class Navigator implements Application.ActivityLifecycleCallbacks {
     /**
      * Constructor.
      *
-     * @param context Context.
+     * @param activity The active activity.
      */
-    public Navigator(Context context) {
+    public Navigator(Activity activity) {
 
-        mContext = context;
+        this(activity, NAVIGATOR_FILE);
+    }
+
+    public Navigator(Activity activity, String navigatorFilePath) {
+
+        mCurrentActivity = activity;
+        mContext = activity.getApplicationContext();
         ((Application) mContext.getApplicationContext()).registerActivityLifecycleCallbacks(this);
 
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            String navigatorFileString = FileHelper.readFile(mContext, NAVIGATOR_FILE);
-            mNavigatorModel = objectMapper.readValue(navigatorFileString,
-                                                     NavigatorModel.class);
-
-            Log.v(TAG, "navigatorModel" + mNavigatorModel);
-
-            // Preload recipes
-            for (NavigatorModel.GlobalRecipes globalRecipes : mNavigatorModel.getGlobalRecipes()) {
-
-                // Load category recipes if there is no hard coded name defined.
-                if (globalRecipes.getCategories().name == null) {
-
-                    globalRecipes.getCategories().dataLoaderRecipe =
-                            Recipe.newInstance(mContext, globalRecipes.getCategories().dataLoader);
-
-                    globalRecipes.getCategories().dynamicParserRecipe =
-                            Recipe.newInstance(mContext,
-                                               globalRecipes.getCategories().dynamicParser);
-                }
-
-                globalRecipes.getContents().dataLoaderRecipe =
-                        Recipe.newInstance(mContext, globalRecipes.getContents().dataLoader);
-
-                globalRecipes.getContents().dynamicParserRecipe =
-                        Recipe.newInstance(mContext, globalRecipes.getContents().dynamicParser);
-            }
+            mNavigatorModel = NavigatorModelParser.parse(mContext, navigatorFilePath);
 
             // Traverse graph nodes.
             for (String entry : mNavigatorModel.getGraph().keySet()) {
@@ -199,10 +179,10 @@ public class Navigator implements Application.ActivityLifecycleCallbacks {
             }
         }
         catch (Exception e) {
-            Log.e(TAG, "Navigator parsing failed!!! ", e);
+            Log.e(TAG, "Error traversing the graph nodes. ", e);
         }
 
-        Log.v(TAG, "Navigator Graph:" + mNavigatorGraph);
+        Log.v(TAG, "Navigator Graph: " + mNavigatorGraph);
     }
 
     /**
@@ -255,6 +235,28 @@ public class Navigator implements Application.ActivityLifecycleCallbacks {
 
         return mNavigatorGraph.getNodeByName(mScreenNameClassMap.get(screenName).getName())
                               .getObject();
+    }
+
+    /**
+     * Returns true if any node of the graph for the given navigator model has verifyScreenAccess
+     * set to true.
+     *
+     * @param model The navigator model to check.
+     * @return True if screen access verification is required; false otherwise.
+     */
+    public static boolean isScreenAccessVerificationRequired(NavigatorModel model) {
+
+        if (model != null && model.getGraph() != null) {
+            // Get the UINodes and check if any of them require verify screen access.
+            for (UINode node : model.getGraph().values()) {
+                // If verification is required then we know were using authentication so add the
+                // setting
+                if (node.isVerifyScreenAccess()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -355,7 +357,7 @@ public class Navigator implements Application.ActivityLifecycleCallbacks {
         Log.d(TAG, activityName + " onActivityCreated");
 
         String screenName = mScreenNameMap.get(activity.getClass().getName());
-
+        mCurrentActivity = activity;
         if (mINavigationListener != null) {
             mINavigationListener.onScreenCreate(activity, screenName);
             mINavigationListener.onSetTheme(activity);
@@ -383,13 +385,11 @@ public class Navigator implements Application.ActivityLifecycleCallbacks {
         Log.d(TAG, activityName + " onActivityResumed " + activity.getClass().getName());
 
         mAppInBackground = true;
-
         String screenName = mScreenNameMap.get(activity.getClass().getName());
+        mCurrentActivity = activity;
         if (screenName != null) {
             mINavigationListener.onScreenGotFocus(activity, screenName);
         }
-
-        mCurrentActivity = activity;
 
         for (Runnable runnable : mRunOnUpcomingActivityList) {
             mCurrentActivity.runOnUiThread(runnable);
@@ -424,6 +424,7 @@ public class Navigator implements Application.ActivityLifecycleCallbacks {
         Log.d(TAG, "startedActivityCount:" + mStartedActivityCount);
         if (mStartedActivityCount == 0 && mINavigationListener != null) {
             mAppInBackground = false;
+            Log.d(TAG, "application going in background");
             mINavigationListener.onApplicationGoesToBackground();
         }
     }

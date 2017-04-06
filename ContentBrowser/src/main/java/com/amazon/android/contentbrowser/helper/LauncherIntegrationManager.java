@@ -38,7 +38,7 @@ public class LauncherIntegrationManager {
     /**
      * Constants required by Launcher integration
      */
-    //Replace COM_AMAZON_TV_LAUNCHER value with "com.amazon.tv.integrationtestonly" when testing
+    // Replace COM_AMAZON_TV_LAUNCHER value with "com.amazon.tv.integrationtestonly" when testing
     // with integration test app.
     private static final String COM_AMAZON_TV_LAUNCHER = "com.amazon.tv.launcher";
     private static final String COM_AMAZON_DEVICE_CAPABILITIES = "com.amazon.device.CAPABILITIES";
@@ -66,7 +66,7 @@ public class LauncherIntegrationManager {
     /**
      * Intent action to be sent to launcher to indicate that the user is authorized to play content
      */
-    private static final String PLAY_CONTENT_FROM_LAUNCHER_ACTION =
+    public static final String PLAY_CONTENT_FROM_LAUNCHER_ACTION =
             "PLAY_CONTENT_FROM_LAUNCHER_ACTION";
     /**
      * Intent action to be sent to launcher to indicate that the user is not authorized to play
@@ -78,13 +78,28 @@ public class LauncherIntegrationManager {
      * Constant to store the user authentication status in preferences
      */
     public static final String PREFERENCE_KEY_USER_AUTHENTICATED = "li_user_authenticated";
-
+    /**
+     * Constant for content source flag in the intent
+     */
+    public static final String CONTENT_SOURCE = "CONTENT_SOURCE";
+    /**
+     * Constant for indicating recommended content as the source of content play request
+     */
+    public static final String RECOMMENDED_CONTENT = "RECOMMENDED_CONTENT";
+    /**
+     * Constant for indicating Catalog content as the source of content play request
+     */
+    public static final String CATALOG_CONTENT = "CATALOG_CONTENT";
+    /**
+     * Debug tag.
+     */
     private static final String TAG = LauncherIntegrationManager.class.getName();
 
     /**
      * The application context.
      */
     protected final Context mContext;
+
     /**
      * Content browser instance
      */
@@ -104,14 +119,14 @@ public class LauncherIntegrationManager {
         this.mContext = context;
         this.mContentBrowser = contentBrowser;
         EventBus.getDefault().register(this);
-        calculateAndAuthenticationStatus(context);
+        calculateAndSendAuthenticationStatus(context);
     }
 
     /**
      * Checks with content browser whether user authentication is mandatory and
      * accordingly sets the preferences
      */
-    private void calculateAndAuthenticationStatus(Context context) {
+    private void calculateAndSendAuthenticationStatus(Context context) {
 
         if (mContentBrowser != null) {
             // Authentication is not mandatory, send user authenticated status as true
@@ -150,7 +165,7 @@ public class LauncherIntegrationManager {
      */
     @Subscribe
     public void onAuthenticationStatusUpdateEvent(AuthHelper.AuthenticationStatusUpdateEvent
-                                                              authenticationStatusUpdateEvent) {
+                                                          authenticationStatusUpdateEvent) {
 
         sendAppAuthenticationStatusBroadcast(mContext, authenticationStatusUpdateEvent
                 .isUserAuthenticated());
@@ -170,6 +185,7 @@ public class LauncherIntegrationManager {
                         context.getString(R.string.launcher_integration_partner_id));
         intent.putExtra(AMAZON_INTENT_EXTRA_DATA_EXTRA_NAME,
                         context.getString(R.string.launcher_integration_content_id_key));
+        intent.putExtra(CONTENT_SOURCE, CATALOG_CONTENT);
 
         if (isUserAuthenticated) {
             intent.putExtra(AMAZON_INTENT_EXTRA_PLAY_INTENT_ACTION,
@@ -204,6 +220,7 @@ public class LauncherIntegrationManager {
         }
         // Send the intent to the Launcher
         context.sendBroadcast(intent);
+        AnalyticsHelper.trackAppAuthenticationStatusBroadcasted(isUserAuthenticated);
     }
 
     /**
@@ -228,14 +245,28 @@ public class LauncherIntegrationManager {
      *
      * @param context Application context
      * @param intent  Intent to read
-     * @return The content id to be played, 0 if no content id exists in the intent.
+     * @return The content id to be played, "0" if no content id exists in the intent.
      */
-    public static long getContentIdToPlay(Context context, Intent intent) {
+    public static String getContentIdToPlay(Context context, Intent intent) {
 
         String content_id_key = context.getString(R.string.launcher_integration_content_id_key);
         if (intent == null || intent.getStringExtra(content_id_key) == null) {
-            return 0;
+            return "0";
         }
-        return Long.parseLong(intent.getStringExtra(content_id_key));
+        return intent.getStringExtra(content_id_key);
+    }
+
+    /**
+     * Extracts the source of content play request from the intent
+     *
+     * @param intent Intent to read
+     * @return source of content play request
+     */
+    public static String getSourceOfContentPlayRequest(Intent intent) {
+
+        if (intent == null || intent.getStringExtra(CONTENT_SOURCE) == null) {
+            return null;
+        }
+        return intent.getStringExtra(CONTENT_SOURCE);
     }
 }

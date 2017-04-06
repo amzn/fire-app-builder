@@ -14,6 +14,8 @@
  */
 package com.amazon.android.model.content;
 
+import com.amazon.utils.ListUtils;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -91,7 +93,7 @@ public class Content implements Serializable {
     /**
      * Available date.
      */
-    private Integer mAvailableDate;
+    private String mAvailableDate;
 
     /**
      * Content channel id.
@@ -101,7 +103,7 @@ public class Content implements Serializable {
     /**
      * Content duration.
      */
-    private String mDuration;
+    private long mDuration;
 
     /**
      * Content format.
@@ -124,6 +126,12 @@ public class Content implements Serializable {
     private String mTags;
 
     /**
+     * A list of content ids to recommend to the user after the content is played. A string
+     * representation of a JSON array of strings.
+     */
+    private String mRecommendations;
+
+    /**
      * Locale of the content; the default is English.
      */
     private Locale mLocale = Locale.ENGLISH;
@@ -134,44 +142,157 @@ public class Content implements Serializable {
     private Map<String, Object> mExtras;
 
     /**
-     * Constant for title field name.
+     * Constant for matching the title field name.
      */
     public static final String TITLE_FIELD_NAME = "title";
 
     /**
-     * Constant for description field name.
+     * Constant for matching the description field name.
      */
     public static final String DESCRIPTION_FIELD_NAME = "description";
 
     /**
-     * Constant for id field name.
+     * Constant for matching the id field name.
      */
     public static final String ID_FIELD_NAME = "id";
 
     /**
-     * Constant for subtitle field name.
+     * Constant for matching the subtitle field name.
      */
     public static final String SUBTITLE_FIELD_NAME = "subtitle";
 
     /**
-     * Constant for url field name.
+     * Constant for matching the url field name.
      */
     public static final String URL_FIELD_NAME = "url";
 
     /**
-     * Constant for cardImageUrl field name.
+     * Constant for matching the cardImageUrl field name.
      */
     public static final String CARD_IMAGE_URL_FIELD_NAME = "cardImageUrl";
 
     /**
-     * Constant for backgroundImageUrl field name.
+     * Constant for matching the backgroundImageUrl field name.
      */
     public static final String BACKGROUND_IMAGE_URL_FIELD_NAME = "backgroundImageUrl";
 
     /**
-     * Constant for tags field name.
+     * Constant for matching the closed captions urls field name.
+     */
+    public static final String CLOSED_CAPTION_FIELD_NAME = "closeCaptionUrls";
+
+    /**
+     * Constant for matching the tags field name.
      */
     public static final String TAGS_FIELD_NAME = "tags";
+
+    /**
+     * Constant for matching the recommendations field name.
+     */
+    public static final String RECOMMENDATIONS_FIELD_NAME = "recommendations";
+
+    /**
+     * Constant for matching the available date field name.
+     */
+    public static final String AVAILABLE_DATE_FIELD_NAME = "availableDate";
+
+    /**
+     * Constant for matching the subscription required field name.
+     */
+    public static final String SUBSCRIPTION_REQUIRED_FIELD_NAME = "subscriptionRequired";
+
+    /**
+     * Constant for matching the channel id field name.
+     */
+    public static final String CHANNEL_ID_FIELD_NAME = "channelId";
+
+    /**
+     * Constant for matching the duration field name.
+     */
+    public static final String DURATION_FIELD_NAME = "duration";
+
+    /**
+     * Constant for matching the ad cue points field name.
+     */
+    public static final String AD_CUE_POINTS_FIELD_NAME = "adCuePoints";
+
+    /**
+     * Constant for matching the studio field name.
+     */
+    public static final String STUDIO_FIELD_NAME = "studio";
+
+    /**
+     * Constant for matching the format field name.
+     */
+    public static final String FORMAT_FIELD_NAME = "format";
+
+    /**
+     * Constant for getting adId out of extras.
+     */
+    public static final String AD_ID_FIELD_NAME = "adId";
+
+    /**
+     * Constant for getting the maturity rating out of extras.
+     */
+    public static final String MATURITY_RATING_TAG = "maturityRating";
+
+    /**
+     * Constant for getting the genres out of extras.
+     */
+    public static final String GENRES_TAG = "genres";
+
+    /**
+     * Constant for getting the live boolean value out of extras.
+     */
+    public static final String LIVE_TAG = "live";
+
+    /**
+     * Constant for getting the start time value out of extras. For live content only. This string
+     * should point to the start time in milliseconds (EPOCH).
+     */
+    public static final String START_TIME_TAG = "startTime";
+
+    /**
+     * Constant for getting the end time value out of extras. For live content only. This string
+     * should point to the end time in milliseconds (EPOCH).
+     */
+    public static final String END_TIME_TAG = "endTime";
+
+    /**
+     * Constant for getting the customer rating value out of extras.
+     */
+    public static final String CUSTOMER_RATING_TAG = "customerRating";
+
+    /**
+     * Constant for getting the customer rating count value out of extras.
+     */
+    public static final String CUSTOMER_RATING_COUNT_TAG = "customerRatingCount";
+
+    /**
+     * Constant for getting the video preview url value out of extras.
+     */
+    public static final String VIDEO_PREVIEW_URL_TAG = "videoPreviewUrl";
+
+    /**
+     * Constant for getting the IMDB rating value out of extras.
+     */
+    public static final String IMDB_ID_TAG = "imdbId";
+
+    /**
+     * Constant for getting the Fire TV categories out of extras. Should point to values such as
+     * ["Home", "Your Videos"]
+     */
+    public static final String FIRE_TV_CATEGORIES_TAG = "fireTvCategories";
+
+    /**
+     * Constant for getting the content type array value out of extras.
+     */
+    public static final String CONTENT_TYPE_TAG = "contentTypes";
+
+    /**
+     * Constant for getting the recommendation action list out of extras.
+     */
+    public static final String RECOMMENDATION_ACTIONS_TAG = "recommendationActions";
 
     /**
      * Creates a {@link Content} with empty values.
@@ -187,9 +308,10 @@ public class Content implements Serializable {
         mCardImageUrl = "";
         mStudio = "";
         mSubscriptionRequired = false;
-        mDuration = "0";
-        mAvailableDate = 0;
+        mDuration = 0;
+        mAvailableDate = "";
         mTags = "[]";
+        mRecommendations = "[]";
     }
 
     /**
@@ -214,23 +336,23 @@ public class Content implements Serializable {
     }
 
     /**
-     * Get content id as long value.
+     * Get content id.
      *
-     * @return Id as a long value.
+     * @return Id.
      */
-    public long getId() {
+    public String getId() {
 
-        return Long.valueOf(mId);
+        return mId;
     }
 
     /**
      * Set content id.
      *
-     * @param id Content id as a long.
+     * @param id Content id.
      */
-    public void setId(Long id) {
+    public void setId(String id) {
 
-        mId = String.valueOf(id);
+        mId = id;
     }
 
     /**
@@ -418,7 +540,7 @@ public class Content implements Serializable {
      *
      * @return Available date.
      */
-    public Integer getAvailableDate() {
+    public String getAvailableDate() {
 
         return mAvailableDate;
     }
@@ -428,7 +550,7 @@ public class Content implements Serializable {
      *
      * @param availableDate Provided date.
      */
-    public void setAvailableDate(Integer availableDate) {
+    public void setAvailableDate(String availableDate) {
 
         mAvailableDate = availableDate;
     }
@@ -478,7 +600,7 @@ public class Content implements Serializable {
      *
      * @return Content duration.
      */
-    public String getDuration() {
+    public long getDuration() {
 
         return mDuration;
     }
@@ -488,7 +610,7 @@ public class Content implements Serializable {
      *
      * @param duration Content duration.
      */
-    public void setDuration(String duration) {
+    public void setDuration(long duration) {
 
         mDuration = duration;
     }
@@ -544,6 +666,16 @@ public class Content implements Serializable {
     }
 
     /**
+     * Get the map of extra data.
+     *
+     * @return Extra data map.
+     */
+    public Map<String, Object> getExtras() {
+
+        return mExtras;
+    }
+
+    /**
      * Get extra data as object from internal map.
      *
      * @param key Key value as string.
@@ -554,7 +686,6 @@ public class Content implements Serializable {
         if (mExtras == null) {
             return null;
         }
-
         return mExtras.get(key);
     }
 
@@ -570,46 +701,179 @@ public class Content implements Serializable {
         if (mExtras == null) {
             mExtras = new HashMap<>();
         }
-
         mExtras.put(key, value);
+    }
+
+    /**
+     * Get a List from the extras map. Warning: This method expects that the value that the key
+     * maps to is a {@link List}. If its not, errors may occur.
+     *
+     * @param key The key that leads to a list in the map.
+     * @return A List. If the extras map is null or the there is no value for the key in the map,
+     * an empty list is returned.
+     */
+    public List getExtraValueAsList(String key) {
+
+        if (mExtras == null || mExtras.get(key) == null) {
+            return new ArrayList<>();
+        }
+        return (List) mExtras.get(key);
+    }
+
+    /**
+     * Get an extra string value as a list. Warning: This method expects the value returned for
+     * the key to be in a list format that can be turned into a {@link JSONArray}. If its not
+     * errors may occur.
+     *
+     * @param key Key value as string.
+     * @return A list of strings. List will be empty if {@link #mExtras} is null or if there
+     * was an error converting the string to a list.
+     */
+    public List getExtraStringValueAsList(String key) {
+
+        if (mExtras == null) {
+            return new ArrayList<>();
+        }
+        try {
+            List list = ListUtils.stringToList((String) mExtras.get(key));
+            if (list == null) {
+                return new ArrayList<>();
+            }
+            return list;
+        }
+        catch (ListUtils.ExpectingJsonArrayException e) {
+            Log.e(TAG, "Couldn't get extra string value as list. ", e);
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Get a value from the extras map as a boolean. Warning: This method expects that the value
+     * that the key maps to is a boolean. If its not, errors may occur.
+     *
+     * @param key The key to the value.
+     * @return A boolean value; false if the value doesn't exist in the extras.
+     */
+    public boolean getExtraValueAsBoolean(String key) {
+
+        if (mExtras == null || mExtras.get(key) == null) {
+            return false;
+        }
+
+        return (boolean) mExtras.get(key);
+    }
+
+    /**
+     * Get a value from the extras map as a long. Warning: This method expects that the value that
+     * the key maps to is a long. If its not, errors may occur.
+     *
+     * @param key The key to the value.
+     * @return A long value; 0 if the value doesn't exist in the extras.
+     */
+    public long getExtraValueAsLong(String key) {
+
+        if (mExtras == null || mExtras.get(key) == null) {
+            return 0;
+        }
+        // When the value gets parsed, its parsed as an Integer. So cast the Object to Integer
+        // then get it as a long value.
+        Integer integer = (Integer) mExtras.get(key);
+        return (long) integer;
+    }
+
+    /**
+     * Get a value from the extras map as an int. Warning: This method expects that the value that
+     * the key maps to is an int. If its not, errors may occur.
+     *
+     * @param key The key to the value.
+     * @return A long value; 0 if the value doesn't exist in the extras.
+     */
+    public int getExtraValueAsInt(String key) {
+
+        if (mExtras == null || mExtras.get(key) == null) {
+            return 0;
+        }
+
+        return (int) mExtras.get(key);
     }
 
     /**
      * Get content tags.
      *
-     * @return Content tags as String list.
+     * @return Content tags as string list or an empty list if there was an error.
      */
     public List<String> getTags() {
 
-        List<String> list = new ArrayList<>();
         try {
-            JSONArray jsonArray = new JSONArray(mTags);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                list.add(jsonArray.getString(i));
-            }
+            return ListUtils.stringToList(mTags);
         }
-        catch (JSONException e) {
-            Log.e(TAG, "There was an error", e);
-            return list;
+        catch (ListUtils.ExpectingJsonArrayException e) {
+            Log.e(TAG, "There was an error getting tags.", e);
+            return new ArrayList<>();
         }
-        return list;
     }
 
     /**
-     * Set content tags.
+     * Set content tags. Warning: This method expects the tags value to be in a list format that
+     * can be turned into a {@link JSONArray}. If its not errors may occur.
      *
      * @param tags Content tags as a string representation of a JSON array.
-     * @throws JSONException Thrown if tags is not a JSON array string.
+     * @throws ListUtils.ExpectingJsonArrayException Thrown if tags is not a JSON array string.
      */
-    public void setTags(String tags) throws JSONException {
+    public void setTags(String tags) throws ListUtils.ExpectingJsonArrayException {
 
         if (tags == null) {
             mTags = "[]";
             return;
         }
         // Make sure tags is a real JSON array string.
-        new JSONArray(mTags);
+        try {
+            new JSONArray(mTags);
+        }
+        catch (JSONException e) {
+            throw new ListUtils.ExpectingJsonArrayException(mTags);
+        }
         mTags = tags;
+    }
+
+    /**
+     * Get the list of content to recommend.
+     *
+     * @return List of content ids, or an empty list if there was an error.
+     */
+    public List<String> getRecommendations() {
+
+        try {
+            return ListUtils.stringToList(mRecommendations);
+        }
+        catch (ListUtils.ExpectingJsonArrayException e) {
+            Log.e(TAG, "Error getting recommendations. ", e);
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Set the list of recommendations to recommend.
+     *
+     * @param recommendations List of content ids as a string representation of a JSON array.
+     * @throws ListUtils.ExpectingJsonArrayException Thrown if the recommendations string is not a
+     *                                               JSON array string.
+     */
+    public void setRecommendations(String recommendations) throws ListUtils
+            .ExpectingJsonArrayException {
+
+        if (recommendations == null) {
+            mRecommendations = "[]";
+            return;
+        }
+        // Make sure recommendations is a real JSON array string.
+        try {
+            new JSONArray(mRecommendations);
+        }
+        catch (JSONException e) {
+            throw new ListUtils.ExpectingJsonArrayException(mRecommendations);
+        }
+        mRecommendations = recommendations;
     }
 
     /**
@@ -656,7 +920,6 @@ public class Content implements Serializable {
         if (name == null) {
             return null;
         }
-
         if (name.equals(TITLE_FIELD_NAME)) {
             return mTitle;
         }
@@ -692,19 +955,30 @@ public class Content implements Serializable {
         return result;
     }
 
-    /**
-     * Get string representation of {@link Content} object.
-     *
-     * @return String representation of {@link Content} object.
-     */
     @Override
     public String toString() {
 
-        return "Content-> id:" + mId +
-                " title: " + mTitle + " " + mSubtitle +
-                " Description: " + mDescription +
-                " CardImageUrl:" + mCardImageUrl +
-                " tags:" + mTags;
+        return "Content{" +
+                "mId='" + mId + '\'' +
+                ", mTitle='" + mTitle + '\'' +
+                ", mSubtitle='" + mSubtitle + '\'' +
+                ", mUrl='" + mUrl + '\'' +
+                ", mDescription='" + mDescription + '\'' +
+                ", mCardImageUrl='" + mCardImageUrl + '\'' +
+                ", mBackgroundImageUrl='" + mBackgroundImageUrl + '\'' +
+                ", mSubscriptionRequired=" + mSubscriptionRequired +
+                ", mStudio='" + mStudio + '\'' +
+                ", mAvailableDate='" + mAvailableDate + '\'' +
+                ", mChannelId='" + mChannelId + '\'' +
+                ", mDuration=" + mDuration +
+                ", mFormat='" + mFormat + '\'' +
+                ", mAdCuePoints=" + mAdCuePoints +
+                ", mCloseCaptionUrls=" + mCloseCaptionUrls +
+                ", mTags='" + mTags + '\'' +
+                ", mRecommendations='" + mRecommendations + '\'' +
+                ", mLocale=" + mLocale +
+                ", mExtras=" + mExtras +
+                '}';
     }
 
     /**
@@ -721,7 +995,8 @@ public class Content implements Serializable {
 
         Content content = (Content) o;
 
-        if (getId() != content.getId())
+        if (getId() != null ? !getId().equals(content.getId()) : content.getId() !=
+                null)
             return false;
         if (getTitle() != null ? !getTitle().equals(content.getTitle()) : content.getTitle() !=
                 null)
@@ -737,7 +1012,9 @@ public class Content implements Serializable {
         if (getCardImageUrl() != null ? !getCardImageUrl().equals(content.getCardImageUrl()) :
                 content.getCardImageUrl() != null)
             return false;
-        if (getBackgroundImageUrl() != null ? !getBackgroundImageUrl().equals(content.getBackgroundImageUrl()) : content.getBackgroundImageUrl() != null)
+        if (getBackgroundImageUrl() != null ?
+                !getBackgroundImageUrl().equals(content.getBackgroundImageUrl()) :
+                content.getBackgroundImageUrl() != null)
             return false;
         if (getTags() != null ? !getTags().equals(content.getTags()) : content.getTags() != null)
             return false;
@@ -747,4 +1024,5 @@ public class Content implements Serializable {
         return !(mExtras != null ? !mExtras.equals(content.mExtras) : content.mExtras != null);
 
     }
+
 }

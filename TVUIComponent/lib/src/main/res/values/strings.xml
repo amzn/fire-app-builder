@@ -31,7 +31,6 @@ permissions and limitations under the License.
 -->
 
 <resources>
-    <string name="app_name"><![CDATA[TenFootUI]]></string>
     <string name="browse_title"><![CDATA[TenFootUI]]></string>
     <string name="feed_reloading">Reloading</string>
     <string name="feed_loading">Loading</string>
@@ -61,4 +60,7 @@ permissions and limitations under the License.
     <string name="terms_title">Terms of Use</string>
 
     <string name="related_contents">Recommended Content</string>
+
+    <string name="season">Season</string>
+    <string name="episode">Episode</string>
 </resources>

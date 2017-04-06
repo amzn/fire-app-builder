@@ -47,6 +47,12 @@ public class AuthenticationConstants {
      * Constant for error category
      */
     public static final String AUTHORIZATION_ERROR_CATEGORY = "authorization";
-
-
+    /**
+     * Constant for the MVPD bundle object.
+     */
+    public static final String MVPD_BUNDLE = "mvpdBundle";
+    /**
+     * Constant for the MVPD.
+     */
+    public static final String MVPD = "mvpd";
 }

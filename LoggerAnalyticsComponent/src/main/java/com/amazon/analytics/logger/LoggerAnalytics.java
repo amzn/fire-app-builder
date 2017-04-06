@@ -20,9 +20,9 @@ import android.content.Context;
 import android.util.Log;
 
 import java.util.HashMap;
-import java.util.Map;
 
-import com.amazon.analytics.AnalyticsConstants;
+import com.amazon.analytics.AnalyticsTags;
+import com.amazon.analytics.CustomAnalyticsTags;
 import com.amazon.analytics.IAnalytics;
 
 /**
@@ -38,6 +38,8 @@ public class LoggerAnalytics implements IAnalytics {
      */
     static final String IMPL_CREATOR_NAME = LoggerAnalytics.class.getSimpleName();
 
+    private CustomAnalyticsTags mCustomTags = new CustomAnalyticsTags();
+
     /**
      * {@inheritDoc}
      *
@@ -45,6 +47,8 @@ public class LoggerAnalytics implements IAnalytics {
      */
     @Override
     public void configure(Context context) {
+
+        mCustomTags.init(context, R.string.logger_analytics_custom_tags);
 
         Log.d(TAG, "Configuration done.");
     }
@@ -71,21 +75,13 @@ public class LoggerAnalytics implements IAnalytics {
     @Override
     public void trackAction(HashMap<String, Object> data) {
 
-        String action = (String) data.get(AnalyticsConstants.ACTION_NAME);
-        Log.d(TAG, "Tracking Action called " + action);
+        String action = (String) data.get(AnalyticsTags.ACTION_NAME);
 
         HashMap<String, Object> attributes =
-                (HashMap<String, Object>) data.get(AnalyticsConstants.ATTRIBUTES);
+                (HashMap<String, Object>) data.get(AnalyticsTags.ATTRIBUTES);
 
-        if (attributes != null && !attributes.isEmpty()) {
-            Log.d(TAG, "Action has the following attributes and values: ");
-            for (Map.Entry pair : attributes.entrySet()) {
-                Log.d(TAG, "Attribute = " + pair.getKey() + ", Value: " + pair.getValue());
-            }
-        }
-        else {
-            Log.d(TAG, "Action has no attribute/value pairs");
-        }
+        Log.d(TAG, "Tracking action " + mCustomTags.getCustomTag(action) + " with attributes: "
+                + String.valueOf(mCustomTags.getCustomTags(attributes)));
     }
 
     /**

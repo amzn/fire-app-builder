@@ -31,14 +31,15 @@ permissions and limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent" android:layout_height="match_parent"
-        >
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/browse_background_color">
 
 
     <ImageView
             android:id="@+id/content_image"
-            android:layout_width="560dp"
-            android:layout_height="400dp"
+            android:layout_width="@dimen/content_image_width"
+            android:layout_height="@dimen/content_image_height"
             android:layout_alignParentRight="true"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"/>
@@ -46,8 +47,7 @@ permissions and limitations under the License.
     <RelativeLayout
             android:id="@+id/main_frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/browse_background">
+            android:layout_height="match_parent">
 
         <ImageView
                 android:id="@+id/main_logo"
@@ -58,6 +58,9 @@ permissions and limitations under the License.
                 android:layout_marginTop="@dimen/lb_browse_padding_top"
                 android:scaleType="centerInside"
                 android:src="@drawable/company_logo"/>
+
+        <include layout="@layout/powered_by_image_view"/>
+
         <LinearLayout
                 android:id="@+id/content_details"
                 android:layout_width="352dp"
@@ -97,7 +100,6 @@ permissions and limitations under the License.
                 android:layout_below="@id/content_details"
                 tools:layout="@layout/action_widget_container"/>
     </RelativeLayout>
-
 
     <include layout="@layout/action_widget_container"/>
 </RelativeLayout>

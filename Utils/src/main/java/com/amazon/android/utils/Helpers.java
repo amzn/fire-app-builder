@@ -16,11 +16,6 @@
 package com.amazon.android.utils;
 
 import com.amazon.utils.R;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.ImageViewTarget;
-import com.bumptech.glide.request.target.Target;
 
 import android.app.Activity;
 import android.content.Context;
@@ -33,8 +28,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -44,7 +37,6 @@ import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -53,14 +45,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.Date;
-import java.util.Locale;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A collection of utility methods, all static.
  */
 public class Helpers {
 
-    private static final String TAG = Helpers.class.getName();
+    private static final String TAG = Helpers.class.getSimpleName();
     public static final boolean DEBUG = false;
 
     /**
@@ -177,32 +170,6 @@ public class Helpers {
     }
 
     /**
-     * A debug helper class to listen for errors when loading image resources via Glide.
-     *
-     * @param <T> The type of the input source.
-     * @param <R> The type of the resource that will be transcoded from the loaded resource.
-     */
-    public static class LoggingListener<T, R> implements RequestListener<T, R> {
-
-        @Override
-        public boolean onException(Exception e, Object model, Target target, boolean
-                isFirstResource) {
-
-            Log.e("GLIDE", String.format(Locale.ROOT,
-                                         "onException(%s, %s, %s, %s)", e, model, target,
-                                         isFirstResource), e);
-            return false;
-        }
-
-        @Override
-        public boolean onResourceReady(Object resource, Object model, Target target, boolean
-                isFromMemoryCache, boolean isFirstResource) {
-
-            return false;
-        }
-    }
-
-    /**
      * Get the contents of the file and return as a Spanned text object.
      *
      * @param context  Application context that allows access to the assets folder.
@@ -299,76 +266,6 @@ public class Helpers {
     }
 
     /**
-     * Loads an image using Glide from a URL into an image view and crossfades it with the image
-     * view's current image.
-     *
-     * @param activity          The activity.
-     * @param imageView         The image view to load the image into to.
-     * @param url               The URL that points to the image to load.
-     * @param crossFadeDuration The duration of the cross-fade in milliseconds.
-     */
-    public static void loadImageWithCrossFadeTransition(Activity activity, ImageView imageView,
-                                                        String url, final int crossFadeDuration) {
-        /*
-         * With the Glide image managing framework, cross fade animations only take place if the
-         * image is not already downloaded in cache. In order to have the cross fade animation
-         * when the image is in cache, we need to make the following two calls.
-         */
-        Glide.with(activity)
-             .load(url)
-             .listener(new LoggingListener<>())
-             .fitCenter()
-             .error(R.drawable.browse_bg_color)
-             .placeholder(imageView.getDrawable())
-             .crossFade()
-             .into(imageView);
-
-        // Adding this second Glide call enables cross-fade transition even if the image is cached.
-        Glide.with(activity)
-             .load(url)
-             .fitCenter()
-             .error(R.drawable.browse_bg_color)
-                .placeholder(imageView.getDrawable())
-                        // Here we override the onResourceReady of the RequestListener to force
-                        // the cross fade animation.
-                .listener(new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String model,
-                                               Target<GlideDrawable> target,
-                                               boolean isFirstResource) {
-
-                        Log.d("GLIDE", String.format(Locale.ROOT,
-                                                     "onException(%s, %s, %s, %s)", e, model,
-                                                     target, isFirstResource), e);
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource,
-                                                   String model,
-                                                   Target<GlideDrawable> target,
-                                                   boolean isFromMemoryCache,
-                                                   boolean isFirstResource) {
-
-                        ImageViewTarget<GlideDrawable> imageTarget
-                                = (ImageViewTarget<GlideDrawable>) target;
-                        Drawable current = imageTarget.getCurrentDrawable();
-                        if (current != null) {
-                            TransitionDrawable transitionDrawable
-                                    = new TransitionDrawable(new Drawable[]{current, resource});
-                            transitionDrawable.setCrossFadeEnabled(true);
-                            transitionDrawable.startTransition(crossFadeDuration);
-                            imageTarget.setDrawable(transitionDrawable);
-                            return true;
-                        }
-                        else
-                            return false;
-                    }
-                }).crossFade()
-                .into(imageView);
-    }
-
-    /**
      * Handles the activity's enter fade transition.
      *
      * @param activity     The activity.
@@ -403,5 +300,79 @@ public class Helpers {
             Log.e(TAG, "Illegal charset " + DEFAULT_CHARSET_TEXT + " given ", e);
             return Charset.defaultCharset();
         }
+    }
+
+    /**
+     * Load a map of strings for the given JSON file. The file should be formatted as a flat
+     * object with string key, value pairs, e.g.:
+     *
+     * {
+     * "Key1", "Value1",
+     * "Key2", "Value2"
+     * }
+     *
+     * @param context    Context.
+     * @param fileNameId File name ID of the file to read from.
+     * @return The JSON file parsed as a map of strings. If there was an error while reading the
+     * file such as the file not existing, an empty map is returned and the error is logged.
+     */
+    public static HashMap<String, String> loadStringMappingFromJsonFile(Context context,
+                                                                        int fileNameId) {
+
+        HashMap<String, String> result = new HashMap<>();
+        String fileName = context.getString(fileNameId);
+        try {
+            if (FileHelper.doesFileExist(context, fileName)) {
+                String fileData = FileHelper.readFile(context, fileName);
+                Map map = JsonHelper.stringToMap(fileData);
+
+                for (Object key : map.keySet()) {
+                    result.put((String) key, String.valueOf(map.get(key)));
+                }
+            }
+        }
+        catch (Exception e) {
+            Log.w(TAG, "Unable to read file " + fileName, e);
+        }
+
+        return result;
+    }
+
+    /**
+     * Check that console output contains the specified text
+     *
+     * @param command    Console command
+     * @param outputLine Text to check for
+     * @return True if the output line was found in the logs from the given
+     * command, false otherwise.
+     */
+    public static boolean checkConsole(String command, String outputLine) throws Exception {
+
+        boolean stringFound = false;
+        Process process = Runtime.getRuntime().exec(command);
+        String line;
+        BufferedReader bufferedReader =
+                new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+        while ((line = bufferedReader.readLine()) != null) {
+            if (line.contains(outputLine)) {
+                stringFound = true;
+                break;
+            }
+
+        }
+        return stringFound;
+    }
+
+    /**
+     * Clears LogCat messages
+     *
+     * @param delay A sleep delay after the logs are cleared.
+     */
+    public static void clearLogs(int delay) throws Exception {
+
+        Runtime.getRuntime().exec("logcat -c");
+        // allow logs to finish clearing, this is not instantaneous;
+        Thread.sleep(delay);
     }
 }

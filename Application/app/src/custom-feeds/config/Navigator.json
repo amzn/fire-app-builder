@@ -1,0 +1,49 @@
+{
+  "config" : {
+    "showRecommendedContent" : true,
+    "categoryDefaultRecommendation" : true,
+    "searchAlgo" : "basic"
+  },
+  "branding" : {
+    "globalTheme" : "AppTheme"
+  },
+  "globalRecipes": [
+    {
+      "categories" : {
+        "dataLoader" : "recipes/SampleDataLoaderRecipe.json",
+        "dynamicParser" : "recipes/SampleCategoriesRecipe.json"
+      },
+      "contents" : {
+        "dataLoader" : "recipes/SampleDataLoaderRecipe.json",
+        "dynamicParser" : "recipes/SampleContentsRecipe.json"
+      }
+    }
+  ],
+  "graph" : {
+    "com.amazon.android.tv.tenfoot.ui.activities.SplashActivity": {
+      "verifyScreenAccess": false,
+      "verifyNetworkConnection": true,
+      "onAction" : "CONTENT_SPLASH_SCREEN"
+    },
+    "com.amazon.android.tv.tenfoot.ui.activities.ContentBrowseActivity": {
+      "verifyScreenAccess": false,
+      "verifyNetworkConnection": true,
+      "onAction" : "CONTENT_HOME_SCREEN"
+    },
+    "com.amazon.android.tv.tenfoot.ui.activities.ContentDetailsActivity": {
+      "verifyScreenAccess": false,
+      "verifyNetworkConnection": true,
+      "onAction" : "CONTENT_DETAILS_SCREEN"
+    },
+    "com.amazon.android.tv.tenfoot.ui.activities.ContentSearchActivity": {
+      "verifyScreenAccess": false,
+      "verifyNetworkConnection": true,
+      "onAction" : "CONTENT_SEARCH_SCREEN"
+    },
+    "com.amazon.android.uamp.ui.PlaybackActivity": {
+      "verifyScreenAccess": false,
+      "verifyNetworkConnection": true,
+      "onAction" : "CONTENT_RENDERER_SCREEN"
+    }
+  }
+}

@@ -1,0 +1,77 @@
+/**
+ * Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * A copy of the License is located at
+ *
+ *     http://aws.amazon.com/apache2.0/
+ *
+ * or in the "license" file accompanying this file. This file is distributed
+ * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+include ':app',
+        ':Utils',
+        ':LoginWithAmazonComponent',
+        ':ModuleInterface',
+        ':AuthInterface',
+        ':Calligraphy',
+        ':AuthInterface',
+        ':ContentModel',
+        ':DataLoader',
+        ':DynamicParser',
+        ':FacebookAuthComponent',
+        ':LoggerAnalyticsComponent',
+        ':AnalyticsInterface',
+        ':PassThroughAdsComponent',
+        ':PassThroughLoginComponent',
+        ':AdsInterface',
+        ':PurchaseInterface',
+        ':AdobepassAuthComponent',
+        ':AmazonInAppPurchaseComponent',
+        ':AMZNMediaPlayerComponent',
+        ':UAMP',
+        ':BrightCoveMediaPlayerComponent',
+        ':ContentBrowser',
+        ':CrashlyticsComponent',
+        ':FlurryAnalyticsComponent',
+        ':FreeWheelAdsComponent',
+        ':GoogleAnalyticsComponent',
+        ':ImageViewerComponent',
+        ':VastAdsComponent',
+        ':TVUIComponent',
+        ':Application'
+
+project(':Utils').projectDir = new File(rootProject.projectDir, "../../Utils")
+project(':LoginWithAmazonComponent').projectDir = new File(rootProject.projectDir, "../../LoginWithAmazonComponent")
+project(':ModuleInterface').projectDir = new File(rootProject.projectDir, "../../ModuleInterface")
+project(':AuthInterface').projectDir = new File(rootProject.projectDir, "../../AuthInterface")
+project(':Calligraphy').projectDir = new File(rootProject.projectDir, "../../TVUIComponent/Calligraphy")
+project(':AuthInterface').projectDir = new File(rootProject.projectDir, "../../AuthInterface")
+project(':ContentModel').projectDir = new File(rootProject.projectDir, "../../ContentModel")
+project(':DataLoader').projectDir = new File(rootProject.projectDir, "../../DataLoader")
+project(':DynamicParser').projectDir = new File(rootProject.projectDir, "../../DynamicParser")
+project(':FacebookAuthComponent').projectDir = new File(rootProject.projectDir, "../../FacebookAuthComponent")
+project(':LoggerAnalyticsComponent').projectDir = new File(rootProject.projectDir, "../../LoggerAnalyticsComponent")
+project(':AnalyticsInterface').projectDir = new File(rootProject.projectDir, "../../AnalyticsInterface")
+project(':PassThroughAdsComponent').projectDir = new File(rootProject.projectDir, "../../PassThroughAdsComponent")
+project(':PassThroughLoginComponent').projectDir = new File(rootProject.projectDir, "../../PassThroughLoginComponent")
+project(':AdsInterface').projectDir = new File(rootProject.projectDir, "../../AdsInterface")
+project(':PurchaseInterface').projectDir = new File(rootProject.projectDir, "../../PurchaseInterface")
+project(':AdobepassAuthComponent').projectDir = new File(rootProject.projectDir, "../../AdobepassAuthComponent")
+project(':AmazonInAppPurchaseComponent').projectDir = new File(rootProject.projectDir, "../../AmazonInAppPurchaseComponent")
+project(':AMZNMediaPlayerComponent').projectDir = new File(rootProject.projectDir, "../../AMZNMediaPlayerComponent")
+project(':UAMP').projectDir = new File(rootProject.projectDir, "../../UAMP")
+project(':BrightCoveMediaPlayerComponent').projectDir = new File(rootProject.projectDir, "../../BrightCoveMediaPlayerComponent")
+project(':ContentBrowser').projectDir = new File(rootProject.projectDir, "../../ContentBrowser")
+project(':CrashlyticsComponent').projectDir = new File(rootProject.projectDir, "../../CrashlyticsComponent")
+project(':FlurryAnalyticsComponent').projectDir = new File(rootProject.projectDir, "../../FlurryAnalyticsComponent")
+project(':FreeWheelAdsComponent').projectDir = new File(rootProject.projectDir, "../../FreeWheelAdsComponent")
+project(':GoogleAnalyticsComponent').projectDir = new File(rootProject.projectDir, "../../GoogleAnalyticsComponent")
+project(':ImageViewerComponent').projectDir = new File(rootProject.projectDir, "../../ImageViewerComponent")
+project(':VastAdsComponent').projectDir = new File(rootProject.projectDir, "../../VastAdsComponent")
+project(':Application').projectDir = new File(rootProject.projectDir, "../../Application/app")
+project(':TVUIComponent').projectDir = new File(rootProject.projectDir, "../../TVUIComponent/lib")

@@ -19,6 +19,7 @@ import com.amazon.utils.R;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.support.v4.content.ContextCompat;
 import android.text.Layout;
 import android.util.AttributeSet;
 import android.widget.TextView;
@@ -82,6 +83,7 @@ public class ReadTextView extends TextView {
 
         // Font needs to be applied since this was created dynamically.
         CalligraphyUtils.applyFontToTextView(getContext(), mText, CalligraphyConfig.get(), null);
+        mText.setTextColor(ContextCompat.getColor(getContext(), R.color.primary_text));
     }
 
     /**

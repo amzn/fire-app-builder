@@ -1,0 +1,13 @@
+{
+  "cooker": "DynamicParser",
+  "format": "xml",
+  "model": "com.amazon.android.model.content.ContentContainer",
+  "translator": "ContentContainerTranslator",
+  "modelType": "array",
+  "query": "//item/category/text()",
+  "queryResultType": "[]$",
+  "matchList": [
+    "/StringKey@name"
+  ],
+  "keyDataType": "/StringKey@keyDataPath"
+}

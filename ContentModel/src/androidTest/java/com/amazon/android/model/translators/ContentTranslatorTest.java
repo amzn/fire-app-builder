@@ -76,7 +76,7 @@ public class ContentTranslatorTest {
 
         Content content = new Content();
         assertTrue(mContentTranslator.setMemberVariable(content, "id", "1"));
-        assertEquals(content.getId(), 1L);
+        assertEquals(content.getId(), "1");
     }
 
     /**
@@ -179,7 +179,6 @@ public class ContentTranslatorTest {
         assertFalse(mContentTranslator.setMemberVariable(null, null, null));
         assertFalse(mContentTranslator.setMemberVariable(new Content(), null, "value"));
         assertFalse(mContentTranslator.setMemberVariable(new Content(), "", "value"));
-        assertFalse(mContentTranslator.setMemberVariable(new Content(), "field", null));
     }
 
     /**
@@ -202,34 +201,6 @@ public class ContentTranslatorTest {
         Content content = createValidContent();
         // make good content bad
         content.setTitle("");
-
-        assertFalse(mContentTranslator.validateModel(content));
-    }
-
-    /**
-     * Tests the {@link ContentTranslator#validateModel(Content)} method for the false case where
-     * the id is invalid.
-     */
-    @Test
-    public void testValidateModelFalseIdCase() throws Exception {
-
-        Content content = createValidContent();
-        // make good content bad
-        content.setId(0L);
-
-        assertFalse(mContentTranslator.validateModel(content));
-    }
-
-    /**
-     * Tests the {@link ContentTranslator#validateModel(Content)} method for the false case where
-     * the tags attribute is invalid.
-     */
-    @Test
-    public void testValidateModelFalseTagsCase() throws Exception {
-
-        Content content = createValidContent();
-        // make good content bad
-        content.setTags("[]");
 
         assertFalse(mContentTranslator.validateModel(content));
     }
@@ -347,25 +318,140 @@ public class ContentTranslatorTest {
     }
 
     /**
-     * Tests the {@link ContentTranslator#mapToModel(Map, Recipe)} with a bad recipe argument.
+     * Tests the {@link ContentTranslator#mapToModel(Map, Recipe)} with a recipe that's missing the
+     * title field.
      */
     @Test(expected = AModelTranslator.TranslationException.class)
-    public void testMapToModelWithBadRecipe() throws Exception {
+    public void testMapToModelWithBadRecipeTitle() throws Exception {
 
-        Recipe badRecipe = Recipe.newInstance(
-                FileHelper.readFile(InstrumentationRegistry.getContext(), "BadContentRecipe.json"));
+        Recipe badRecipe = Recipe.newInstance(getBadContentRecipeJsonString("title"));
 
         mContentTranslator.mapToModel(createValidMap(), badRecipe);
     }
 
     /**
-     * Tests the {@link ContentTranslator#mapToModel(Map, Recipe)} with a bad map argument.
+     * Tests the {@link ContentTranslator#mapToModel(Map, Recipe)} with a recipe that's missing the
+     * description field.
+     */
+    @Test(expected = AModelTranslator.TranslationException.class)
+    public void testMapToModelWithBadRecipeDescription() throws Exception {
+
+        Recipe badRecipe = Recipe.newInstance(getBadContentRecipeJsonString("description"));
+
+        mContentTranslator.mapToModel(createValidMap(), badRecipe);
+    }
+
+    /**
+     * Tests the {@link ContentTranslator#mapToModel(Map, Recipe)} with a recipe that's missing the
+     * url field.
+     */
+    @Test(expected = AModelTranslator.TranslationException.class)
+    public void testMapToModelWithBadRecipeUrl() throws Exception {
+
+        Recipe badRecipe = Recipe.newInstance(getBadContentRecipeJsonString("url"));
+
+        mContentTranslator.mapToModel(createValidMap(), badRecipe);
+    }
+
+    /**
+     * Tests the {@link ContentTranslator#mapToModel(Map, Recipe)} with a recipe that's missing the
+     * cardImageUrl field.
+     */
+    @Test(expected = AModelTranslator.TranslationException.class)
+    public void testMapToModelWithBadRecipeCardImageUrl() throws Exception {
+
+        Recipe badRecipe = Recipe.newInstance(getBadContentRecipeJsonString("cardImageUrl"));
+
+        mContentTranslator.mapToModel(createValidMap(), badRecipe);
+    }
+
+    /**
+     * Tests the {@link ContentTranslator#mapToModel(Map, Recipe)} with a recipe that's missing the
+     * backgroundImageUrl field.
+     */
+    @Test(expected = AModelTranslator.TranslationException.class)
+    public void testMapToModelWithBadRecipeBackgroundImageUrl() throws Exception {
+
+        Recipe badRecipe = Recipe.newInstance(getBadContentRecipeJsonString("backgroundImageUrl"));
+
+        mContentTranslator.mapToModel(createValidMap(), badRecipe);
+    }
+
+    /**
+     *Create a content recipe JSON string that is missing a required field in the matchList.
+     *
+     * @param skipMatchItem Field that will be missing from the matchList.
+     * @return JSON string for the bad content recipe.
+     */
+    private String getBadContentRecipeJsonString(String skipMatchItem) {
+
+        return getBadContentRecipeJsonString(skipMatchItem, "");
+    }
+
+    /**
+     * Create a content recipe JSON string that is missing a required field in the matchList and/or
+     * has an extra/invalid field in the matchList.
+     *
+     * @param skipMatchItem Field that will be missing from the matchList.
+     * @param extraMatchItem Extra field to add to the matchList (should be formatted as abc@123).
+     * @return JSON string for the bad content recipe.
+     */
+    private String getBadContentRecipeJsonString(String skipMatchItem, String extraMatchItem) {
+
+        final List<String> matchList = new ArrayList<>();
+        matchList.add("title@title");
+        matchList.add("description@description");
+        matchList.add("urls/url@url");
+        matchList.add("urls/cardImageUrl@cardImageUrl");
+        matchList.add("urls/backgroundImageUrl@backgroundImageUrl");
+
+        // Create the matchList, excluding skipMatchItem
+        StringBuilder matchListStringBuilder = new StringBuilder();
+        for (String item : matchList) {
+            if (!skipMatchItem.isEmpty() && item.contains(skipMatchItem)) {
+                continue;
+            }
+            if (!matchListStringBuilder.toString().isEmpty()) {
+                matchListStringBuilder.append(",");
+            }
+            matchListStringBuilder
+                    .append("\"")
+                    .append(item)
+                    .append("\"");
+        }
+
+        // Add extraMatchItem to the matchList
+        if (!extraMatchItem.isEmpty()) {
+            matchListStringBuilder
+                    .append(",\"")
+                    .append(extraMatchItem)
+                    .append("\"");
+        }
+
+        // Construct the recipe JSON string
+        return "{\n" +
+                "  \"recipeCooker\": \"com.amazon.dynamicparser.DynamicParser\",\n" +
+                "  \"format\": \"json\",\n" +
+                "  \"model\": \"com.amazon.android.model.content.Content\",\n" +
+                "  \"modelType\": \"\",\n" +
+                "  \"conversionType\": \"\",\n" +
+                "  \"query\": \"\",\n" +
+                "  \"matchList\": [" +
+                matchListStringBuilder.toString() +
+                "],\n" +
+                "  \"keyDataPath\": \"\"\n" +
+                "}";
+    }
+
+    /**
+     * Tests the {@link ContentTranslator#mapToModel(Map, Recipe)} with a bad map argument. The map
+     * is missing the title field so the model should not be valid at the end of translation.
      */
     @Test(expected = AModelTranslator.TranslationException.class)
     public void testMapToModelWithBadMap() throws Exception {
 
         Map<String, Object> map = createValidMap();
-        map.remove("id");
+        map.remove("title");
 
         mContentTranslator.mapToModel(map, mGoodRecipe);
     }
@@ -419,10 +505,10 @@ public class ContentTranslatorTest {
     /**
      * Creates a valid {@link Content} model to test with.
      */
-    private Content createValidContent() throws JSONException {
+    private Content createValidContent() throws Exception {
 
         Content content = new Content();
-        content.setId(1L);
+        content.setId("1");
         content.setTitle("Good Content");
         content.setSubtitle("Good Subtitle");
         content.setUrl("www.someUrl.com");

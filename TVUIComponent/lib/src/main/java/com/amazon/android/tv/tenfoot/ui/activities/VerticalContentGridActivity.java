@@ -31,7 +31,9 @@ package com.amazon.android.tv.tenfoot.ui.activities;
 import com.amazon.android.tv.tenfoot.R;
 
 import android.app.Activity;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 
 /**
  * A class to display content in a vertical grid.
@@ -46,6 +48,7 @@ public class VerticalContentGridActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.vertical_content_grid_layout);
-        getWindow().setBackgroundDrawableResource(R.drawable.browse_background_no_preview);
+        getWindow().setBackgroundDrawable(
+                new ColorDrawable(ContextCompat.getColor(this, R.color.browse_background_color)));
     }
 }

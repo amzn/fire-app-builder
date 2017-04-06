@@ -16,21 +16,20 @@ permissions and limitations under the License.
 <resources>
 
     <!-- logout dialog -->
-    <color name="logout_title_color">#D8D8D8</color>
-    <color name="logout_desc_color">#FFFFFF</color>
-
+    <color name="logout_title_color">@color/primary_text</color>
+    <color name="logout_desc_color">@color/secondary_text</color>
+    <!-- Second screen authentication -->
+    <color name="login_instructions_color">@color/primary_text</color>
+    <color name="login_code_color">@color/secondary_text</color>
     <!-- Details description extended body text color -->
-    <color name="details_description_extended">#D8D8D8</color>
-    <color name="error_button_focus_color">#12A3F4</color>
-
-    <color name="custom_error_button_focus_color">@color/error_button_focus_color</color>
-
+    <color name="details_description_extended">@color/primary_text</color>
     <color name="error_dialog_bg_color">#13181F</color>
     <color name="progress_fragment_bg_color">#CC000000</color>
     <color name="spinner_color">#FFFFFF</color>
-    <!-- Background color drawable-->
-    <drawable name="browse_bg_color">@color/browse_background_color</drawable>
-    <!-- Background color-->
-    <color name="browse_background_color">#000000</color>
-
+    <!-- Text color for unfocused action button -->
+    <color name="action_button_text_color">@color/primary_text</color>
+    <!-- Text color for focused action button -->
+    <color name="action_button_text_color_focused">@color/primary_text</color>
+    <!-- Action widget background color -->
+    <color name="search_orb">@color/accent</color>
 </resources>

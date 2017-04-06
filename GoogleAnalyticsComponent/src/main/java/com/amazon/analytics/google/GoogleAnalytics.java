@@ -14,18 +14,20 @@
  */
 package com.amazon.analytics.google;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
+import com.amazon.analytics.AnalyticsTags;
+import com.amazon.analytics.CustomAnalyticsTags;
+import com.amazon.analytics.IAnalytics;
+
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import com.amazon.analytics.AnalyticsConstants;
-import com.amazon.analytics.IAnalytics;
-
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 /**
  * An analytics implementation using the
@@ -53,37 +55,13 @@ public class GoogleAnalytics implements IAnalytics {
      */
     private Tracker mTracker;
 
-    /**
-     * Map of custom dimension names to index.
-     */
-    private Map<String, Integer> mDimensionIndexMap;
+    private CustomAnalyticsTags mCustomDimensionTags = new CustomAnalyticsTags();
+    private CustomAnalyticsTags mCustomMetricTags = new CustomAnalyticsTags();
 
     /**
-     * Map of custom metric names to index.
+     * HashMap for storing mEvents.
      */
-    private Map<String, Integer> mMetricIndexMap;
-
-    /**
-     * Custom dimension indexes.
-     */
-    private final int PLATFORM_IDX = 1;
-    private final int SEARCH_IDX = 2;
-    private final int ERROR_MSG_IDX = 10;
-    private final int PLAYBACK_SOURCE_IDX = 3;
-    private final int PURCHASE_RESULT_IDX = 8;
-    private final int PURCHASE_SKU_IDX = 9;
-    private final int TITLE_IDX = 4;
-    private final int SUBTITLE_IDX = 5;
-    private final int VIDEO_TYPE_IDX = 6;
-    private final int PURCHASE_TYPE_IDX = 7;
-
-    /**
-     * Custom metric indexes.
-     */
-    private final int AD_SECONDS_WATCHED_IDX = 1;
-    private final int VIDEO_SECONDS_WATCHED_IDX = 2;
-    private final int VIDEO_ID_IDX = 3;
-    private final int AD_ID_IDX = 4;
+    private Map<String, String> mEvents;
 
     /**
      * Gets the default {@link Tracker}.
@@ -101,6 +79,8 @@ public class GoogleAnalytics implements IAnalytics {
     @Override
     public void configure(Context context) {
 
+        mEvents = null;
+
         if (mTracker == null) {
             com.google.android.gms.analytics.GoogleAnalytics analytics = com.google.android.gms
                     .analytics.GoogleAnalytics.getInstance(context);
@@ -114,38 +94,10 @@ public class GoogleAnalytics implements IAnalytics {
         }
 
         // Create map of analytics constants to custom Google Analytics indexes.
-        initializeIndexMap();
+        mCustomDimensionTags.init(context, R.string.google_analytics_custom_dimension_tags);
+        mCustomMetricTags.init(context, R.string.google_analytics_custom_metric_tags);
 
         Log.d(TAG, "Google analytics configuration complete.");
-    }
-
-    /**
-     * Initializes the maps that hold the mappings between the strings from {@link
-     * AnalyticsConstants} to the index values assigned to the custom dimensions and metrics within
-     * the Google Analytics dashboard.
-     */
-    private void initializeIndexMap() {
-
-        mDimensionIndexMap = new HashMap<>();
-        mDimensionIndexMap.put(AnalyticsConstants.ATTRIBUTE_PLATFORM, PLATFORM_IDX);
-        mDimensionIndexMap.put(AnalyticsConstants.ATTRIBUTE_SEARCH_TERM, SEARCH_IDX);
-        mDimensionIndexMap.put(AnalyticsConstants.ATTRIBUTE_PLAY_SOURCE, PLAYBACK_SOURCE_IDX);
-        mDimensionIndexMap.put(AnalyticsConstants.ATTRIBUTE_ERROR_MSG, ERROR_MSG_IDX);
-        mDimensionIndexMap.put(AnalyticsConstants.ATTRIBUTE_PURCHASE_TYPE, PURCHASE_TYPE_IDX);
-        mDimensionIndexMap.put(AnalyticsConstants.ATTRIBUTE_PURCHASE_RESULT, PURCHASE_RESULT_IDX);
-        mDimensionIndexMap.put(AnalyticsConstants.ATTRIBUTE_PURCHASE_SKU, PURCHASE_SKU_IDX);
-        mDimensionIndexMap.put(AnalyticsConstants.ATTRIBUTE_TITLE, TITLE_IDX);
-        mDimensionIndexMap.put(AnalyticsConstants.ATTRIBUTE_SUBTITLE, SUBTITLE_IDX);
-        mDimensionIndexMap.put(AnalyticsConstants.ATTRIBUTE_VIDEO_TYPE, VIDEO_TYPE_IDX);
-
-        mMetricIndexMap = new HashMap<>();
-        mMetricIndexMap.put(AnalyticsConstants.ATTRIBUTE_AD_SECONDS_WATCHED,
-                            AD_SECONDS_WATCHED_IDX);
-        mMetricIndexMap.put(AnalyticsConstants.ATTRIBUTE_VIDEO_SECONDS_WATCHED,
-                            VIDEO_SECONDS_WATCHED_IDX);
-        mMetricIndexMap.put(AnalyticsConstants.ATTRIBUTE_VIDEO_ID, VIDEO_ID_IDX);
-        mMetricIndexMap.put(AnalyticsConstants.ATTRIBUTE_AD_ID, AD_ID_IDX);
-
     }
 
     /**
@@ -156,7 +108,7 @@ public class GoogleAnalytics implements IAnalytics {
      */
     private boolean isKeyConfigured(String key) {
 
-        return mDimensionIndexMap.containsKey(key) || mMetricIndexMap.containsKey(key);
+        return mCustomDimensionTags.tagCustomized(key) || mCustomMetricTags.tagCustomized(key);
     }
 
     /**
@@ -186,14 +138,14 @@ public class GoogleAnalytics implements IAnalytics {
         Tracker tracker = getDefaultTracker();
 
         // Get the action name.
-        String action = String.valueOf(data.get(AnalyticsConstants.ACTION_NAME));
+        String action = String.valueOf(data.get(AnalyticsTags.ACTION_NAME));
 
         HitBuilders.EventBuilder eventBuilder = new HitBuilders.EventBuilder();
         eventBuilder.setAction(action);
 
         // Get the attributes map.
         Map<String, Object> contextDataObjectMap =
-                (Map<String, Object>) data.get(AnalyticsConstants.ATTRIBUTES);
+                (Map<String, Object>) data.get(AnalyticsTags.ATTRIBUTES);
 
         if (contextDataObjectMap != null) {
             Log.d(TAG, "Tracking action " + action + " with attributes: "
@@ -211,15 +163,17 @@ public class GoogleAnalytics implements IAnalytics {
                     if (value != null && value.length() > 0) {
 
                         // If the key is a dimension, add a custom dimension value
-                        if (mDimensionIndexMap.containsKey(key)) {
+                        if (mCustomDimensionTags.tagCustomized(key)) {
 
-                            eventBuilder.setCustomDimension(mDimensionIndexMap.get(key), value);
+                            eventBuilder.setCustomDimension(
+                                    Integer.valueOf(mCustomDimensionTags.getCustomTag(key)), value);
                         }
                         // If the key is a metric, add a custom metric value
-                        else if (mMetricIndexMap.containsKey(key)) {
+                        else if (mCustomMetricTags.tagCustomized(key)) {
 
                             int intValue = Integer.parseInt(value);
-                            eventBuilder.setCustomMetric(mMetricIndexMap.get(key), intValue);
+                            eventBuilder.setCustomMetric(
+                                    Integer.valueOf(mCustomMetricTags.getCustomTag(key)), intValue);
                         }
                     }
                     else {
@@ -235,7 +189,8 @@ public class GoogleAnalytics implements IAnalytics {
         }
 
         // Record action
-        tracker.send(eventBuilder.build());
+        mEvents = eventBuilder.build();
+        tracker.send(mEvents);
 
     }
 
@@ -260,5 +215,15 @@ public class GoogleAnalytics implements IAnalytics {
         Log.d(TAG, "Tracking a caught error: " + errorMessage);
         Tracker tracker = getDefaultTracker();
         tracker.send(new HitBuilders.ExceptionBuilder().setDescription(errorMessage).build());
+    }
+
+    /**
+     * Get the data sent to the Google Analytics service.
+     * @return HashMap containing the analytics data.
+     */
+    @VisibleForTesting
+    public Map<String, String> getEvents() {
+
+        return mEvents;
     }
 }

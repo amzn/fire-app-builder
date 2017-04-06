@@ -21,9 +21,10 @@ import android.util.Log;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.amazon.analytics.CustomAnalyticsTags;
 import com.crashlytics.android.Crashlytics;
 
-import com.amazon.analytics.AnalyticsConstants;
+import com.amazon.analytics.AnalyticsTags;
 import io.fabric.sdk.android.Fabric;
 import com.amazon.analytics.IAnalytics;
 
@@ -45,6 +46,8 @@ public class CrashlyticsAnalytics implements IAnalytics {
      */
     private static final String TAG = CrashlyticsAnalytics.class.getSimpleName();
 
+    private CustomAnalyticsTags mCustomTags = new CustomAnalyticsTags();
+
     /**
      * {@inheritDoc}
      */
@@ -52,6 +55,8 @@ public class CrashlyticsAnalytics implements IAnalytics {
     public void configure(Context context) {
 
         Fabric.with(context, new Crashlytics());
+
+        mCustomTags.init(context, R.string.crashlytics_analytics_custom_tags);
     }
 
     /**
@@ -60,9 +65,8 @@ public class CrashlyticsAnalytics implements IAnalytics {
     @Override
     public void collectLifeCycleData(Activity activity, boolean active) {
 
-        Crashlytics.log("Collecting life cycle data for activity: " + activity.toString() + ", " +
-                                "active:" +
-                                " " + active);
+        Crashlytics.log("Collecting life cycle data for activity: " + activity.toString() +
+                                ", active:" + active);
         Crashlytics.setBool(activity.toString(), active);
     }
 
@@ -72,21 +76,23 @@ public class CrashlyticsAnalytics implements IAnalytics {
     @Override
     public void trackAction(HashMap<String, Object> data) {
 
-        String action = (String) data.get(AnalyticsConstants.ACTION_NAME);
-        Crashlytics.setString(AnalyticsConstants.ACTION_NAME, action);
+        String action = (String) data.get(AnalyticsTags.ACTION_NAME);
+        Crashlytics.setString(AnalyticsTags.ACTION_NAME, mCustomTags.getCustomTag(action));
 
         try {
-            Map<String, Object> contextDataObjectMap = (Map<String, Object>) data.get
-                    (AnalyticsConstants.ATTRIBUTES);
+            Map<String, Object> contextDataObjectMap =
+                    (Map<String, Object>) data.get(AnalyticsTags.ATTRIBUTES);
+
             for (String key : contextDataObjectMap.keySet()) {
-                Crashlytics.setString(key, String.valueOf(contextDataObjectMap.get(key)));
+                Crashlytics.setString(mCustomTags.getCustomTag(key),
+                        String.valueOf(contextDataObjectMap.get(key)));
             }
         }
         catch (Exception e) {
             Log.e(TAG, "The params map was not of type <String, String> for action " + action +
                     ", dropping the map and just logging the event", e);
             // Record action.
-            Crashlytics.setString(AnalyticsConstants.ACTION_NAME, action);
+            Crashlytics.setString(AnalyticsTags.ACTION_NAME, mCustomTags.getCustomTag(action));
         }
     }
 

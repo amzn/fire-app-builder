@@ -28,12 +28,15 @@
  */
 package com.amazon.android.uamp.ui;
 
-import com.amazon.analytics.AnalyticsConstants;
+import com.amazon.analytics.AnalyticsTags;
 import com.amazon.android.contentbrowser.ContentBrowser;
+import com.amazon.android.contentbrowser.helper.AnalyticsHelper;
 import com.amazon.android.model.content.Content;
 import com.amazon.android.tv.tenfoot.R;
-import com.amazon.android.utils.Helpers;
-import com.bumptech.glide.Glide;
+import com.amazon.android.tv.tenfoot.presenter.CardPresenter;
+import com.amazon.android.tv.tenfoot.utils.ContentHelper;
+import com.amazon.utils.StringManipulation;
+import com.amazon.android.utils.GlideHelper;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -43,7 +46,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v17.leanback.app.CardPresenter;
 import android.support.v17.leanback.app.TenFootPlaybackOverlayFragment;
 import android.support.v17.leanback.widget.AbstractDetailsDescriptionPresenter;
 import android.support.v17.leanback.widget.Action;
@@ -81,9 +83,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static com.amazon.android.contentbrowser.helper.AnalyticsHelper.trackContentAction;
-import static com.amazon.android.contentbrowser.helper.AnalyticsHelper.trackContentFinished;
 
 /**
  * Class for video playback with media control.
@@ -125,7 +124,7 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
     private Timer mClickTrackingTimer;
     private int mClickCount;
     private boolean mFadeOutComplete;
-    private boolean mShowRecommendations;
+    private boolean mShowRelatedContent;
     private boolean mHideMoreActions;
 
     /**
@@ -175,7 +174,7 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
     public void updateCurrentContent(Content newContent) {
 
         mSelectedContent = newContent;
-        if (mShowRecommendations) {
+        if (mShowRelatedContent) {
             // Find the index of the selected content in the related content list only if
             // recommendations are enabled
             mCurrentItem = getCurrentContentIndex(newContent);
@@ -189,15 +188,17 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
     }
 
     /**
-     * Find the index of the selected content in the related content list only if recommendations
-     * are enabled.
+     * Find the index of the selected content in the related content list.
      */
     private int getCurrentContentIndex(Content content) {
 
+        if (content == null) {
+            return -1;
+        }
         int index = -1;
         for (int j = 0; j < mRelatedContentList.size(); j++) {
             final Content currentContent = mRelatedContentList.get(j);
-            if (mSelectedContent.getId() == currentContent.getId()) {
+            if (StringManipulation.areStringsEqual(content.getId(), currentContent.getId())) {
                 index = j;
                 break;
             }
@@ -217,12 +218,12 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
                                                   .getSerializableExtra(
                                                           Content.class.getSimpleName());
 
-        mShowRecommendations = ContentBrowser.getInstance(getActivity()).isShowRecommendations();
+        mShowRelatedContent = ContentBrowser.getInstance(getActivity()).isShowRelatedContent();
 
         mHideMoreActions = true;
 
         mCurrentItem = -1;
-        if (mShowRecommendations) {
+        if (mShowRelatedContent) {
             mRelatedContentList = ContentBrowser.getInstance(getActivity())
                                                 .getRecommendedListOfAContentAsAContainer
                                                         (mSelectedContent)
@@ -359,53 +360,45 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
                     boolean actionIndex = mPlayPauseAction.getIndex() == PlayPauseAction.PLAY;
                     togglePlayback(actionIndex);
                     if (actionIndex) {
-                        trackContentAction(AnalyticsConstants.ACTION_PLAYBACK_CONTROL_PLAY,
-                                           mSelectedContent);
+                        trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_PLAY);
                     }
                     else {
-                        trackContentAction(AnalyticsConstants.ACTION_PLAYBACK_CONTROL_PAUSE,
-                                           mSelectedContent);
+                        trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_PAUSE);
                     }
                 }
                 else if (action.getId() == mSkipNextAction.getId()) {
                     next();
-                    trackContentAction(AnalyticsConstants.ACTION_PLAYBACK_CONTROL_NEXT,
-                                       mSelectedContent);
+                    trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_NEXT);
                 }
                 else if (action.getId() == mClosedCaptioningAction.getId()) {
                     toggleCloseCaption();
-                    trackContentAction(AnalyticsConstants.ACTION_PLAYBACK_CONTROL_TOGGLE_CC,
-                                       mSelectedContent);
+                    trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_TOGGLE_CC);
                 }
                 else if (action.getId() == mSkipPreviousAction.getId()) {
                     prev();
-                    trackContentAction(AnalyticsConstants.ACTION_PLAYBACK_CONTROL_PRE,
-                                       mSelectedContent);
+                    trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_PRE);
                 }
                 else if (action.getId() == mFastForwardAction.getId()) {
                     fastForward();
-                    trackContentAction(AnalyticsConstants.ACTION_PLAYBACK_CONTROL_FF,
-                                       mSelectedContent);
+                    trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_FF);
                 }
                 else if (action.getId() == mRewindAction.getId()) {
                     fastRewind();
-                    trackContentAction(AnalyticsConstants.ACTION_PLAYBACK_CONTROL_REWIND,
-                                       mSelectedContent);
+                    trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_REWIND);
                 }
                 else if (action instanceof PlaybackControlsRow.MultiAction) {
                     ((PlaybackControlsRow.MultiAction) action).nextIndex();
                     notifyChanged(action);
-                    trackContentAction(AnalyticsConstants.ACTION_PLAYBACK_CONTROL_MULTI_ACTION,
-                                       mSelectedContent);
+                    trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_MULTI_ACTION);
                 }
             }
         });
 
         playbackControlsRowPresenter.setBackgroundColor(
-                getResources().getColor(R.color.lb_playback_background_color));
+                ContextCompat.getColor(getActivity(), R.color.lb_playback_background_color));
 
         playbackControlsRowPresenter.setProgressColor(
-                getResources().getColor(R.color.lb_playback_progress_color_no_theme));
+                ContextCompat.getColor(getActivity(), R.color.lb_playback_progress_color_no_theme));
 
         // Secondary actions when *not hidden* shall not display the ellipsis.
         playbackControlsRowPresenter.setSecondaryActionsHidden(!mHideMoreActions);
@@ -420,7 +413,7 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
 
         addPlaybackControlsRow();
 
-        if (mShowRecommendations) {
+        if (mShowRelatedContent) {
             addOtherRows();
         }
         Log.d(TAG, "Hide more actions ? " + mHideMoreActions);
@@ -432,6 +425,33 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
         }
 
         setAdapter(mRowsAdapter);
+    }
+
+    /**
+     * Helper method to track a playback action.
+     *
+     * @param action The playback action to track.
+     */
+    private void trackAnalyticsAction(String action) {
+
+        trackAnalyticsAction(action, mSelectedContent);
+    }
+
+
+    /**
+     * Helper method to track a playback action.
+     *
+     * @param action  The playback action to track.
+     * @param content The content.
+     */
+    private void trackAnalyticsAction(String action, Content content) {
+
+        if (isAdded() && getActivity() != null) {
+
+            AnalyticsHelper.trackContentAction(action, content,
+                                               ((PlaybackActivity) getActivity())
+                                                       .getCurrentPosition());
+        }
     }
 
     /**
@@ -609,7 +629,7 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
      */
     protected String getVideoSubtitle() {
 
-        return mSelectedContent.getSubtitle();
+        return ContentHelper.getDescriptiveSubtitle(mContext, mSelectedContent);
     }
 
     /**
@@ -670,7 +690,7 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
         ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
         for (Content content : mRelatedContentList) {
             // Do not show the selected content under recommendation list.
-            if (content.getId() != mSelectedContent.getId()) {
+            if (!StringManipulation.areStringsEqual(content.getId(), mSelectedContent.getId())) {
                 listRowAdapter.add(content);
             }
         }
@@ -804,7 +824,7 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
 
         togglePlaybackUI(false);
         next();
-        trackContentFinished(mSelectedContent, mCallback.getDuration());
+        AnalyticsHelper.trackContentFinished(mSelectedContent, mCallback.getDuration());
     }
 
     /**
@@ -819,20 +839,21 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
 
     private void updateVideoImage(String uri) {
 
-        Glide.with(mContext)
+        SimpleTarget<GlideDrawable> simpleTarget = new SimpleTarget<GlideDrawable>(CARD_WIDTH,
+                                                                                   CARD_HEIGHT) {
+            @Override
+            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super
+                    GlideDrawable> glideAnimation) {
 
-             .load(uri)
-             .listener(new Helpers.LoggingListener<>())
-             .centerCrop()
-             .into(new SimpleTarget<GlideDrawable>(CARD_WIDTH, CARD_HEIGHT) {
-                 @Override
-                 public void onResourceReady(GlideDrawable resource, GlideAnimation<? super
-                         GlideDrawable> glideAnimation) {
+                mPlaybackControlsRow.setImageDrawable(resource);
+                mRowsAdapter.notifyArrayItemRangeChanged(0, mRowsAdapter.size());
+            }
+        };
 
-                     mPlaybackControlsRow.setImageDrawable(resource);
-                     mRowsAdapter.notifyArrayItemRangeChanged(0, mRowsAdapter.size());
-                 }
-             });
+        GlideHelper.loadImageIntoSimpleTarget(mContext, uri, new GlideHelper.LoggingListener<>(),
+                                              simpleTarget);
+
+
     }
 
     private void startClickTrackingTimer() {
@@ -912,9 +933,11 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
 
             if (item instanceof Content) {
                 Content content = (Content) item;
-                trackContentAction(AnalyticsConstants.ACTION_RECOMMENDED_CONTENT_CLICKED, content);
+                trackAnalyticsAction(AnalyticsTags.ACTION_RECOMMENDED_CONTENT_CLICKED, content);
+
                 mCallback.changeContent(content);
             }
         }
     }
+
 }
