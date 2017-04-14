@@ -16,10 +16,8 @@ package com.amazon.android.model.translators;
 
 import com.amazon.android.model.content.Content;
 import com.amazon.android.recipe.Recipe;
-import com.amazon.android.model.AModelTranslator;
 import com.amazon.android.utils.FileHelper;
 
-import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,6 +31,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -321,60 +320,69 @@ public class ContentTranslatorTest {
      * Tests the {@link ContentTranslator#mapToModel(Map, Recipe)} with a recipe that's missing the
      * title field.
      */
-    @Test(expected = AModelTranslator.TranslationException.class)
+    @Test
     public void testMapToModelWithBadRecipeTitle() throws Exception {
 
         Recipe badRecipe = Recipe.newInstance(getBadContentRecipeJsonString("title"));
 
-        mContentTranslator.mapToModel(createValidMap(), badRecipe);
+        Content content = mContentTranslator.mapToModel(createValidMap(), badRecipe);
+        assertNull("Content should be null due to bad translation", content);
+
     }
 
     /**
      * Tests the {@link ContentTranslator#mapToModel(Map, Recipe)} with a recipe that's missing the
      * description field.
      */
-    @Test(expected = AModelTranslator.TranslationException.class)
+    @Test
     public void testMapToModelWithBadRecipeDescription() throws Exception {
 
         Recipe badRecipe = Recipe.newInstance(getBadContentRecipeJsonString("description"));
 
-        mContentTranslator.mapToModel(createValidMap(), badRecipe);
+        Content content = mContentTranslator.mapToModel(createValidMap(), badRecipe);
+        assertNull("Content should be null due to bad translation", content);
+
     }
 
     /**
      * Tests the {@link ContentTranslator#mapToModel(Map, Recipe)} with a recipe that's missing the
      * url field.
      */
-    @Test(expected = AModelTranslator.TranslationException.class)
+    @Test
     public void testMapToModelWithBadRecipeUrl() throws Exception {
 
         Recipe badRecipe = Recipe.newInstance(getBadContentRecipeJsonString("url"));
 
-        mContentTranslator.mapToModel(createValidMap(), badRecipe);
+        Content content = mContentTranslator.mapToModel(createValidMap(), badRecipe);
+        assertNull("Content should be null due to bad translation", content);
     }
 
     /**
      * Tests the {@link ContentTranslator#mapToModel(Map, Recipe)} with a recipe that's missing the
      * cardImageUrl field.
      */
-    @Test(expected = AModelTranslator.TranslationException.class)
+    @Test
     public void testMapToModelWithBadRecipeCardImageUrl() throws Exception {
 
         Recipe badRecipe = Recipe.newInstance(getBadContentRecipeJsonString("cardImageUrl"));
 
-        mContentTranslator.mapToModel(createValidMap(), badRecipe);
+        Content content = mContentTranslator.mapToModel(createValidMap(), badRecipe);
+        assertNull("Content should be null due to bad translation", content);
+
     }
 
     /**
      * Tests the {@link ContentTranslator#mapToModel(Map, Recipe)} with a recipe that's missing the
      * backgroundImageUrl field.
      */
-    @Test(expected = AModelTranslator.TranslationException.class)
+    @Test
     public void testMapToModelWithBadRecipeBackgroundImageUrl() throws Exception {
 
         Recipe badRecipe = Recipe.newInstance(getBadContentRecipeJsonString("backgroundImageUrl"));
 
-        mContentTranslator.mapToModel(createValidMap(), badRecipe);
+        Content content = mContentTranslator.mapToModel(createValidMap(), badRecipe);
+        assertNull("Content should be null due to bad translation", content);
+
     }
 
     /**
@@ -447,13 +455,15 @@ public class ContentTranslatorTest {
      * Tests the {@link ContentTranslator#mapToModel(Map, Recipe)} with a bad map argument. The map
      * is missing the title field so the model should not be valid at the end of translation.
      */
-    @Test(expected = AModelTranslator.TranslationException.class)
+    @Test
     public void testMapToModelWithBadMap() throws Exception {
 
         Map<String, Object> map = createValidMap();
         map.remove("title");
 
-        mContentTranslator.mapToModel(map, mGoodRecipe);
+        Content content = mContentTranslator.mapToModel(map, mGoodRecipe);
+        assertNull("Content should be null due to bad translation", content);
+
     }
 
     /**

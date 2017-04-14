@@ -79,8 +79,6 @@ import java.util.List;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-import static com.amazon.android.model.content.Content.AD_ID_FIELD_NAME;
-
 /**
  * PlaybackOverlayActivity for content playback that loads PlaybackOverlayFragment
  */
@@ -117,6 +115,7 @@ public class PlaybackActivity extends Activity implements
     private ProgressBar mProgressBar;
     private Window mWindow;
     private long mCurrentPlaybackPosition;
+    private long mStartingPlaybackPosition;
 
     private AudioManager mAudioManager;
     private AudioFocusState mAudioFocusState = AudioFocusState.NoFocusNoDuck;
@@ -173,7 +172,6 @@ public class PlaybackActivity extends Activity implements
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
 
         // Create video position tracking handler.
         mVideoPositionTrackingHandler = new Handler();
@@ -245,6 +243,7 @@ public class PlaybackActivity extends Activity implements
     protected void onStart() {
 
         super.onStart();
+
         registerHDMIUnpluggedStateChangeBroadcast();
         requestAudioFocus();
         openSelectedContent();
@@ -286,7 +285,7 @@ public class PlaybackActivity extends Activity implements
         if (!isContentLive(mSelectedContent)) {
             loadContentPlaybackState();
         }
-
+        mStartingPlaybackPosition = mCurrentPlaybackPosition;
         mIsActivityResumed = true;
         Log.d(TAG, "onResume() current state is " + mCurrentState);
         switch (mCurrentState) {
@@ -305,6 +304,13 @@ public class PlaybackActivity extends Activity implements
                 mPlayer.prepare();
                 break;
         }
+
+        long duration = getDuration();
+        // Duration wasn't found using the player, try getting it directly from the content.
+        if (duration == 0) {
+            duration = mSelectedContent.getDuration();
+        }
+        AnalyticsHelper.trackPlaybackStarted(mSelectedContent, duration, mCurrentPlaybackPosition);
 
         // Let ads implementation track player activity lifecycle.
         if (mAdsImplementation != null) {
@@ -327,6 +333,10 @@ public class PlaybackActivity extends Activity implements
         if (mPlayer.getCurrentPosition() > 0) {
 
             storeContentPlaybackState();
+            // User has stopped watching content so track it with analytics
+            AnalyticsHelper.trackPlaybackFinished(mSelectedContent, mStartingPlaybackPosition,
+                                                  getCurrentPosition());
+
             // After the user has stopped watching the content, send recommendations for related
             // content of the selected content if any exist.
             if (mSelectedContent.getRecommendations().size() > 0) {
@@ -564,6 +574,10 @@ public class PlaybackActivity extends Activity implements
             // Save previous content's state before changing.
             storeContentPlaybackState();
 
+            // User has stopped watching this content so track it with analytics.
+            AnalyticsHelper.trackPlaybackFinished(mSelectedContent, mStartingPlaybackPosition,
+                                                  getCurrentPosition());
+
             // Since the user is done watching this content, send recommendations for related
             // content of the selected content (if any exist) before changing to the next content.
             if (mSelectedContent.getRecommendations().size() > 0) {
@@ -577,6 +591,10 @@ public class PlaybackActivity extends Activity implements
             mSelectedContent = content;
 
             loadContentPlaybackState();
+            mStartingPlaybackPosition = mCurrentPlaybackPosition;
+            // User will start watching this new content so track it with analytics.
+            AnalyticsHelper.trackPlaybackStarted(mSelectedContent, mStartingPlaybackPosition,
+                                                 mCurrentPlaybackPosition);
 
             if (mPlayer != null) {
                 mPlayer.close();
@@ -619,7 +637,7 @@ public class PlaybackActivity extends Activity implements
 
         // Save the recently played content to database
         ContentDatabaseHelper database = ContentDatabaseHelper.getInstance(getApplicationContext());
-        if (database != null) {
+        if (database != null && !isContentLive(mSelectedContent)) {
             // Calculate if the content has finished playing
             boolean isFinished = (mPlayer.getDuration() - ContentBrowser.GRACE_TIME_MS)
                     <= mPlayer.getCurrentPosition();
@@ -838,24 +856,30 @@ public class PlaybackActivity extends Activity implements
         switch (keyCode) {
             case KeyEvent.KEYCODE_MEDIA_PLAY:
                 playbackOverlayFragment.togglePlayback(false);
-                AnalyticsHelper.trackContentAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_PLAY,
-                                                   mSelectedContent, getCurrentPosition());
+                AnalyticsHelper.trackPlaybackControlAction(AnalyticsTags
+                                                                   .ACTION_PLAYBACK_CONTROL_PLAY,
+                                                           mSelectedContent, getCurrentPosition());
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 playbackOverlayFragment.togglePlayback(false);
-                AnalyticsHelper.trackContentAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_PAUSE,
-                                                   mSelectedContent, getCurrentPosition());
+                AnalyticsHelper.trackPlaybackControlAction(AnalyticsTags
+                                                                   .ACTION_PLAYBACK_CONTROL_PAUSE,
+                                                           mSelectedContent, getCurrentPosition());
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
                 if (mPlaybackState == LeanbackPlaybackState.PLAYING) {
                     playbackOverlayFragment.togglePlayback(false);
-                    AnalyticsHelper.trackContentAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_PAUSE,
-                                                       mSelectedContent, getCurrentPosition());
+                    AnalyticsHelper.trackPlaybackControlAction(AnalyticsTags
+                                                                       .ACTION_PLAYBACK_CONTROL_PAUSE,
+                                                               mSelectedContent,
+                                                               getCurrentPosition());
                 }
                 else {
                     playbackOverlayFragment.togglePlayback(true);
-                    AnalyticsHelper.trackContentAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_PLAY,
-                                                       mSelectedContent, getCurrentPosition());
+                    AnalyticsHelper.trackPlaybackControlAction(AnalyticsTags
+                                                                       .ACTION_PLAYBACK_CONTROL_PLAY,
+                                                               mSelectedContent,
+                                                               getCurrentPosition());
                 }
                 return true;
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
@@ -865,8 +889,8 @@ public class PlaybackActivity extends Activity implements
                 else {
                     playbackOverlayFragment.fastForward();
                 }
-                AnalyticsHelper.trackContentAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_FF,
-                                                   mSelectedContent, getCurrentPosition());
+                AnalyticsHelper.trackPlaybackControlAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_FF,
+                                                           mSelectedContent, getCurrentPosition());
                 return true;
             case KeyEvent.KEYCODE_MEDIA_REWIND:
                 if (mIsLongPress) {
@@ -875,8 +899,9 @@ public class PlaybackActivity extends Activity implements
                 else {
                     playbackOverlayFragment.fastRewind();
                 }
-                AnalyticsHelper.trackContentAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_REWIND,
-                                                   mSelectedContent, getCurrentPosition());
+                AnalyticsHelper.trackPlaybackControlAction(AnalyticsTags
+                                                                   .ACTION_PLAYBACK_CONTROL_REWIND,
+                                                           mSelectedContent, getCurrentPosition());
                 return true;
             case KeyEvent.KEYCODE_BUTTON_R1:
                 if (mIsLongPress) {
@@ -885,8 +910,8 @@ public class PlaybackActivity extends Activity implements
                 else {
                     playbackOverlayFragment.fastForward();
                 }
-                AnalyticsHelper.trackContentAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_FF,
-                                                   mSelectedContent, getCurrentPosition());
+                AnalyticsHelper.trackPlaybackControlAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_FF,
+                                                           mSelectedContent, getCurrentPosition());
                 return true;
             case KeyEvent.KEYCODE_BUTTON_L1:
                 if (mIsLongPress) {
@@ -895,8 +920,9 @@ public class PlaybackActivity extends Activity implements
                 else {
                     playbackOverlayFragment.fastRewind();
                 }
-                AnalyticsHelper.trackContentAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_REWIND,
-                                                   mSelectedContent, getCurrentPosition());
+                AnalyticsHelper.trackPlaybackControlAction(AnalyticsTags
+                                                                   .ACTION_PLAYBACK_CONTROL_REWIND,
+                                                           mSelectedContent, getCurrentPosition());
                 return true;
             default:
                 return super.onKeyUp(keyCode, event);
@@ -917,7 +943,8 @@ public class PlaybackActivity extends Activity implements
     private BroadcastReceiver mHDMIUnpluggedStateChangeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "mHDMIUnpluggedStateChangeReceiver "+intent);
+
+            Log.d(TAG, "mHDMIUnpluggedStateChangeReceiver " + intent);
             if (isInitialStickyBroadcast()) {
                 // Ignore initial sticky broadcast.
                 return;
@@ -1202,7 +1229,6 @@ public class PlaybackActivity extends Activity implements
 
     private void openSelectedContent() {
 
-        AnalyticsHelper.trackContentStarted(mSelectedContent, getDuration());
         Log.d(TAG, "Open content");
 
         mAdsImplementation.setIAdsEvents(mIAdsEvents);
@@ -1223,6 +1249,7 @@ public class PlaybackActivity extends Activity implements
         // Usually required by ads support.
         // As Player interface doesn't know about video model, we are using Bundles.
         mPlayer.getExtra().putBundle("video", videoExtras);
+
         // Set Ads video extras.
         mAdsImplementation.getExtra().putBundle("video", videoExtras);
         // Show pre roll ad.
@@ -1260,8 +1287,8 @@ public class PlaybackActivity extends Activity implements
         }
         // If buffering stopped
         if (mPrevState == PlayerState.BUFFERING && mCurrentState != PlayerState.BUFFERING) {
-            AnalyticsHelper.trackContentAction(AnalyticsTags.ACTION_PLAYBACK_BUFFER_END,
-                                               mSelectedContent, getCurrentPosition());
+            AnalyticsHelper.trackPlaybackControlAction(AnalyticsTags.ACTION_PLAYBACK_BUFFER_END,
+                                                       mSelectedContent, getCurrentPosition());
         }
         switch (newState) {
             case IDLE:
@@ -1345,8 +1372,9 @@ public class PlaybackActivity extends Activity implements
                 break;
             case BUFFERING:
                 showProgress();
-                AnalyticsHelper.trackContentAction(AnalyticsTags.ACTION_PLAYBACK_BUFFER_START,
-                                                   mSelectedContent, getCurrentPosition());
+                AnalyticsHelper.trackPlaybackControlAction(AnalyticsTags
+                                                                   .ACTION_PLAYBACK_BUFFER_START,
+                                                           mSelectedContent, getCurrentPosition());
                 break;
             case SEEKING:
                 showProgress();
@@ -1364,12 +1392,8 @@ public class PlaybackActivity extends Activity implements
                 }
                 break;
             case CLOSING:
-
                 if (mPlaybackOverlayFragment != null) {
                     mPlaybackOverlayFragment.stopProgressAutomation();
-                }
-                if (!isContentLive(mSelectedContent)) {
-                    AnalyticsHelper.trackContentFinished(mSelectedContent, getCurrentPosition());
                 }
                 break;
             case ERROR:

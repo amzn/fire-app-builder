@@ -32,6 +32,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -180,14 +181,15 @@ public class ContentContainerTranslatorTest {
      * Tests the {@link ContentContainerTranslator#mapToModel(Map, Recipe)} method with a bad
      * recipe.
      */
-    @Test(expected = AModelTranslator.TranslationException.class)
+    @Test
     public void testMapToModelWithBadRecipe() throws Exception {
 
         Recipe badRecipe = Recipe.newInstance(FileHelper.readFile(InstrumentationRegistry
                                                                           .getContext(),
                                                                   "BadContainerRecipe.json"));
 
-        mTranslator.mapToModel(createValidMap(), badRecipe);
+        ContentContainer container = mTranslator.mapToModel(createValidMap(), badRecipe);
+        assertNull("ContentContainer should be null", container);
     }
 
     /**

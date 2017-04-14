@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * This class tests the {@link AModelTranslator} interface.
@@ -66,7 +67,7 @@ public class AModelTranslatorTest {
         mMap.put("field2", "field2");
 
         mRecipe = Recipe.newInstance(FileHelper.readFile(InstrumentationRegistry.getContext(),
-                "TestObjectRecipe.json"));
+                                                         "TestObjectRecipe.json"));
 
     }
 
@@ -104,37 +105,34 @@ public class AModelTranslatorTest {
 
     /**
      * Tests the {@link DummyModelTranslator#mapToModel(Map, Recipe)} method with a bad match list
-     * in the {@link Recipe}. A {@link AModelTranslator.TranslationException} is
-     * expected.
+     * in the {@link Recipe}. A {@link AModelTranslator.TranslationException} is expected.
      */
     @Test(expected = AModelTranslator.TranslationException.class)
     public void testMapToModelWithBadMatchList() throws Exception {
 
-        Recipe badRecipe = Recipe.newInstance(FileHelper.readFile(InstrumentationRegistry
-                        .getContext(),
-                "TestObjectRecipeBadMatchList" +
-                        ".json"));
+        Recipe badRecipe = Recipe.newInstance(
+                FileHelper.readFile(InstrumentationRegistry.getContext(),
+                                    "TestObjectRecipeBadMatchList.json"));
         mTranslator.mapToModel(mMap, badRecipe);
     }
 
     /**
      * Tests the {@link DummyModelTranslator#mapToModel(Map, Recipe)} method with a match list that
      * doesn't match all mandatory fields of {@link com.amazon.android.model.testresources
-     * .DummyModelTranslator.TestObject}. A {@link AModelTranslator
-     * .TranslationException} is expected.
+     * .DummyModelTranslator.TestObject}.
      */
-    @Test(expected = AModelTranslator.TranslationException.class)
+    @Test
     public void testMapToModelWithUnfinishedMatchList() throws Exception {
 
         Recipe badRecipe = Recipe.newInstance(
                 FileHelper.readFile(InstrumentationRegistry.getContext(),
-                        "TestObjectRecipeUnfinishedMatchList.json"));
-        mTranslator.mapToModel(mMap, badRecipe);
+                                    "TestObjectRecipeUnfinishedMatchList.json"));
+        DummyModelTranslator.TestObject object = mTranslator.mapToModel(mMap, badRecipe);
+        assertNull("Object should be null due to bad translation", object);
     }
 
     /**
      * Tests the {@link DummyModelTranslator#getName()} method.
-     * @throws Exception
      */
     @Test
     public void testGetName() throws Exception {

@@ -194,12 +194,13 @@ public class AnalyticsHelper {
 
 
     /**
-     * Track that the given content started/resumed playback.
+     * Track that the given content started or resumed playback.
      *
-     * @param content  Content that started/resumed playback.
-     * @param duration Total duration of the content.
+     * @param content         Content that started/resumed playback.
+     * @param duration        Total duration of the content.
+     * @param currentPosition The current playback position.
      */
-    public static void trackContentStarted(Content content, long duration) {
+    public static void trackPlaybackStarted(Content content, long duration, long currentPosition) {
 
         Map<String, Object> attributes = getBasicAnalyticsAttributesForContent(content);
         attributes.putAll(getDetailedContentAttributes(content));
@@ -207,21 +208,27 @@ public class AnalyticsHelper {
         // Get Content extras
         attributes.putAll(ExtraContentAttributes.getExtraAttributes(content.getExtras()));
         attributes.put(AnalyticsTags.ATTRIBUTE_VIDEO_DURATION, duration);
+        attributes.put(AnalyticsTags.ATTRIBUTE_VIDEO_CURRENT_POSITION, currentPosition);
 
         sendAnalytics(AnalyticsTags.ACTION_PLAYBACK_STARTED, attributes);
     }
 
     /**
-     * Tracks the ending of a content.
+     * Tracks that a content's playback finished. This could be that the content was played to
+     * completion or that the player was exited.
      *
-     * @param content  Content to track.
-     * @param duration The duration for which the content was played.
+     * @param content          Content to track.
+     * @param startingPosition The position that this playback session started at.
+     * @param currentPosition  The current playback position.
      */
-    public static void trackContentFinished(Content content, long duration) {
+    public static void trackPlaybackFinished(Content content, long startingPosition,
+                                             long currentPosition) {
 
         // Get the attributes for the selected movie.
         Map<String, Object> attributes = getBasicAnalyticsAttributesForContent(content);
-        attributes.put(AnalyticsTags.ATTRIBUTE_VIDEO_SECONDS_WATCHED, duration);
+        attributes.put(AnalyticsTags.ATTRIBUTE_VIDEO_SECONDS_WATCHED,
+                       currentPosition - startingPosition);
+        attributes.put(AnalyticsTags.ATTRIBUTE_VIDEO_CURRENT_POSITION, currentPosition);
 
         sendAnalytics(AnalyticsTags.ACTION_PLAYBACK_FINISHED, attributes);
     }
@@ -242,13 +249,14 @@ public class AnalyticsHelper {
     }
 
     /**
-     * Tracks playback actions of the content.
+     * Tracks when users interact with the playback controls of the player.
      *
      * @param action          Action taken on this content.
      * @param content         Content on which the action was taken.
      * @param currentPosition Current position in the content playback that the ad finished.
      */
-    public static void trackContentAction(String action, Content content, long currentPosition) {
+    public static void trackPlaybackControlAction(String action, Content content,
+                                                  long currentPosition) {
 
         // Get the attributes for the selected content.
         Map<String, Object> attributes = getBasicAnalyticsAttributesForContent(content);
@@ -357,15 +365,15 @@ public class AnalyticsHelper {
     /**
      * Tracks requests received from launcher to play content
      *
-     * @param contentId contentId of the content requested to be played
-     * @param content   content corresponding to the contentId
+     * @param contentId     contentId of the content requested to be played
+     * @param content       content corresponding to the contentId
      * @param requestSource Source of request, it could be Catalog integration or Recommendations
      */
     public static void trackLauncherRequest(String contentId, Content content,
                                             String requestSource) {
 
         HashMap<String, Object> attributes = new HashMap<>();
-        if(requestSource != null) {
+        if (requestSource != null) {
             attributes.put(AnalyticsTags.ATTRIBUTE_REQUEST_SOURCE, requestSource);
         }
         if (content != null) {

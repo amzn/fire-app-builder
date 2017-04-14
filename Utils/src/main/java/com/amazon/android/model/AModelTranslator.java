@@ -129,7 +129,7 @@ public abstract class AModelTranslator<E> {
         // Check that the model was properly translated.
         if (!validateModel(object)) {
             Log.e(TAG, "Model object not valid: " + object.toString());
-            throw new TranslationException("Model object not valid: " + object.toString());
+            return null;
         }
 
         return object;

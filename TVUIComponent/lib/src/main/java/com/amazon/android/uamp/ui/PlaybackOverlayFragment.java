@@ -367,16 +367,16 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
                     }
                 }
                 else if (action.getId() == mSkipNextAction.getId()) {
-                    next();
                     trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_NEXT);
+                    next();
                 }
                 else if (action.getId() == mClosedCaptioningAction.getId()) {
                     toggleCloseCaption();
                     trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_TOGGLE_CC);
                 }
                 else if (action.getId() == mSkipPreviousAction.getId()) {
-                    prev();
                     trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_PRE);
+                    prev();
                 }
                 else if (action.getId() == mFastForwardAction.getId()) {
                     fastForward();
@@ -448,9 +448,9 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
 
         if (isAdded() && getActivity() != null) {
 
-            AnalyticsHelper.trackContentAction(action, content,
-                                               ((PlaybackActivity) getActivity())
-                                                       .getCurrentPosition());
+            AnalyticsHelper.trackPlaybackControlAction(action, content,
+                                                       ((PlaybackActivity) getActivity())
+                                                               .getCurrentPosition());
         }
     }
 
@@ -824,7 +824,6 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
 
         togglePlaybackUI(false);
         next();
-        AnalyticsHelper.trackContentFinished(mSelectedContent, mCallback.getDuration());
     }
 
     /**
