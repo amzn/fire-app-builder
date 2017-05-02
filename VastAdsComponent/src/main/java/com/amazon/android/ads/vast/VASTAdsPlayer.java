@@ -53,6 +53,7 @@ import com.amazon.android.ads.vast.util.DefaultMediaPicker;
 import com.amazon.android.ads.vast.util.HttpTools;
 import com.amazon.android.ads.vast.util.NetworkTools;
 import com.amazon.android.ads.vast.util.VASTLog;
+import com.amazon.android.utils.NetworkUtils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -87,8 +88,7 @@ public class VASTAdsPlayer implements IAds,
 
     private static final String TAG = VASTAdsPlayer.class.getSimpleName();
     public static final String VERSION = "1.3";
-    public static final String VAST_TAG_BUNDLE_KEY = "VASTAdTag";
-
+    private static final String CORRELATOR_PARAMETER = "correlator";
     // errors that can be returned in the vastError callback method of the
     // VASTPlayerListener
     public static final int ERROR_NONE = 0;
@@ -137,12 +137,8 @@ public class VASTAdsPlayer implements IAds,
         mFrameLayout = frameLayout;
         mExtras = extras;
 
-        mExtras.putString(VASTAdsPlayer.VAST_TAG_BUNDLE_KEY,
-                          mContext.getResources().getString(R.string.vast_preroll_tag));
-
         DisplayMetrics displayMetrics = mContext.getResources()
                                                 .getDisplayMetrics();
-
 
         mScreenWidth = displayMetrics.widthPixels;
         mScreenHeight = displayMetrics.heightPixels;
@@ -161,7 +157,15 @@ public class VASTAdsPlayer implements IAds,
 
         createSurface(params);
 
-        loadVideoWithUrl(mExtras.getString(VAST_TAG_BUNDLE_KEY));
+        // Get the preroll url and give it a unique timestamp.
+        String preRollUrl = mContext.getResources().getString(R.string.vast_preroll_tag);
+
+        // Try to add a correlator value.
+        preRollUrl = NetworkUtils.addParameterToUrl(preRollUrl, CORRELATOR_PARAMETER,
+                                                        "" + System.currentTimeMillis());
+
+
+        loadVideoWithUrl(preRollUrl);
     }
 
     @Override

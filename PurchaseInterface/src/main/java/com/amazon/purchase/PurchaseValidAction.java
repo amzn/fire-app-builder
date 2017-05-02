@@ -17,7 +17,6 @@ package com.amazon.purchase;
 import com.amazon.purchase.model.Receipt;
 import com.amazon.purchase.model.Response;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 

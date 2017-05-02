@@ -36,9 +36,12 @@ import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.contentbrowser.database.ContentDatabaseHelper;
 import com.amazon.android.contentbrowser.database.RecentRecord;
 import com.amazon.android.contentbrowser.helper.AnalyticsHelper;
+import com.amazon.android.contentbrowser.helper.AuthHelper;
 import com.amazon.android.model.content.Content;
 import com.amazon.android.module.ModuleManager;
 
+import com.amazon.android.navigator.Navigator;
+import com.amazon.android.navigator.UINode;
 import com.amazon.android.recipe.Recipe;
 import com.amazon.android.tv.tenfoot.R;
 import com.amazon.android.uamp.DrmProvider;
@@ -255,12 +258,9 @@ public class PlaybackActivity extends Activity implements
     }
 
     /**
-     * {@inheritDoc}
+     * resume Playback Activity if user Authentication is success
      */
-    @Override
-    public void onResume() {
-
-        super.onResume();
+    private void resumePlaybackAfterAuthentication() {
 
         // Start tracking video position changes.
         mVideoPositionTrackingHandler.post(mVideoPositionTrackingRunnable);
@@ -316,6 +316,60 @@ public class PlaybackActivity extends Activity implements
         if (mAdsImplementation != null) {
             mAdsImplementation.setActivityState(IAds.ActivityState.RESUME);
         }
+    }
+
+    /**
+     * Authenticate User On Resume of PlayBackActivity.
+     *
+     * @param screenName Screen name
+     */
+    private void authenticateUserOnResume(String screenName) {
+
+        Navigator mNavigator = ContentBrowser.getInstance(this).getNavigator();
+        AuthHelper mAuthHelper = ContentBrowser.getInstance(this).getAuthHelper();
+        UINode uiNode = (UINode) mNavigator.getNodeObjectByScreenName(screenName);
+        Log.d(TAG, "AuthenticateUserOnResume called in:" + screenName);
+        Log.d(TAG, "AuthenticateUserOnResume needed:" + uiNode.isVerifyScreenAccess());
+        //check if this Screen need Access verification
+        if (uiNode.isVerifyScreenAccess()) {
+            boolean loginLater = Preferences.getBoolean(AuthHelper.LOGIN_LATER_PREFERENCES_KEY);
+            //Check if Authentication can be deferred or not
+            if (!mAuthHelper.getIAuthentication().isAuthenticationCanBeDoneLater() ||
+                    (!loginLater && mAuthHelper.getIAuthentication()
+                                               .isAuthenticationCanBeDoneLater())) {
+                //Check if user is Authenticated for the content
+                mAuthHelper.isAuthenticated().subscribe(extras -> {
+                    if (extras.getBoolean(AuthHelper.RESULT)) {
+                        //Playback activity need to be resumed as Authentication succeeded.
+                        resumePlaybackAfterAuthentication();
+                    }
+                    else {
+                        //Playback activity need to be closed as Authentication failed.
+                        finish();
+                        Log.i(TAG, "Traversing to details page since user is not authenticated " +
+                                "any more");
+                    }
+                });
+            }
+            else {
+                resumePlaybackAfterAuthentication();
+            }
+        }
+        else {
+            resumePlaybackAfterAuthentication();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        //Check before resume as user might not authenticated any more. One such scenario is
+        // coming back from next/prev screen when user account has been disabled from server.
+        authenticateUserOnResume(ContentBrowser.CONTENT_RENDERER_SCREEN);
     }
 
     /**
@@ -380,6 +434,20 @@ public class PlaybackActivity extends Activity implements
         if (mAdsImplementation != null) {
             mAdsImplementation.setActivityState(IAds.ActivityState.STOP);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        Log.v(TAG, "onActivityResult called with requestCode:" + requestCode +
+                " resultCode:" + requestCode + " intent:" + data);
+        super.onActivityResult(requestCode, resultCode, data);
+
+        ContentBrowser.getInstance(this)
+                      .handleOnActivityResult(this, requestCode, resultCode, data);
     }
 
     /**

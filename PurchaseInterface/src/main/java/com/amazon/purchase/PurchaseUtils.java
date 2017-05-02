@@ -16,7 +16,6 @@ package com.amazon.purchase;
 
 import com.amazon.android.recipe.Recipe;
 import com.amazon.android.utils.FileHelper;
-import com.amazon.auth.R;
 import com.amazon.purchase.model.Product;
 import com.amazon.purchase.model.Receipt;
 import com.amazon.purchase.model.SkuData;

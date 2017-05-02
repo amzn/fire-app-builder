@@ -1,7 +1,7 @@
 {
   "config" : {
-    "showRecommendedContent" : true,
-    "categoryDefaultRecommendation" : true,
+    "showRelatedContent": true,
+    "useCategoryAsDefaultRelatedContent": true,
     "searchAlgo" : "basic"
   },
   "branding" : {

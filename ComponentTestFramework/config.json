@@ -90,23 +90,11 @@
 		"dir": "../ContentBrowser"
 	},
 	{
-		"componentName": "ImageViewerComponent",
-		"dir": "../ImageViewerComponent"
-	},
-	{
 		"componentName": "AmazonInAppPurchaseComponent",
 		"dir": "../AmazonInAppPurchaseComponent"
 	},
 	{
 		"componentName": "FlurryAnalyticsComponent",
 		"dir": "../FlurryAnalyticsComponent"
-	},
-	{
-		"componentName": "BrightCoveMediaPlayerComponent",
-		"dir": "../BrightCoveMediaPlayerComponent"
-	},
-	{
-		"componentName": "Application",
-		"dir": "../Application/app"
 	}
 ]

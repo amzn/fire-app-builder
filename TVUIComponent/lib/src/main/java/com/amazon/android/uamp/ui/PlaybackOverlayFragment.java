@@ -368,7 +368,9 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
                 }
                 else if (action.getId() == mSkipNextAction.getId()) {
                     trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_NEXT);
-                    next();
+                    ContentBrowser.getInstance(getActivity()).verifyScreenSwitch(ContentBrowser
+                                                                                         .CONTENT_RENDERER_SCREEN, extra ->
+                            next());
                 }
                 else if (action.getId() == mClosedCaptioningAction.getId()) {
                     toggleCloseCaption();
@@ -376,7 +378,9 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
                 }
                 else if (action.getId() == mSkipPreviousAction.getId()) {
                     trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_PRE);
-                    prev();
+                    ContentBrowser.getInstance(getActivity()).verifyScreenSwitch(ContentBrowser
+                                                                                         .CONTENT_RENDERER_SCREEN, extra ->
+                            prev());
                 }
                 else if (action.getId() == mFastForwardAction.getId()) {
                     fastForward();
@@ -934,7 +938,9 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
                 Content content = (Content) item;
                 trackAnalyticsAction(AnalyticsTags.ACTION_RECOMMENDED_CONTENT_CLICKED, content);
 
-                mCallback.changeContent(content);
+                ContentBrowser.getInstance(getActivity()).verifyScreenSwitch(ContentBrowser
+                                                                                     .CONTENT_RENDERER_SCREEN, extra ->
+                        mCallback.changeContent(content));
             }
         }
     }

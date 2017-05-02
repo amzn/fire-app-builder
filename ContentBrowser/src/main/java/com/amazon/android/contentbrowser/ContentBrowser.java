@@ -1262,7 +1262,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * @param screenName            Screen name
      * @param iScreenSwitchListener Screen switch listener.
      */
-    private void verifyScreenSwitch(String screenName,
+    public void verifyScreenSwitch(String screenName,
                                     IScreenSwitchListener iScreenSwitchListener) {
 
         UINode uiNode = (UINode) mNavigator.getNodeObjectByScreenName(screenName);
