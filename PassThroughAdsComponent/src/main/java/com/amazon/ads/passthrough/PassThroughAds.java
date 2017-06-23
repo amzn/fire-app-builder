@@ -82,6 +82,15 @@ public class PassThroughAds implements IAds {
      * {@inheritDoc}
      */
     @Override
+    public boolean isPostRollAvailable() {
+
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setActivityState(ActivityState activityState) {
 
     }

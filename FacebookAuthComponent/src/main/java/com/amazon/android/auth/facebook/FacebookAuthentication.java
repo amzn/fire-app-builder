@@ -17,6 +17,7 @@ package com.amazon.android.auth.facebook;
 
 import com.amazon.android.utils.Preferences;
 import com.amazon.auth.IAuthentication;
+import com.amazon.auth.AuthenticationConstants;
 import com.facebook.FacebookSdk;
 
 import android.content.Context;
@@ -124,8 +125,7 @@ public class FacebookAuthentication implements IAuthentication {
 
                     // Encountered an unknown error while checking access token.
                     if (map == null) {
-                        bundle.putString(ResponseHandler.MESSAGE,
-                                         context.getString(R.string.error_checking_token));
+                        populateErrorBundle(bundle, context.getString(R.string.error_checking_token));
                         responseHandler.onFailure(bundle);
                         return;
                     }
@@ -141,10 +141,9 @@ public class FacebookAuthentication implements IAuthentication {
                                 && map.containsKey(IAuthentication.ERROR)) {
 
                             // Add error message and status code.
-                            bundle.putInt(ResponseHandler.STATUS_CODE, Integer.parseInt(map.get
-                                    (ResponseHandler.STATUS_CODE).toString()));
-                            bundle.putString(ResponseHandler.MESSAGE,
-                                             map.get(IAuthentication.ERROR).toString());
+                            populateAuthenticationFailureBundle(Integer.parseInt(map.get
+                                    (ResponseHandler.STATUS_CODE).toString()), bundle, map.get
+                                    (IAuthentication.ERROR).toString());
                         }
                         responseHandler.onFailure(bundle);
                     }
@@ -161,8 +160,7 @@ public class FacebookAuthentication implements IAuthentication {
         // Access token is null or empty so we know its not valid.
         else {
             Log.d(TAG, context.getString(R.string.access_token_null));
-            bundle.putString(ResponseHandler.MESSAGE,
-                             context.getString(R.string.access_token_null));
+            populateErrorBundle(bundle, context.getString(R.string.access_token_null));
             responseHandler.onFailure(bundle);
         }
     }
@@ -224,5 +222,39 @@ public class FacebookAuthentication implements IAuthentication {
     void setAccessToken(String accessToken) {
 
         mAccessToken = accessToken;
+    }
+
+    /**
+     * Bundle to be sent on failures other than Authentication and Authorization
+     *
+     * @param bundle Bundle to populate
+     * @param errorMessage error message received
+     */
+    private void populateErrorBundle(Bundle bundle, String errorMessage) {
+
+        Bundle errorBundle = new Bundle();
+        errorBundle.putString(ResponseHandler.MESSAGE,
+                              errorMessage);
+        errorBundle.putString(
+                AuthenticationConstants.ERROR_CATEGORY,
+                AuthenticationConstants.AUTHENTICATION_ERROR_CATEGORY);
+        bundle.putBundle(
+                AuthenticationConstants.ERROR_BUNDLE, errorBundle);
+    }
+
+    /**
+     * Bundle to be sent on failures other than Authentication and Authorization
+     *
+     * @param statusCode status code received because of failure
+     * @param bundle Bundle to populate
+     * @param errorMessage error message received
+     */
+    private void populateAuthenticationFailureBundle(int statusCode, Bundle bundle, String
+            errorMessage) {
+
+        populateErrorBundle(bundle, errorMessage);
+        bundle.getBundle(
+                AuthenticationConstants.ERROR_BUNDLE).putInt(ResponseHandler.STATUS_CODE,
+                                                             statusCode);
     }
 }

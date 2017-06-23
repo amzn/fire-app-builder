@@ -17,7 +17,7 @@ package com.amazon.analytics;
 import android.content.Context;
 import android.util.Log;
 
-import com.amazon.android.utils.Helpers;
+import com.amazon.android.utils.MapHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +44,7 @@ public class ExtraContentAttributes {
      */
     public static void init(Context context) {
 
-        mAttributeToExtraMap = Helpers.loadStringMappingFromJsonFile(context,
+        mAttributeToExtraMap = MapHelper.loadStringMappingFromJsonFile(context,
                 R.string.analytics_attribute_to_content_extra_map_file);
         Log.d(TAG, "Extra attribute mapping: " + mAttributeToExtraMap.toString());
     }

@@ -14,5 +14,6 @@ permissions and limitations under the License.
 -->
 <resources>
     <string name="load_string_mapping_test1_file">LoadStringMappingTest1.json</string>
+    <string name="load_array_mapping_test1_file">LoadArrayMappingTest1.json</string>
     <string name="non_existent_file">FakeFile</string>
 </resources>

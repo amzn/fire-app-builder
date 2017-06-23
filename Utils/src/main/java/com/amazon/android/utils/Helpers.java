@@ -45,8 +45,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A collection of utility methods, all static.
@@ -300,42 +298,6 @@ public class Helpers {
             Log.e(TAG, "Illegal charset " + DEFAULT_CHARSET_TEXT + " given ", e);
             return Charset.defaultCharset();
         }
-    }
-
-    /**
-     * Load a map of strings for the given JSON file. The file should be formatted as a flat
-     * object with string key, value pairs, e.g.:
-     *
-     * {
-     * "Key1", "Value1",
-     * "Key2", "Value2"
-     * }
-     *
-     * @param context    Context.
-     * @param fileNameId File name ID of the file to read from.
-     * @return The JSON file parsed as a map of strings. If there was an error while reading the
-     * file such as the file not existing, an empty map is returned and the error is logged.
-     */
-    public static HashMap<String, String> loadStringMappingFromJsonFile(Context context,
-                                                                        int fileNameId) {
-
-        HashMap<String, String> result = new HashMap<>();
-        String fileName = context.getString(fileNameId);
-        try {
-            if (FileHelper.doesFileExist(context, fileName)) {
-                String fileData = FileHelper.readFile(context, fileName);
-                Map map = JsonHelper.stringToMap(fileData);
-
-                for (Object key : map.keySet()) {
-                    result.put((String) key, String.valueOf(map.get(key)));
-                }
-            }
-        }
-        catch (Exception e) {
-            Log.w(TAG, "Unable to read file " + fileName, e);
-        }
-
-        return result;
     }
 
     /**

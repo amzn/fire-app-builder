@@ -17,6 +17,7 @@ package com.amazon.android.contentbrowser.helper;
 
 import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.contentbrowser.R;
+import com.amazon.android.model.content.Content;
 import com.amazon.android.module.ModuleManager;
 import com.amazon.android.ui.constants.PreferencesConstants;
 import com.amazon.android.ui.fragments.ErrorDialogFragment;
@@ -130,6 +131,11 @@ public class AuthHelper {
      * String constant to compare the default MVPD string value in custom.xml to.
      */
     private static final String DEFAULT_MVPD_URL = "DEFAULT_MVPD_URL";
+
+    /**
+     * String constant to be used as default error in authentication events.
+     */
+    private static final String DEFAULT_AUTH_ERROR = "Unknown";
 
     /**
      * Authentication implementation reference.
@@ -267,6 +273,22 @@ public class AuthHelper {
     }
 
     /**
+     * retrieve Error Category.
+     *
+     * @param extras Bundle.
+     * @return Error category.
+     */
+    String retrieveErrorCategory(Bundle extras){
+        Bundle bundle = extras.getBundle(AuthenticationConstants.ERROR_BUNDLE);
+        String authErrorCategory = DEFAULT_AUTH_ERROR;
+        if (bundle != null) {
+            authErrorCategory = bundle.getString(AuthenticationConstants.ERROR_CATEGORY,
+                                                 DEFAULT_AUTH_ERROR);
+        }
+        return authErrorCategory;
+    }
+
+    /**
      * Logout observable.
      *
      * @return RX Observable.
@@ -274,12 +296,13 @@ public class AuthHelper {
     public Observable<Bundle> logout() {
 
         Log.v(TAG, "logout called.");
-
+        AnalyticsHelper.trackLogOutRequest();
         return Observable.create(subscriber -> {
             mIAuthentication.logout(mAppContext, new IAuthentication.ResponseHandler() {
                 @Override
                 public void onSuccess(Bundle extras) {
 
+                    AnalyticsHelper.trackLogOutResultSuccess();
                     broadcastAuthenticationStatus(false);
                     Log.d(TAG, "Account logout success");
                     handleSuccessCase(subscriber, extras);
@@ -288,6 +311,7 @@ public class AuthHelper {
                 @Override
                 public void onFailure(Bundle extras) {
 
+                    AnalyticsHelper.trackLogOutResultFailure(retrieveErrorCategory(extras));
                     Log.e(TAG, "Account logout failure");
                     handleFailureCase(subscriber, extras);
                 }
@@ -331,6 +355,9 @@ public class AuthHelper {
      */
     public Observable<Bundle> isAuthorized() {
 
+        //get the requested content
+        Content content = mContentBrowser.getLastSelectedContent();
+        AnalyticsHelper.trackAuthorizationRequest(content);
         return Observable.create(subscriber -> {
             // Check if user is logged in. If not, show authentication activity.
             mIAuthentication.isResourceAuthorized(mAppContext, "",
@@ -340,6 +367,8 @@ public class AuthHelper {
 
                                                           Log.d(TAG, "Resource Authorization " +
                                                                   "success");
+                                                          AnalyticsHelper
+                                                                  .trackAuthorizationResultSuccess(content);
                                                           handleSuccessCase(subscriber, extras);
                                                       }
 
@@ -348,6 +377,8 @@ public class AuthHelper {
 
                                                           Log.e(TAG, "Resource Authorization " +
                                                                   "failed");
+                                                          AnalyticsHelper
+                                                                  .trackAuthorizationResultFailure(content, retrieveErrorCategory(extras));
                                                           handleFailureCase(subscriber, extras);
                                                       }
                                                   });
@@ -388,6 +419,7 @@ public class AuthHelper {
      */
     public Observable<Bundle> authenticateWithActivity() {
 
+        AnalyticsHelper.trackAuthenticationRequest();
         return mRxLauncher.from(mContentBrowser.getNavigator()
                                                .getActiveActivity())
                           .startActivityForResult(getIAuthentication()
@@ -405,6 +437,21 @@ public class AuthHelper {
                               else if (activityResult.data != null) {
                                   resultBundle = activityResult.data.getExtras();
                               }
+                              else {
+                                  // Cancel auth request.
+                                  cancelAllRequests();
+                                  return resultBundle;
+                              }
+
+                              //Check if authentication succeeded.
+                              if (activityResult.isOk()) {
+                                  AnalyticsHelper.trackAuthenticationResultSuccess();
+                              }
+                              else {
+                                  AnalyticsHelper.trackAuthenticationResultFailure
+                                          (retrieveErrorCategory(resultBundle));
+                              }
+
                               handleAuthenticationActivityResultBundle(resultBundle);
 
                               if (resultBundle != null) {
@@ -425,22 +472,50 @@ public class AuthHelper {
 
         return isAuthenticated().flatMap(
                 // With isAuthenticated result bundle do
-                isAuthenticatedResultBundle ->
-                        Observable.create(new OperatorIfThen<>(
-                                                  // If isAuthenticated success then do
-                                                  // isAuthorized.
-                                                  () -> isAuthenticatedResultBundle.getBoolean
-                                                          (RESULT),
-                                                  isAuthorized(),
-                                                  // If isAuthenticated failed then do
-                                                  // authenticateWithActivity.
-                                                  // Warning!!! After this point all the
-                                                  // upcoming tasks needs to be handled
-                                                  // in upcoming activity!!!
-                                                  authenticateWithActivity()
-                                          )
-                        )
+                isAuthenticatedResultBundle -> {
+                    if (isAuthenticatedResultBundle.getBoolean(RESULT)) {
+                        // If isAuthenticated success then do isAuthorized.
+                        return isAuthorized();
+                    }
+                    else {
+                        // If isAuthenticated failed then do
+                        // authenticateWithActivity.
+                        // Warning!!! After this point all the
+                        // upcoming tasks needs to be handled
+                        // in upcoming activity!!!
+                        return authenticateWithActivity();
+                    }
+                }
         );
+    }
+
+    /**
+     * Handle Authentication Chain.
+     *
+     * @param iAuthorizedHandler   Authorized handler.
+     * @param authenticationResult Bundle
+     */
+    public void handleAuthChain(IAuthorizedHandler iAuthorizedHandler, Bundle authenticationResult) {
+
+        if (authenticationResult == null) {
+            Log.w(TAG, "resultBundle is null, user probably pressed back on login screen");
+        }
+        // If we got Authentication Result success
+        else if (authenticationResult.getBoolean(RESULT)) {
+            // Check if we are authorized in current activity context.
+            isAuthorized().subscribe(bundle -> {
+                // If we were authorized return success.
+                if (bundle.getBoolean(RESULT)) {
+                    iAuthorizedHandler.onAuthorized(bundle);
+                } else {
+                    // If we were not authorized return show error.
+                    handleErrorBundle(bundle);
+                }
+            });
+        } else {
+            // If everything failed then show error.
+            handleErrorBundle(authenticationResult);
+        }
     }
 
     /**
@@ -454,24 +529,34 @@ public class AuthHelper {
         // Check authentication first.
         authenticate()
                 .subscribe(resultBundle -> {
-                    if(resultBundle == null) {
-                        Log.w(TAG, "resultBundle is null, user probably pressed back on login screen");
+                    if (resultBundle == null) {
+                        Log.w(TAG, "resultBundle is null, user probably pressed back on login " +
+                                "screen");
                     }
                     // If we got a login screen and login was success
                     else if (resultBundle.getBoolean(RESULT_FROM_ACTIVITY)) {
-                        // Check if we are authorized in upcoming activity context.
-                        mContentBrowser
-                                .getNavigator()
-                                .runOnUpcomingActivity(() -> isAuthorized().subscribe(bundle -> {
-                                    // If we were authorized return success.
-                                    if (resultBundle.getBoolean(RESULT)) {
-                                        iAuthorizedHandler.onAuthorized(resultBundle);
-                                    }
-                                    else {
-                                        // If we were not authorized return show error.
-                                        handleErrorBundle(resultBundle);
-                                    }
-                                }));
+                        //If authentication succeeded
+                        if (resultBundle.getBoolean(RESULT)) {
+                            // Check if we are authorized in upcoming activity context.
+                            mContentBrowser
+                                    .getNavigator()
+                                    .runOnUpcomingActivity(() -> isAuthorized().subscribe(bundle -> {
+                                        // If we were authorized return success.
+                                        if (bundle.getBoolean(RESULT)) {
+                                            iAuthorizedHandler.onAuthorized(bundle);
+                                        }
+                                        else {
+                                            // If we were not authorized return show error.
+                                            handleErrorBundle(bundle);
+                                        }
+                                    }));
+                        }
+                        else {
+                            // If we were not authenticated return show error.
+                            mContentBrowser.getNavigator()
+                                           .runOnUpcomingActivity(() -> handleErrorBundle
+                                                   (resultBundle));
+                        }
                     }
                     else if (resultBundle.getBoolean(RESULT)) {
                         // If we were logged in and authorized return success.
@@ -479,9 +564,7 @@ public class AuthHelper {
                     }
                     else {
                         // If everything failed then show error.
-                        mContentBrowser.getNavigator()
-                                       .runOnUpcomingActivity(() -> handleErrorBundle
-                                               (resultBundle));
+                        handleErrorBundle(resultBundle);
                     }
                 }, throwable -> Log.e(TAG, "handleAuthChain failed:", throwable));
     }
@@ -522,10 +605,12 @@ public class AuthHelper {
     private void logoutFromAccount(Context context) {
 
         Log.v(TAG, "logoutFromAccount called.");
+        AnalyticsHelper.trackLogOutRequest();
         mIAuthentication.logout(context, new IAuthentication.ResponseHandler() {
             @Override
             public void onSuccess(Bundle extras) {
 
+                AnalyticsHelper.trackLogOutResultSuccess();
                 broadcastAuthenticationStatus(false);
                 Log.d(TAG, "Account logout success");
             }
@@ -533,6 +618,7 @@ public class AuthHelper {
             @Override
             public void onFailure(Bundle extras) {
 
+                AnalyticsHelper.trackLogOutResultFailure(retrieveErrorCategory(extras));
                 Log.e(TAG, "Account logout failure");
             }
         });
@@ -544,7 +630,7 @@ public class AuthHelper {
      * @param bundle Auth error bundle.
      * @return Error category.
      */
-    public static ErrorUtils.ERROR_CATEGORY convertAuthErrorToErrorUtils(Bundle bundle) {
+    private static ErrorUtils.ERROR_CATEGORY convertAuthErrorToErrorUtils(Bundle bundle) {
 
         switch (bundle.getString(AuthenticationConstants.ERROR_CATEGORY)) {
             case AuthenticationConstants.REGISTRATION_ERROR_CATEGORY:
@@ -577,19 +663,24 @@ public class AuthHelper {
                 (fragment, errorButtonType, errorCategory) -> {
                     if (ErrorUtils.ERROR_BUTTON_TYPE.DISMISS == errorButtonType) {
                         fragment.dismiss();
+                        mContentBrowser.updateContentActions();
                     }
                     else if (ErrorUtils.ERROR_BUTTON_TYPE.LOGOUT == errorButtonType) {
+                        AnalyticsHelper.trackLogOutRequest();
                         mIAuthentication.logout(activity, new IAuthentication.ResponseHandler() {
                             @Override
                             public void onSuccess(Bundle extras) {
 
+                                AnalyticsHelper.trackLogOutResultSuccess();
                                 broadcastAuthenticationStatus(false);
                                 fragment.dismiss();
+                                mContentBrowser.updateContentActions();
                             }
 
                             @Override
                             public void onFailure(Bundle extras) {
 
+                                AnalyticsHelper.trackLogOutResultFailure(retrieveErrorCategory(extras));
                                 fragment.getArguments()
                                         .putString(ErrorDialogFragment.ARG_ERROR_MESSAGE,
                                                    activity.getResources().getString(

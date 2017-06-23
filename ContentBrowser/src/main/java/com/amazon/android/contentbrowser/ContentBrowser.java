@@ -478,6 +478,19 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     }
 
     /**
+     * Screen switch Error listener interface.
+     */
+    public interface IScreenSwitchErrorHandler {
+
+        /**
+         * Authentication error callback.
+         *
+         * @param iScreenSwitchListener Screen switch listener interface implementation.
+         */
+        void onErrorHandler(IScreenSwitchListener iScreenSwitchListener);
+    }
+
+    /**
      * Constructor.
      *
      * @param activity The activity that is active when ContentBrowser is created.
@@ -831,6 +844,17 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     public boolean isUseCategoryAsDefaultRelatedContent() {
 
         return mNavigator.getNavigatorModel().getConfig().useCategoryAsDefaultRelatedContent;
+    }
+
+    /**
+     * Get the flag for enabling CEA-608 closed captions
+     *
+     * @return True if CEA-608 closed captions should be enabled and set as priority;
+     * false otherwise
+     */
+    public boolean isEnableCEA608() {
+
+        return mNavigator.getNavigatorModel().getConfig().enableCEA608;
     }
 
     /**
@@ -1257,13 +1281,49 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     }
 
     /**
+     * show authentication Error Dialog
+     *
+     * @param iScreenSwitchListener Screen switch listener.
+     */
+    public void showAuthenticationErrorDialog(IScreenSwitchListener iScreenSwitchListener) {
+
+        AlertDialogFragment.createAndShowAlertDialogFragment(
+                mNavigator.getActiveActivity(),
+                mAppContext.getString(R.string.optional_login_dialog_title),
+                mAppContext.getString(R.string.optional_login_dialog_message),
+                mAppContext.getString(R.string.now),
+                mAppContext.getString(R.string.later),
+                new AlertDialogFragment.IAlertDialogListener() {
+
+                    @Override
+                    public void onDialogPositiveButton(
+                            AlertDialogFragment alertDialogFragment) {
+
+                        mAuthHelper.handleAuthChain(
+                                iScreenSwitchListener::onScreenSwitch);
+                    }
+
+                    @Override
+                    public void onDialogNegativeButton
+                            (AlertDialogFragment alertDialogFragment) {
+
+                        Preferences.setBoolean(
+                                AuthHelper.LOGIN_LATER_PREFERENCES_KEY, true);
+                        iScreenSwitchListener.onScreenSwitch(null);
+                    }
+                });
+    }
+
+    /**
      * Verify screen switch.
      *
      * @param screenName            Screen name
      * @param iScreenSwitchListener Screen switch listener.
+     * @param iScreenSwitchErrorHandler Screen switch error handler
      */
     public void verifyScreenSwitch(String screenName,
-                                    IScreenSwitchListener iScreenSwitchListener) {
+                                   IScreenSwitchListener iScreenSwitchListener,
+                                   IScreenSwitchErrorHandler iScreenSwitchErrorHandler) {
 
         UINode uiNode = (UINode) mNavigator.getNodeObjectByScreenName(screenName);
         Log.d(TAG, "VerifyScreenSwitch called in:" + screenName);
@@ -1281,34 +1341,10 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                     mAuthHelper.isAuthenticated().subscribe(extras -> {
                         if (extras.getBoolean(AuthHelper.RESULT)) {
                             mAuthHelper.handleAuthChain(
-                                    iScreenSwitchListener::onScreenSwitch);
+                                    iScreenSwitchListener::onScreenSwitch, extras);
                         }
                         else {
-                            AlertDialogFragment.createAndShowAlertDialogFragment(
-                                    mNavigator.getActiveActivity(),
-                                    mAppContext.getString(R.string.optional_login_dialog_title),
-                                    mAppContext.getString(R.string.optional_login_dialog_message),
-                                    mAppContext.getString(R.string.now),
-                                    mAppContext.getString(R.string.later),
-                                    new AlertDialogFragment.IAlertDialogListener() {
-
-                                        @Override
-                                        public void onDialogPositiveButton(
-                                                AlertDialogFragment alertDialogFragment) {
-
-                                            mAuthHelper.handleAuthChain(
-                                                    iScreenSwitchListener::onScreenSwitch);
-                                        }
-
-                                        @Override
-                                        public void onDialogNegativeButton
-                                                (AlertDialogFragment alertDialogFragment) {
-
-                                            Preferences.setBoolean(
-                                                    AuthHelper.LOGIN_LATER_PREFERENCES_KEY, true);
-                                            iScreenSwitchListener.onScreenSwitch(null);
-                                        }
-                                    });
+                            iScreenSwitchErrorHandler.onErrorHandler(iScreenSwitchListener);
                         }
                     });
                 }
@@ -1342,7 +1378,8 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
             activitySwitchListener) {
 
         verifyScreenSwitch(screenName, extra ->
-                mNavigator.startActivity(screenName, activitySwitchListener)
+                                   mNavigator.startActivity(screenName, activitySwitchListener),
+                           errorExtra -> showAuthenticationErrorDialog(errorExtra)
         );
     }
 
@@ -1355,7 +1392,8 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     public void switchToScreen(String screenName, Bundle bundle) {
 
         verifyScreenSwitch(screenName, extra ->
-                mNavigator.startActivity(screenName, bundle)
+                                   mNavigator.startActivity(screenName, bundle),
+                           errorExtra -> showAuthenticationErrorDialog(errorExtra)
         );
     }
 

@@ -45,14 +45,21 @@
 package com.amazon.android.ads.vast;
 
 import com.amazon.ads.IAds;
-import com.amazon.android.ads.vast.model.TRACKING_EVENTS_TYPE;
-import com.amazon.android.ads.vast.model.VASTModel;
-import com.amazon.android.ads.vast.processor.VASTMediaPicker;
-import com.amazon.android.ads.vast.processor.VASTProcessor;
+import com.amazon.android.ads.vast.model.vast.Creative;
+import com.amazon.android.ads.vast.model.vast.Inline;
+import com.amazon.android.ads.vast.model.vast.LinearAd;
+import com.amazon.android.ads.vast.model.vast.VastAd;
+import com.amazon.android.ads.vast.model.vast.VastResponse;
+import com.amazon.android.ads.vast.model.vmap.AdBreak;
+import com.amazon.android.ads.vast.model.vmap.Tracking;
+import com.amazon.android.ads.vast.model.vmap.VmapResponse;
+import com.amazon.android.ads.vast.processor.AdTagProcessor;
+import com.amazon.android.ads.vast.processor.MediaPicker;
+import com.amazon.android.ads.vast.processor.ResponseValidator;
+import com.amazon.android.ads.vast.util.VastAdListener;
 import com.amazon.android.ads.vast.util.DefaultMediaPicker;
 import com.amazon.android.ads.vast.util.HttpTools;
 import com.amazon.android.ads.vast.util.NetworkTools;
-import com.amazon.android.ads.vast.util.VASTLog;
 import com.amazon.android.utils.NetworkUtils;
 
 import android.app.Activity;
@@ -60,23 +67,25 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.FrameLayout;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.amazon.utils.DateAndTimeHelper.convertDateFormatToSeconds;
+
 /**
- * This implementation of VAST is experimental and under development.  Very limited support and
- * documentation is provided.  This can be used as a proof of concept for VAST but all code and
+ * This implementation of VAST is experimental and under development. Very limited support and
+ * documentation is provided. This can be used as a proof of concept for VAST but all code and
  * interfaces are subject to change.
  */
 public class VASTAdsPlayer implements IAds,
@@ -87,8 +96,8 @@ public class VASTAdsPlayer implements IAds,
         SurfaceHolder.Callback {
 
     private static final String TAG = VASTAdsPlayer.class.getSimpleName();
-    public static final String VERSION = "1.3";
-    private static final String CORRELATOR_PARAMETER = "correlator";
+    public static final String VERSION = "2.0";
+
     // errors that can be returned in the vastError callback method of the
     // VASTPlayerListener
     public static final int ERROR_NONE = 0;
@@ -100,15 +109,20 @@ public class VASTAdsPlayer implements IAds,
     public static final int ERROR_EXCEEDED_WRAPPER_LIMIT = 6;
     public static final int ERROR_VIDEO_PLAYBACK = 7;
 
+    /**
+     * constant to be used to convert seconds to milliseconds
+     */
+    private static final int MILLISECONDS_IN_SECOND = 1000;
+
     private static final long QUARTILE_TIMER_INTERVAL = 250;
 
     private Context mContext;
     private FrameLayout mFrameLayout;
     private Bundle mExtras;
     private IAdsEvents mIAdsEvents;
+    private Bundle mAdDetail;
 
-    private VASTModel mVASTModel;
-    private HashMap<TRACKING_EVENTS_TYPE, List<String>> mTrackingEventMap;
+    private HashMap<String, List<String>> mTrackingEventMap;
 
     private MediaPlayer mMediaPlayer;
     private SurfaceView mSurfaceView;
@@ -126,9 +140,20 @@ public class VASTAdsPlayer implements IAds,
     private Timer mTrackingEventTimer;
     private int mQuartile = 0;
 
-    private double mCurrentVideoPosition;
-    private PlayerState mPlayerState;
     private ActivityState mActivityState;
+
+    private VmapResponse mAdResponse;
+    private AdTagProcessor.AdTagType mAdType;
+    private List<AdBreak> mMidRollAds;
+    private List<AdBreak> mPostRollAds;
+    private List<Boolean> mPlayedMidRollAds;
+    private int mAdPlayedCount;
+    private String mCurrentAdType;
+
+    /**
+     * Ad start time.
+     */
+    private long mAdSlotStartTime;
 
     @Override
     public void init(Context context, FrameLayout frameLayout, Bundle extras) {
@@ -137,18 +162,17 @@ public class VASTAdsPlayer implements IAds,
         mFrameLayout = frameLayout;
         mExtras = extras;
 
-        DisplayMetrics displayMetrics = mContext.getResources()
-                                                .getDisplayMetrics();
+        DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
 
         mScreenWidth = displayMetrics.widthPixels;
         mScreenHeight = displayMetrics.heightPixels;
 
-        VASTLog.d(TAG, "Init called, version:" + VERSION);
+        Log.d(TAG, "Init called, version:" + VERSION);
     }
 
     @Override
     public void showPreRollAd() {
-
+        Log.d(TAG, "showPreRollAd called");
         cleanUpMediaPlayer();
 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
@@ -156,16 +180,10 @@ public class VASTAdsPlayer implements IAds,
                 FrameLayout.LayoutParams.MATCH_PARENT);
 
         createSurface(params);
+        mCurrentAdType = IAds.PRE_ROLL_AD;
+        mAdPlayedCount = 0;
 
-        // Get the preroll url and give it a unique timestamp.
-        String preRollUrl = mContext.getResources().getString(R.string.vast_preroll_tag);
-
-        // Try to add a correlator value.
-        preRollUrl = NetworkUtils.addParameterToUrl(preRollUrl, CORRELATOR_PARAMETER,
-                                                        "" + System.currentTimeMillis());
-
-
-        loadVideoWithUrl(preRollUrl);
+        loadAdFromUrl();
     }
 
     @Override
@@ -177,11 +195,49 @@ public class VASTAdsPlayer implements IAds,
     @Override
     public void setCurrentVideoPosition(double position) {
 
-        mCurrentVideoPosition = position;
+        if (mMidRollAds != null && mMidRollAds.size() > 0 &&
+                mPlayedMidRollAds.contains(false)) {
+
+            int i = 0;
+            List<AdBreak> midRollsToPlayNow = new ArrayList<>();
+            for (AdBreak adBreak : mMidRollAds) {
+
+                // Queue the add if the time offset matches the playback position
+                // and the ad hasn't been played yet.
+                if (adBreak.getConvertedTimeOffset() == ((int) position / 1000)
+                        && !mPlayedMidRollAds.get(i)) {
+
+                    Log.d(TAG, "Mid roll " + i + " played=" + mPlayedMidRollAds.get(i) +
+                            " compare :" + adBreak.getConvertedTimeOffset() + " == "
+                            + (int) (position / 1000));
+
+                    midRollsToPlayNow.add(adBreak);
+                    mPlayedMidRollAds.set(i, true);
+                }
+                i++;
+            }
+            // Play any mid-roll ads that matched the playback position
+            if (!midRollsToPlayNow.isEmpty()) {
+                createMediaPlayer();
+
+                Log.d(TAG, "Play mid-rolls!!");
+                mCurrentAdType = IAds.MID_ROLL_AD;
+                mAdListener.startAdPod(0, midRollsToPlayNow);
+            }
+        }
+    }
+
+    @Override
+    public boolean isPostRollAvailable() {
+
+        return mPostRollAds != null && mPostRollAds.size() > 0;
     }
 
     @Override
     public void setActivityState(ActivityState activityState) {
+
+        Log.d(TAG, "Activity state changed from " + mActivityState + " to " + activityState);
+
         mActivityState = activityState;
         activityStateChanged(activityState);
     }
@@ -205,7 +261,15 @@ public class VASTAdsPlayer implements IAds,
     @Override
     public void setPlayerState(PlayerState playerState) {
 
-        mPlayerState = playerState;
+        if (playerState == PlayerState.COMPLETED) {
+            if (mPostRollAds != null && mPostRollAds.size() > 0) {
+                if (mAdListener != null) {
+                    Log.d(TAG, "Start post roll ads");
+                    mCurrentAdType = IAds.POST_ROLL_AD;
+                    mAdListener.startAdPod(0, mPostRollAds);
+                }
+            }
+        }
     }
 
     @Override
@@ -223,100 +287,259 @@ public class VASTAdsPlayer implements IAds,
         return mExtras;
     }
 
-    private void loadVideoWithUrl(final String urlString) {
+    /**
+     * return inline ads list
+     *
+     * @return List of inline ads.
+     */
+    private List<Inline> getInlineAds(AdBreak currentAd){
 
-        VASTLog.d(TAG, "loadVideoWithUrl " + urlString);
-        mVASTModel = null;
+        List<Inline> inlineAds = null;
+        VastResponse vastResponse = currentAd.getAdSource().getVastResponse();
+        //need to check here for null as we can also get custom ad data in a vmap response
+        if (vastResponse != null) {
+            inlineAds = vastResponse.getInlineAds();
+        }
+        return inlineAds;
+    }
+
+    /**
+     * provide ad id from a inline ad
+     *
+     * @return String ad id.
+     */
+    private String getCurrentAdId(AdBreak currentAd) {
+
+        String adId = null;
+        //ToDo: we need to change this after we are having single inline in each ad
+        //instead of single ad with multiple inlines.
+        List<Inline> inlineAds = getInlineAds(currentAd);
+        //We may possibly get a wrapper ad instead of a inline ad attribute
+        if (inlineAds != null && !inlineAds.isEmpty()) {
+            adId = inlineAds.get(0).getId();
+        }
+        return adId;
+    }
+
+    /**
+     * provide duration from a linear ad
+     *
+     * @return String ad duration.
+     */
+    private String getCurrentAdDuration(AdBreak currentAd) {
+
+        String duration = null;
+        List<Inline> inlineAds = getInlineAds(currentAd);
+        //We may possibly get a wrapper ad instead of a inline ad attribute
+        if (inlineAds != null && !inlineAds.isEmpty()) {
+            //ToDo: we may need to change this if we start selecting the best format
+            // in muliple creatives
+            List<Creative> mCreatives = inlineAds.get(0).getCreatives();
+            //creatives is a required field in linear ad
+            VastAd mVastAd = mCreatives.get(0).getVastAd();
+            if (mVastAd instanceof LinearAd) {
+                duration = ((LinearAd) mVastAd).getDuration();
+            }
+        }
+        return duration;
+    }
+
+    /**
+     * provide basic ad details
+     *
+     * @return bundle containing ad details.
+     */
+    private Bundle getBasicAdDetailBundle() {
+
+        if (mAdDetail == null) {
+            mAdDetail = new Bundle();
+            AdBreak currentAd = mAdResponse.getCurrentAd();
+            if (currentAd != null) {
+                mAdDetail.putString(ID, getCurrentAdId(currentAd));
+                mAdDetail.putString(AD_TYPE, mCurrentAdType);
+                String duration = getCurrentAdDuration(currentAd);
+                if (duration != null) {
+                    mAdDetail.putLong(DURATION_RECEIVED, (long) (convertDateFormatToSeconds
+                            (duration) * MILLISECONDS_IN_SECOND));
+                }
+            }
+        }
+        return mAdDetail;
+    }
+
+    /**
+     * Load data from the ad tag string resource and process the data to get the ad response.
+     */
+    private void loadAdFromUrl() {
+
+        Log.d(TAG, "Loading the ad model from url.");
+        mAdResponse = null;
+
         if (NetworkTools.connectedToInternet(mContext)) {
             (new Thread(new Runnable() {
                 @Override
                 public void run() {
 
-                    BufferedReader in = null;
-                    StringBuffer sb;
-                    try {
-                        URL url = new URL(urlString);
+                    MediaPicker mediaPicker = new DefaultMediaPicker(mContext);
+                    AdTagProcessor adTagProcessor = new AdTagProcessor(mediaPicker);
 
-                        in = new BufferedReader(new InputStreamReader(url.openStream()));
-                        sb = new StringBuffer();
-                        String line;
-                        while ((line = in.readLine()) != null) {
-                            sb.append(line).append(System.getProperty("line.separator"));
-                        }
-                    } catch (Exception e) {
-                        mVASTPlayerListener.vastError(ERROR_XML_OPEN_OR_READ);
-                        VASTLog.e(TAG, e.getMessage(), e);
-                        return;
-                    } finally {
-                        try {
-                            if (in != null) {
-                                in.close();
-                            }
-                        } catch (IOException e) {
-                            // ignore
-                        }
+                    String adUrl = mContext.getResources().getString(R.string.ad_tag);
+
+                    // Try to add a correlator value to the url if needed.
+                    adUrl = NetworkUtils.addParameterToUrl(adUrl, IAds.CORRELATOR_PARAMETER,
+                                                           "" + System.currentTimeMillis());
+
+                    mAdType = adTagProcessor.process(adUrl);
+
+                    if (mAdType != AdTagProcessor.AdTagType.error) {
+                        mAdResponse = adTagProcessor.getAdResponse();
+                        mAdListener.adsReady();
                     }
-                    loadVideoWithData(sb.toString());
+                    else {
+                        mVASTPlayerListener.vastError(ERROR_XML_PARSE);
+                    }
                 }
             })).start();
-        } else {
+        }
+        else {
             mVASTPlayerListener.vastError(ERROR_NO_NETWORK);
         }
     }
 
-    private void loadVideoWithData(final String xmlData) {
+    /**
+     * An ad listener that deals with playing ad pods (multiple ads at a time).
+     */
+    private VastAdListener mAdListener = new VastAdListener() {
 
-        VASTLog.v(TAG, "loadVideoWithData\n" + xmlData);
-        mVASTModel = null;
-        if (NetworkTools.connectedToInternet(mContext)) {
-            (new Thread(new Runnable() {
-                @Override
-                public void run() {
+        List<AdBreak> adList;
+        int adIdx;
 
-                    VASTMediaPicker mediaPicker = new DefaultMediaPicker(mContext);
-                    VASTProcessor processor = new VASTProcessor(mediaPicker);
-                    int error = processor.process(xmlData);
-                    if (error == ERROR_NONE) {
-                        mVASTModel = processor.getModel();
-                        mVASTPlayerListener.vastReady();
-                    } else {
-                        mVASTPlayerListener.vastError(error);
+        @Override
+        public void adsReady() {
+
+            Log.d(TAG, "Ad models are ready");
+            mMidRollAds = mAdResponse.getMidRollAdBreaks();
+            mPostRollAds = mAdResponse.getPostRollAdBreaks();
+            mPlayedMidRollAds = new ArrayList<>();
+            for (int i = 0; i < mMidRollAds.size(); i++) {
+                mPlayedMidRollAds.add(false);
+            }
+            Log.d(TAG, "Starting pre-roll ads");
+            startAdPod(0, mAdResponse.getPreRollAdBreaks());
+        }
+
+        @Override
+        public void startAdPod(int adIdx, List<AdBreak> adList) {
+
+            this.adIdx = adIdx;
+            this.adList = adList;
+
+            // Capture ad start time.
+            mAdSlotStartTime = SystemClock.elapsedRealtime();
+            startAd();
+        }
+
+        @Override
+        public void startAd() {
+
+            Log.d(TAG, "start ad with index " + adIdx);
+            if (adIdx < adList.size()) {
+                if (mMediaPlayer == null) {
+                    createMediaPlayer();
+                }
+                mAdResponse.setCurrentAd(adList.get(adIdx));
+                if (ResponseValidator.validateAdBreak(mAdResponse.getCurrentAd())) {
+                    mVASTPlayerListener.vastReady();
+                }
+                else {
+                    Log.e(TAG, "Skipping invalid ad");
+                    adIdx++;
+                    if (adIdx < adList.size()) {
+                        startAd();
+                    }
+                    else {
+                        adPodComplete();
                     }
                 }
-            })).start();
-        } else {
-            mVASTPlayerListener.vastError(ERROR_NO_NETWORK);
+            }
         }
-    }
 
-    // NOT BEING CALLED IN UI THREAD!!!
+        @Override
+        public void adComplete() {
+
+            Log.d(TAG, "ad complete with index " + adIdx);
+            adIdx++;
+            mAdPlayedCount++;
+            if (mMediaPlayer != null) {
+                mMediaPlayer.stop();
+            }
+            cleanUpMediaPlayer();
+            if (mIAdsEvents != null) {
+                // Calculate how long Ads played.
+                long adSlotTime = SystemClock.elapsedRealtime() - mAdSlotStartTime;
+                Bundle extras = getBasicAdDetailBundle();
+                extras.putLong(DURATION_PLAYED, adSlotTime);
+                extras.putBoolean(IAds.AD_POD_COMPLETE, adIdx == adList.size());
+                // Let listener know about Ad slot stop event.
+                mIAdsEvents.onAdSlotEnded(extras);
+            }
+            if (adIdx < adList.size()) {
+                startAd();
+            }
+            else {
+                adPodComplete();
+            }
+        }
+
+        @Override
+        public void adPodComplete() {
+            Log.d(TAG, "ad pod complete");
+            Log.d(TAG, "Played " + mAdPlayedCount + " of " + mAdResponse.getAdBreaks().size()
+                    + " ads");
+
+            if (mAdPlayedCount == mAdResponse.getAdBreaks().size()) {
+                if (mVASTPlayerListener != null) {
+                    mVASTPlayerListener.vastComplete();
+                }
+            }
+        }
+    };
+
+    // NOT CALLED IN UI THREAD!!!
     private VASTPlayerListener mVASTPlayerListener = new VASTPlayerListener() {
+
         @Override
         public void vastReady() {
 
-            mTrackingEventMap = mVASTModel.getTrackingUrls();
+            Log.d(TAG, "Vast ready!");
 
-            ((Activity) mContext).runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
+            if (mAdResponse != null) {
 
-                    String url = mVASTModel.getPickedMediaFileURL();
+                mTrackingEventMap = mAdResponse.getCurrentAd().getTrackingUrls();
 
-                    VASTLog.d(TAG, "URL for media file:" + url);
-                    try {
-                        mMediaPlayer.setDataSource(url);
-                    } catch (IOException e) {
-                        VASTLog.e(TAG, "Could not set data source for VAST ad",e);
+                ((Activity) mContext).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        String url = mAdResponse.getCurrentAd().getSelectedMediaFileUrl();
+
+                        Log.d(TAG, "URL for media file:" + url);
+                        try {
+                            mMediaPlayer.setDataSource(url);
+                        }
+                        catch (IOException e) {
+                            Log.e(TAG, "Could not set data source for VAST ad", e);
+                        }
+                        mMediaPlayer.prepareAsync();
                     }
-                    mMediaPlayer.prepareAsync();
-                }
-            });
+                });
+            }
         }
 
         @Override
         public void vastError(int error) {
 
-            VASTLog.e(TAG, "vastComplete:" + error);
+            Log.e(TAG, "vast error:" + error);
 
             ((Activity) mContext).runOnUiThread(new Runnable() {
                 @Override
@@ -328,7 +551,11 @@ public class VASTAdsPlayer implements IAds,
                     cleanUpMediaPlayer();
 
                     if (mIAdsEvents != null) {
-                        mIAdsEvents.onAdSlotEnded(null);
+                        // Calculate how long Ads played.
+                        long adSlotTime = SystemClock.elapsedRealtime() - mAdSlotStartTime;
+                        Bundle extras = getBasicAdDetailBundle();
+                        extras.putLong(DURATION_PLAYED, adSlotTime);
+                        mIAdsEvents.onAdSlotEnded(extras);
                     }
                 }
             });
@@ -342,57 +569,53 @@ public class VASTAdsPlayer implements IAds,
         @Override
         public void vastComplete() {
 
-            VASTLog.e(TAG, "vastComplete");
-
-            if (mMediaPlayer != null) {
-                mMediaPlayer.stop();
-            }
-            cleanUpMediaPlayer();
-
-            if (mIAdsEvents != null) {
-                mIAdsEvents.onAdSlotEnded(null);
-            }
+            Log.d(TAG, "vastComplete");
+            cleanUpSurface();
         }
 
         @Override
         public void vastDismiss() {
-            VASTLog.d(TAG, "vastDismiss");
+
+            Log.d(TAG, "vastDismiss");
         }
     };
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
 
-        VASTLog.d(TAG, "surfaceCreated -- (SurfaceHolder callback)");
+        Log.d(TAG, "surfaceCreated -- (SurfaceHolder callback)");
         try {
             if (mMediaPlayer == null) {
                 createMediaPlayer();
             }
             mMediaPlayer.setDisplay(mSurfaceHolder);
-        } catch (Exception e) {
-            VASTLog.e(TAG, e.getMessage(), e);
+        }
+        catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
         }
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
+
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+
     }
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
 
-        VASTLog.e(TAG, "entered onError -- (MediaPlayer callback)");
+        Log.d(TAG, "entered onCompletion-- (MediaPlayer callback)");
 
         if (!mIsPlayBackError && !mIsCompleted) {
             mIsCompleted = true;
-            this.processEvent(TRACKING_EVENTS_TYPE.complete);
+            this.processEvent(Tracking.COMPLETE_TYPE);
 
-            if (mVASTPlayerListener != null) {
-                mVASTPlayerListener.vastComplete();
+            if (mAdListener != null) {
+                mAdListener.adComplete();
             }
         }
     }
@@ -400,9 +623,9 @@ public class VASTAdsPlayer implements IAds,
     @Override
     public boolean onError(MediaPlayer mediaPlayer, int what, int extra) {
 
-        VASTLog.e(TAG, "entered onError -- (MediaPlayer callback)");
+        Log.e(TAG, "entered onError -- (MediaPlayer callback)");
         mIsPlayBackError = true;
-        VASTLog.e(TAG, "Shutting down Activity due to Media Player errors: WHAT:" + what + ": " +
+        Log.e(TAG, "Shutting down Activity due to Media Player errors: WHAT:" + what + ": " +
                 "EXTRA:" + extra + ":");
 
         processErrorEvent();
@@ -415,7 +638,11 @@ public class VASTAdsPlayer implements IAds,
 
         calculateAspectRatio();
 
-        mIAdsEvents.onAdSlotStarted(null);
+        mAdDetail = null;
+        mIAdsEvents.onAdSlotStarted(getBasicAdDetailBundle());
+
+        // Capture ad start time.
+        mAdSlotStartTime = SystemClock.elapsedRealtime();
 
         mMediaPlayer.start();
 
@@ -439,27 +666,36 @@ public class VASTAdsPlayer implements IAds,
 
     private void createSurface(FrameLayout.LayoutParams params) {
 
+        Log.d(TAG, "Creating surface");
         mSurfaceView = new SurfaceView(mContext);
         mSurfaceView.setLayoutParams(params);
 
         mSurfaceHolder = mSurfaceView.getHolder();
         mSurfaceHolder.addCallback(this);
-        mFrameLayout.addView(mSurfaceView);
     }
 
     private void createMediaPlayer() {
 
+        Log.d(TAG, "create media player");
         mMediaPlayer = new MediaPlayer();
         mMediaPlayer.setOnCompletionListener(this);
         mMediaPlayer.setOnErrorListener(this);
         mMediaPlayer.setOnPreparedListener(this);
         mMediaPlayer.setOnVideoSizeChangedListener(this);
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+        ((Activity)mContext).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mFrameLayout.addView(mSurfaceView);
+            }
+        });
+
     }
 
     private void cleanUpMediaPlayer() {
 
-        VASTLog.d(TAG, "entered cleanUpMediaPlayer ");
+        Log.d(TAG, "entered cleanUpMediaPlayer ");
 
         if (mMediaPlayer != null) {
 
@@ -475,23 +711,35 @@ public class VASTAdsPlayer implements IAds,
             mMediaPlayer.release();
             mMediaPlayer = null;
 
-            mFrameLayout.removeView(mSurfaceView);
-            mSurfaceHolder.removeCallback(this);
-            mSurfaceHolder.getSurface().release();
-            mSurfaceView = null;
-            mSurfaceHolder = null;
+            ((Activity)mContext).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mFrameLayout.removeView(mSurfaceView);
+                }
+            });
 
             mIsVideoPaused = false;
             mIsPlayBackError = false;
             mIsProcessedImpressions = false;
             mIsCompleted = false;
+            mQuartile = 0;
         }
 
     }
 
-    private void processEvent(TRACKING_EVENTS_TYPE eventName) {
+    /**
+     * Clean up the surface view. Should only be done after we're done using the player.
+     */
+    private void cleanUpSurface() {
+        mSurfaceHolder.removeCallback(this);
+        mSurfaceHolder.getSurface().release();
+        mSurfaceView = null;
+        mSurfaceHolder = null;
+    }
 
-        VASTLog.i(TAG, "entered Processing Event: " + eventName);
+    private void processEvent(String eventName) {
+
+        Log.i(TAG, "entered Processing Event: " + eventName);
         List<String> urls = mTrackingEventMap.get(eventName);
 
         fireUrls(urls);
@@ -499,43 +747,43 @@ public class VASTAdsPlayer implements IAds,
 
     private void processErrorEvent() {
 
-        VASTLog.d(TAG, "entered processErrorEvent");
+        Log.i(TAG, "entered processErrorEvent");
 
-        List<String> errorUrls = mVASTModel.getErrorUrl();
+        List<String> errorUrls = mAdResponse.getCurrentAd().getErrorUrls();
         fireUrls(errorUrls);
     }
 
     private void processImpressions() {
 
-        VASTLog.d(TAG, "entered processImpressions");
+        Log.i(TAG, "entered processImpressions");
 
         mIsProcessedImpressions = true;
-        List<String> impressions = mVASTModel.getImpressions();
+        List<String> impressions = mAdResponse.getCurrentAd().getImpressions();
         fireUrls(impressions);
     }
 
     private void fireUrls(List<String> urls) {
 
-        VASTLog.d(TAG, "entered fireUrls");
+        Log.i(TAG, "entered fireUrls");
 
         if (urls != null) {
-
             for (String url : urls) {
-                VASTLog.v(TAG, "\tfiring url:" + url);
+                Log.i(TAG, "\tfiring url:" + url);
                 HttpTools.httpGetURL(url);
             }
-        } else {
-            VASTLog.d(TAG, "\turl list is null");
+        }
+        else {
+            Log.i(TAG, "\turl list is null");
         }
     }
 
     private void startQuartileTimer() {
 
-        VASTLog.d(TAG, "entered startQuartileTimer");
+        Log.i(TAG, "entered startQuartileTimer");
         stopQuartileTimer();
 
         if (mIsCompleted) {
-            VASTLog.d(TAG, "ending quartileTimer because the video has been replayed");
+            Log.i(TAG, "ending quartileTimer because the video has been replayed");
             return;
         }
 
@@ -555,31 +803,29 @@ public class VASTAdsPlayer implements IAds,
                         return;
                     }
                     percentage = 100 * curPos / videoDuration;
-                } catch (Exception e) {
-                    VASTLog.w(TAG,
-                            "mediaPlayer.getCurrentPosition exception: "
-                                    + e.getMessage());
+                }
+                catch (Exception e) {
+                    Log.e(TAG, "mediaPlayer.getCurrentPosition exception: " + e.getMessage());
                     this.cancel();
                     return;
                 }
 
                 if (percentage >= 25 * mQuartile) {
                     if (mQuartile == 0) {
-                        VASTLog.i(TAG, "Video at start: (" + percentage
-                                + "%)");
-                        processEvent(TRACKING_EVENTS_TYPE.start);
-                    } else if (mQuartile == 1) {
-                        VASTLog.i(TAG, "Video at first quartile: ("
-                                + percentage + "%)");
-                        processEvent(TRACKING_EVENTS_TYPE.firstQuartile);
-                    } else if (mQuartile == 2) {
-                        VASTLog.i(TAG, "Video at midpoint: ("
-                                + percentage + "%)");
-                        processEvent(TRACKING_EVENTS_TYPE.midpoint);
-                    } else if (mQuartile == 3) {
-                        VASTLog.i(TAG, "Video at third quartile: ("
-                                + percentage + "%)");
-                        processEvent(TRACKING_EVENTS_TYPE.thirdQuartile);
+                        Log.i(TAG, "Video at start: (" + percentage + "%)");
+                        processEvent(Tracking.START_TYPE);
+                    }
+                    else if (mQuartile == 1) {
+                        Log.i(TAG, "Video at first quartile: (" + percentage + "%)");
+                        processEvent(Tracking.FIRST_QUARTILE_TYPE);
+                    }
+                    else if (mQuartile == 2) {
+                        Log.i(TAG, "Video at midpoint: (" + percentage + "%)");
+                        processEvent(Tracking.MIDPOINT_TYPE);
+                    }
+                    else if (mQuartile == 3) {
+                        Log.i(TAG, "Video at third quartile: (" + percentage + "%)");
+                        processEvent(Tracking.THIRD_QUARTILE_TYPE);
                         stopQuartileTimer();
                     }
                     mQuartile++;
@@ -598,14 +844,14 @@ public class VASTAdsPlayer implements IAds,
 
     private void calculateAspectRatio() {
 
-        VASTLog.d(TAG, "entered calculateAspectRatio");
+        Log.d(TAG, "entered calculateAspectRatio");
 
         if (mVideoWidth == 0 || mVideoHeight == 0) {
-            VASTLog.w(TAG, "mVideoWidth or mVideoHeight is 0, skipping calculateAspectRatio");
+            Log.w(TAG, "mVideoWidth or mVideoHeight is 0, skipping calculateAspectRatio");
             return;
         }
 
-        VASTLog.d(TAG, "calculating aspect ratio");
+        Log.d(TAG, "calculating aspect ratio");
         double widthRatio = 1.0 * mScreenWidth / mVideoWidth;
         double heightRatio = 1.0 * mScreenHeight / mVideoHeight;
 
@@ -616,15 +862,14 @@ public class VASTAdsPlayer implements IAds,
 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                 surfaceWidth, surfaceHeight);
-        //params.addRule(RelativeLayout.CENTER_IN_PARENT);
         mSurfaceView.setLayoutParams(params);
 
         mSurfaceHolder.setFixedSize(surfaceWidth, surfaceHeight);
 
-        VASTLog.d(TAG, " screen size: " + mScreenWidth + "x" + mScreenHeight);
-        VASTLog.d(TAG, " video size:  " + mVideoWidth + "x" + mVideoHeight);
-        VASTLog.d(TAG, " widthRatio:   " + widthRatio);
-        VASTLog.d(TAG, " heightRatio:   " + heightRatio);
-        VASTLog.d(TAG, "surface size: " + surfaceWidth + "x" + surfaceHeight);
+        Log.d(TAG, " screen size: " + mScreenWidth + "x" + mScreenHeight);
+        Log.d(TAG, " video size:  " + mVideoWidth + "x" + mVideoHeight);
+        Log.d(TAG, " widthRatio:   " + widthRatio);
+        Log.d(TAG, " heightRatio:   " + heightRatio);
+        Log.d(TAG, "surface size: " + surfaceWidth + "x" + surfaceHeight);
     }
 }

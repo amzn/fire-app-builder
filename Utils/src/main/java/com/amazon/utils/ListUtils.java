@@ -22,6 +22,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Utilities for Lists.
@@ -84,6 +85,26 @@ public class ListUtils {
         catch (JSONException e) {
             throw new ExpectingJsonArrayException(string);
         }
+        return list;
+    }
+
+    /**
+     * Get a map value from a map using a key and return it as a list.
+     *
+     * @param map The map to get the map value from.
+     * @param key The key to get the map value.
+     * @return A list of maps.
+     */
+    public static List<Map> getValueAsMapList(Map<String, Map> map, String key) {
+
+        if (map == null || StringManipulation.isNullOrEmpty(key) || map.get(key) == null) {
+            return new ArrayList<>();
+        }
+        if (map.get(key) instanceof List) {
+            return (List<Map>) map.get(key);
+        }
+        List<Map> list = new ArrayList<>();
+        list.add(map.get(key));
         return list;
     }
 

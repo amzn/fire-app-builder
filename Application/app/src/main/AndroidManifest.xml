@@ -25,7 +25,8 @@ permissions and limitations under the License.
         <activity
                 android:name="com.amazon.android.tv.tenfoot.ui.activities.SplashActivity"
                 android:screenOrientation="landscape"
-                android:noHistory="true">
+                android:noHistory="true"
+                android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

@@ -1,0 +1,53 @@
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+    <!-- Sample VAST 2.0 single ad in wrapper -->
+    <string name="vast_2_wrapper_tag">https://raw.githubusercontent.com/nexage/sourcekit-vast-android/master/demo/app/assets/WrapperSimple.xml</string>
+    <!-- Sample VAST 3.0 single linear ad in wrapper -->
+    <string name="vast_3_wrapper_tag">https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&amp;iu=/124319096/external/single_ad_samples&amp;ciu_szs=300x250&amp;impl=s&amp;gdfp_req=1&amp;env=vp&amp;output=vast&amp;unviewed_position_start=1&amp;cust_params=deployment%3Ddevsite%26sample_ct%3Dredirectlinear&amp;correlator=</string>
+    <!-- Sample VAST 2.0 single ad -->
+    <string name="vast_2_tag">https://raw.githubusercontent.com/nexage/sourcekit-vast-android/master/demo/app/assets/Simple.xml</string>
+    <!-- Sample VAST 3.0 single pre-roll ad -->
+    <string name="vast_preroll_tag">https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&amp;iu=/124319096/external/single_ad_samples&amp;ciu_szs=300x250&amp;impl=s&amp;gdfp_req=1&amp;env=vp&amp;output=vast&amp;unviewed_position_start=1&amp;cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&amp;correlator=</string>
+    <!-- Sample VMAP single pre-roll ad -->
+    <string name="vmap_preroll_tag">https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&amp;iu=/124319096/external/ad_rule_samples&amp;ciu_szs=300x250&amp;ad_rule=1&amp;impl=s&amp;gdfp_req=1&amp;env=vp&amp;output=vmap&amp;unviewed_position_start=1&amp;cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonly&amp;cmsid=496&amp;vid=short_onecue&amp;correlator=</string>
+    <!-- Sample VMAP single pre-roll ad with bumper -->
+    <string name="vmap_preroll_bumper_tag">https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&amp;iu=/124319096/external/ad_rule_samples&amp;ciu_szs=300x250&amp;ad_rule=1&amp;impl=s&amp;gdfp_req=1&amp;env=vp&amp;output=vmap&amp;unviewed_position_start=1&amp;cust_params=deployment%3Ddevsite%26sample_ar%3Dpreonlybumper&amp;cmsid=496&amp;vid=short_onecue&amp;correlator=</string>
+    <!-- Sample VMAP single post-roll ad -->
+    <string name="vmap_postroll_tag">https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&amp;iu=/124319096/external/ad_rule_samples&amp;ciu_szs=300x250&amp;ad_rule=1&amp;impl=s&amp;gdfp_req=1&amp;env=vp&amp;output=vmap&amp;unviewed_position_start=1&amp;cust_params=deployment%3Ddevsite%26sample_ar%3Dpostonly&amp;cmsid=496&amp;vid=short_onecue&amp;correlator=</string>
+    <!-- Sample VMAP single post-roll ad with bumper -->
+    <string name="vmap_postroll_bumper_tag">https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&amp;iu=/124319096/external/ad_rule_samples&amp;ciu_szs=300x250&amp;ad_rule=1&amp;impl=s&amp;gdfp_req=1&amp;env=vp&amp;output=vmap&amp;unviewed_position_start=1&amp;cust_params=deployment%3Ddevsite%26sample_ar%3Dpostonlybumper&amp;cmsid=496&amp;vid=short_onecue&amp;correlator=</string>
+    <!-- Sample VMAP single pre/mid/post roll ads -->
+    <string name="vmap_pre_mid_post_rolls_single_ads_tag">
+        https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&amp;iu=/124319096/external/ad_rule_samples&amp;ciu_szs=300x250&amp;ad_rule=1&amp;impl=s&amp;gdfp_req=1&amp;env=vp&amp;output=vmap&amp;unviewed_position_start=1&amp;cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpost&amp;cmsid=496&amp;vid=short_onecue&amp;correlator=
+    </string>
+    <!-- Sample VMAP single pre, 3 mids, and single post ads -->
+    <string name="vmap_standard_pod_with_3_ads">
+        https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&amp;iu=/124319096/external/ad_rule_samples&amp;ciu_szs=300x250&amp;ad_rule=1&amp;impl=s&amp;gdfp_req=1&amp;env=vp&amp;output=vmap&amp;unviewed_position_start=1&amp;cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpostpod&amp;cmsid=496&amp;vid=short_onecue&amp;correlator=
+    </string>
+    <!-- Sample optimized VMAP pod with 3 ads -->
+    <string name="vmap_optimized_pod_with_3_ads">
+        https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&amp;iu=/124319096/external/ad_rule_samples&amp;ciu_szs=300x250&amp;ad_rule=1&amp;impl=s&amp;gdfp_req=1&amp;env=vp&amp;output=vmap&amp;unviewed_position_start=1&amp;cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpostoptimizedpod&amp;cmsid=496&amp;vid=short_onecue&amp;correlator=
+    </string>
+    <!-- Sample VMAP pod with 3 ads and bumpers -->
+    <string name="vmap_standard_pod_with_3_ads_bumpers">
+        https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&amp;iu=/124319096/external/ad_rule_samples&amp;ciu_szs=300x250&amp;ad_rule=1&amp;impl=s&amp;gdfp_req=1&amp;env=vp&amp;output=vmap&amp;unviewed_position_start=1&amp;cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpostpodbumper&amp;cmsid=496&amp;vid=short_onecue&amp;correlator=
+    </string>
+    <!-- Sample optimized VMAP pod with 3 ads and bumpers -->
+    <string name="vmap_optimized_pod_with_3_ads_bumpers">
+        https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&amp;iu=/124319096/external/ad_rule_samples&amp;ciu_szs=300x250&amp;ad_rule=1&amp;impl=s&amp;gdfp_req=1&amp;env=vp&amp;output=vmap&amp;unviewed_position_start=1&amp;cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpostoptimizedpodbumper&amp;cmsid=496&amp;vid=short_onecue&amp;correlator=
+    </string>
+
+</resources>

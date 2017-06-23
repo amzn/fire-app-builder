@@ -126,8 +126,7 @@ public class AdobepassAuthentication implements IAuthentication {
                         });
             }
             else {
-                bundle.putString(AuthenticationConstants.ERROR_CATEGORY,
-                                 AuthenticationConstants.NETWORK_ERROR_CATEGORY);
+                populateErrorBundle(bundle, AuthenticationConstants.NETWORK_ERROR_CATEGORY);
                 responseHandler.onFailure(bundle);
             }
         }
@@ -201,8 +200,7 @@ public class AdobepassAuthentication implements IAuthentication {
                         });
             }
             else {
-                bundle.putString(AuthenticationConstants.ERROR_CATEGORY,
-                                 AuthenticationConstants.NETWORK_ERROR_CATEGORY);
+                populateErrorBundle(bundle, AuthenticationConstants.NETWORK_ERROR_CATEGORY);
                 responseHandler.onFailure(bundle);
             }
 
@@ -267,8 +265,7 @@ public class AdobepassAuthentication implements IAuthentication {
                         });
             }
             else {
-                bundle.putString(AuthenticationConstants.ERROR_CATEGORY,
-                                 AuthenticationConstants.NETWORK_ERROR_CATEGORY);
+                populateErrorBundle(bundle, AuthenticationConstants.NETWORK_ERROR_CATEGORY);
                 responseHandler.onFailure(bundle);
             }
         }
@@ -292,12 +289,15 @@ public class AdobepassAuthentication implements IAuthentication {
     private void populateAuthorizationFailureBundle(int statusCode, Bundle bundle, Throwable
             throwable) {
 
-        bundle.putInt(ResponseHandler.STATUS_CODE, statusCode);
-        bundle.putString(
+        Bundle errorBundle = new Bundle();
+        errorBundle.putInt(ResponseHandler.STATUS_CODE, statusCode);
+        errorBundle.putString(
                 AuthenticationConstants.ERROR_CATEGORY,
                 AuthenticationConstants.AUTHORIZATION_ERROR_CATEGORY);
-        bundle.putSerializable(
+        errorBundle.putSerializable(
                 AuthenticationConstants.ERROR_CAUSE, throwable);
+        bundle.putBundle(
+                AuthenticationConstants.ERROR_BUNDLE, errorBundle);
     }
 
     /**
@@ -318,11 +318,30 @@ public class AdobepassAuthentication implements IAuthentication {
     private void populateAuthenticationFailureBundle(int statusCode, Bundle bundle, Throwable
             throwable) {
 
-        bundle.putInt(ResponseHandler.STATUS_CODE, statusCode);
-        bundle.putString(
+        Bundle errorBundle = new Bundle();
+        errorBundle.putInt(ResponseHandler.STATUS_CODE, statusCode);
+        errorBundle.putString(
                 AuthenticationConstants.ERROR_CATEGORY,
                 AuthenticationConstants.AUTHENTICATION_ERROR_CATEGORY);
-        bundle.putSerializable(
+        errorBundle.putSerializable(
                 AuthenticationConstants.ERROR_CAUSE, throwable);
+        bundle.putBundle(
+                AuthenticationConstants.ERROR_BUNDLE, errorBundle);
+    }
+
+    /**
+     * Bundle to be sent on failures other than Authentication and Authorization
+     *
+     * @param bundle        Bundle to populate
+     * @param errorCategory Error Category
+     */
+    private void populateErrorBundle(Bundle bundle, String errorCategory) {
+
+        Bundle errorBundle = new Bundle();
+        errorBundle.putString(
+                AuthenticationConstants.ERROR_CATEGORY,
+                errorCategory);
+        bundle.putBundle(
+                AuthenticationConstants.ERROR_BUNDLE, errorBundle);
     }
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+
+    <!-- Encrypted ComScore client token for your application, encrypt it using ResourceObfuscationStandaloneUtility -->
+    <string name="encrypted_comscore_client_id">encrypted_comscore_client_id</string>
+
+    <!-- Encrypted ComScore app id for your application, encrypt it using ResourceObfuscationStandaloneUtility -->
+    <string name="encrypted_comscore_publisher_secret">encrypted_comscore_publisher_secret</string>
+
+    <!-- PseudoRandom strings, used to generate random key for encrypting/decrypting ComScore resources.
+    These keys should always remain in sync with the keys used by ResourceObfuscationStandaloneUtility -->
+    <string name="comscore_key_1">comscore_key_1</string>
+    <string name="comscore_key_2">comscore_key_2</string>
+    <string name="comscore_key_3">comscore_key_3</string>
+    <string name="comscore_key_4">comscore_key_4</string>
+    <string name="comscore_key_5">comscore_key_5</string>
+    <string name="comscore_key_6">comscore_key_6</string>
+
+</resources>

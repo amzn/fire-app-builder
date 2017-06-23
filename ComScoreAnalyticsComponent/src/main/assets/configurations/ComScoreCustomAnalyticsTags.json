@@ -1,0 +1,15 @@
+{
+  "ATTRIBUTE_TITLE": "ns_st_pr",
+  "ATTRIBUTE_PUBLISHER_NAME": "ns_st_pu",
+  "ATTRIBUTE_SEASON_NUMBER": "ns_st_sn",
+  "ATTRIBUTE_EPISODE_NUMBER": "ns_st_en",
+  "ATTRIBUTE_GENRE": "ns_st_ge",
+  "ATTRIBUTE_AIRDATE": "ns_st_ddt",
+  "ATTRIBUTE_SEGMENT_NUMBER": "ns_st_pn",
+  "ATTRIBUTE_NUMBER_OF_SEGMENTS": "ns_st_tp",
+  "ATTRIBUTE_SUBTITLE": "ns_st_ep",
+  "ATTRIBUTE_VIDEO_DURATION": "ns_st_cl",
+  "ATTRIBUTE_VIDEO_ID": "ns_st_ci",
+  "ATTRIBUTE_AD_ID": "ns_st_ci",
+  "ATTRIBUTE_ADVERTISEMENT_TYPE": "ns_st_ad"
+}

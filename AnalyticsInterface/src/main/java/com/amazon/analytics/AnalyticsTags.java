@@ -179,6 +179,51 @@ public class AnalyticsTags {
     public static final String ACTION_UPDATE_RELATED_RECOMMENDATIONS =
             "ACTION_UPDATE_RELATED_RECOMMENDATIONS";
 
+    /**
+     * Customizable action for user authentication requested.
+     */
+    public static final String ACTION_AUTHENTICATION_REQUESTED =  "ACTION_AUTHENTICATION_REQUESTED";
+
+    /**
+     * Customizable action for user authentication succeeded.
+     */
+    public static final String ACTION_AUTHENTICATION_SUCCEEDED =  "ACTION_AUTHENTICATION_SUCCEEDED";
+
+    /**
+     * Customizable action for user authentication failed.
+     */
+    public static final String ACTION_AUTHENTICATION_FAILED =  "ACTION_AUTHENTICATION_FAILED";
+
+    /**
+     * Customizable action for user Authorization requested.
+     */
+    public static final String ACTION_AUTHORIZATION_REQUESTED =  "ACTION_AUTHORIZATION_REQUESTED";
+
+    /**
+     * Customizable action for user Authorization succeeded.
+     */
+    public static final String ACTION_AUTHORIZATION_SUCCEEDED =  "ACTION_AUTHORIZATION_SUCCEEDED";
+
+    /**
+     * Customizable action for user Authorization failed.
+     */
+    public static final String ACTION_AUTHORIZATION_FAILED =  "ACTION_AUTHORIZATION_FAILED";
+
+    /**
+    * Customizable action for user log out requested.
+    */
+    public static final String ACTION_LOG_OUT_REQUESTED =  "ACTION_LOG_OUT_REQUESTED";
+
+    /**
+    * Customizable action for user log out succeeded.
+    */
+    public static final String ACTION_LOG_OUT_SUCCEEDED =  "ACTION_LOG_OUT_SUCCEEDED";
+
+    /**
+    * Customizable action for user log out failed.
+    */
+    public static final String ACTION_LOG_OUT_FAILED =  "ACTION_LOG_OUT_FAILED";
+
     /////////////////////////////////////////////////////////////////////////
     //                      Customizable attributes.                       //
     /////////////////////////////////////////////////////////////////////////
@@ -305,6 +350,11 @@ public class AnalyticsTags {
     public static final String ATTRIBUTE_VIDEO_DURATION = "ATTRIBUTE_VIDEO_DURATION";
 
     /**
+     * Customizable attribute for the duration of the ad.
+     */
+    public static final String ATTRIBUTE_AD_DURATION = "ATTRIBUTE_AD_DURATION";
+
+    /**
      * Customizable attribute for the ID of the content.
      */
     public static final String ATTRIBUTE_VIDEO_ID = "ATTRIBUTE_VIDEO_ID";
@@ -359,6 +409,78 @@ public class AnalyticsTags {
      * Customizable attribute for Recommendation Id
      */
     public static final String ATTRIBUTE_RECOMMENDATION_ID = "ATTRIBUTE_RECOMMENDATION_ID";
+
+    /**
+     * Customizable attribute for the Authentication submitted
+     */
+    public static final String ATTRIBUTE_AUTHENTICATION_SUBMITTED =
+            "ATTRIBUTE_AUTHENTICATION_SUBMITTED";
+
+    /**
+     * Customizable attribute for the Authentication success
+     */
+    public static final String ATTRIBUTE_AUTHENTICATION_SUCCESS =
+            "ATTRIBUTE_AUTHENTICATION_SUCCESS";
+
+    /**
+     * Customizable attribute for the Authentication failure
+     */
+    public static final String ATTRIBUTE_AUTHENTICATION_FAILURE =
+            "ATTRIBUTE_AUTHENTICATION_FAILURE";
+
+    /**
+     * Customizable attribute for the Authentication failure reason
+     */
+    public static final String ATTRIBUTE_AUTHENTICATION_FAILURE_REASON =
+            "ATTRIBUTE_AUTHENTICATION_FAILURE_REASON";
+
+    /**
+     * Customizable attribute for the Logout submitted
+     */
+    public static final String ATTRIBUTE_LOGOUT_SUBMITTED =
+            "ATTRIBUTE_LOGOUT_SUBMITTED";
+
+    /**
+     * Customizable attribute for the Logout success
+     */
+    public static final String ATTRIBUTE_LOGOUT_SUCCESS =
+            "ATTRIBUTE_LOGOUT_SUCCESS";
+
+    /**
+     * Customizable attribute for the Logout failure
+     */
+    public static final String ATTRIBUTE_LOGOUT_FAILURE =
+            "ATTRIBUTE_LOGOUT_FAILURE";
+
+    /**
+     * Customizable attribute for the Logout Failure reason
+     */
+    public static final String ATTRIBUTE_LOGOUT_FAILURE_REASON =
+            "ATTRIBUTE_LOGOUT_FAILURE_REASON";
+
+    /**
+     * Customizable attribute for the Authorization submitted
+     */
+    public static final String ATTRIBUTE_AUTHORIZATION_SUBMITTED =
+            "ATTRIBUTE_AUTHORIZATION_SUBMITTED";
+
+    /**
+     * Customizable attribute for the Authorization success
+     */
+    public static final String ATTRIBUTE_AUTHORIZATION_SUCCESS =
+            "ATTRIBUTE_AUTHORIZATION_SUCCESS";
+
+    /**
+     * Customizable attribute for the Authorization failure
+     */
+    public static final String ATTRIBUTE_AUTHORIZATION_FAILURE =
+            "ATTRIBUTE_AUTHORIZATION_FAILURE";
+
+    /**
+     * Customizable attribute for the Authorization failure reason
+     */
+    public static final String ATTRIBUTE_AUTHORIZATION_FAILURE_REASON =
+            "ATTRIBUTE_AUTHORIZATION_FAILURE_REASON";
 
     /////////////////////////////////////////////////////////////////////////
     //                  Non-Customizable screen names.                     //

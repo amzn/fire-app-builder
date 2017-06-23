@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vmap="http://www.iab.net/videosuite/vmap" xmlns:vast="http://www.iab.net/videosuite/vast" targetNamespace="http://www.iab.net/videosuite/vmap" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+    <xs:import namespace="http://www.iab.net/videosuite/vast" schemaLocation="vast3_draft.xsd"/>
+    <xs:element name="VMAP">
+        <xs:annotation>
+            <xs:documentation>IAB VMAP, Video Multiple AD Playlist, Version 1.0, xml schema prepared by FreeWheel</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="AdBreak" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>Top-level element, represents a single ad break, but may allow for multiple ads</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="AdSource" minOccurs="0" maxOccurs="1">
+                                <xs:annotation>
+                                    <xs:documentation>Represents the ad data that will be used to fill the ad break</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:choice maxOccurs="1" minOccurs="1">
+                                        <xs:element name="VASTAdData" minOccurs="0" maxOccurs="1" type="vmap:VASTAdData_type">
+                                            <xs:annotation>
+                                                <xs:documentation>A VAST 3.0 document that comprises the ad response document. Not contained within a CDATA. (There were are a couple of places where the VMAP 1.0 pdf incorrectly references both VASTData and VASTAdData but VASTAdData is the correct element per VMAP 1.0.1)</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="CustomAdData" minOccurs="0" maxOccurs="1" type="vmap:CustomAdData_type">
+                                            <xs:annotation>
+                                                <xs:documentation>An ad response document (included inline) that is not VAST 3.0</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="AdTagURI" minOccurs="0" maxOccurs="1" type="vmap:AdTagURI_type">
+                                            <xs:annotation>
+                                                <xs:documentation>URL to a secondary ad server that will provide the ad response. URL must be contained within a CDATA block</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                    </xs:choice>
+                                    <xs:attribute name="id" type="xs:integer" use="optional">
+                                        <xs:annotation>
+                                            <xs:documentation>Identifier for the ad source</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="allowMultipleAds" type="xs:boolean" use="optional">
+                                        <xs:annotation>
+                                            <xs:documentation>Indicates whether the player should select and play only a single ad from the ad response document, or play multiple ads. If not specified, video player accepts playing multiple ads in an ad break</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="followRedirects" type="xs:boolean" use="optional">
+                                        <xs:annotation>
+                                            <xs:documentation>Whether the player should follow wrappers/redirects in the ad response document. If not specified, left to the video player’s discretion</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="TrackingEvents" minOccurs="0" maxOccurs="1" type="vmap:TrackingEvents_type">
+                                <xs:annotation>
+                                    <xs:documentation>Container for tracking URIs for events specific to VMAP</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="Extensions" minOccurs="0" maxOccurs="1" type="vmap:Extensions_type">
+                                <xs:annotation>
+                                    <xs:documentation>Container for Extensions that express additional information not supported by VMAP</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="timeOffset" type="xs:string" use="required">
+                            <xs:annotation>
+                                <xs:documentation>Represent the timing for the ad break. Expressed in one of four ways: (1)time format HH:MM:SS[.mmm], (2)n% (n is an integer from 0-100 and represents percentage of total duration from start to that point), (3)“start” or “end”, or (4) #m (m is an integer &gt; 0 and represents the position of the ad break opportunity)</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="breakType" type="xs:string" use="required">
+                            <xs:annotation>
+                                <xs:documentation>The type of ads allowed by the ad break: "linear", "nonlinear" or "display" (multiple types can be entered using a comma separator with no spaces). Intended to provide a "hint" to the player</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="breakId" type="xs:string" use="optional">
+                            <xs:annotation>
+                                <xs:documentation>Optional identifier for the ad break</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="repeatAfter" type="xs:string" use="optional">
+                            <xs:annotation>
+                                <xs:documentation>Optional indicator that instructs the video player to repeat the same AdBreak and AdSource at time offsets equal to the duration value of this attribute. Expresssed in time format HH.MM.SS[.mmm]</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="version" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>Current version is 1.0.1</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="TrackingEvents_type">
+        <xs:sequence>
+            <xs:element name="Tracking" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>URI to track for specified event type</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:anyURI">
+                            <xs:attribute name="event" use="required">
+                                <xs:annotation>
+                                    <xs:documentation>The name of the VMAP ad break level event to track</xs:documentation>
+                                </xs:annotation>
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:NMTOKEN">
+                                        <xs:enumeration value="breakStart"/>
+                                        <xs:enumeration value="breakEnd"/>
+                                        <xs:enumeration value="error"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:attribute>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Extensions_type">
+        <xs:sequence>
+            <xs:element name="Extension" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>The XML content of the Extension. Extension XML must use its own namespace</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" namespace="##any"/>
+                    </xs:sequence>
+                    <xs:attribute name="type" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:documentation>The type of the extension. The type value must be globally unique. A URI is recommended</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VASTAdData_type">
+        <xs:sequence>
+            <xs:element ref="vast:VAST" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CustomAdData_type">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="templateType" use="required">
+                    <xs:annotation>
+                        <xs:documentation>The ad response template employed by the ad response document</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:NMTOKEN">
+                            <xs:enumeration value="vast1"/>
+                            <xs:enumeration value="vast2"/>
+                            <xs:enumeration value="proprietary"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="AdTagURI_type">
+        <xs:simpleContent>
+            <xs:extension base="xs:anyURI">
+                <xs:attribute name="templateType" use="required">
+                    <xs:annotation>
+                        <xs:documentation>The ad response template employed by the ad response document</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:NMTOKEN">
+                            <xs:enumeration value="vast1"/>
+                            <xs:enumeration value="vast2"/>
+                            <xs:enumeration value="vast3"/>
+                            <xs:enumeration value="proprietary"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+</xs:schema>

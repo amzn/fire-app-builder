@@ -48,15 +48,18 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 public class NetworkTools {
 
     private static final String TAG = HttpTools.class.getName();
 
-    // This method return true if it's connected to Internet
+    /**
+     * This method returns true if it's connected to Internet
+     */
     public static boolean connectedToInternet(Context context) {
 
-        VASTLog.d(TAG, "Testing connectivity:");
+        Log.d(TAG, "Testing connectivity:");
 
         ConnectivityManager cm = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -65,32 +68,33 @@ public class NetworkTools {
 
         NetworkInfo wifiNetwork = getNetworkInfo(cm, networks, ConnectivityManager.TYPE_WIFI);
         if (wifiNetwork != null && wifiNetwork.isConnected()) {
-            VASTLog.d(TAG, "Connected to Internet");
+            Log.d(TAG, "Connected to Internet");
             return true;
         }
 
         NetworkInfo mobileNetwork = getNetworkInfo(cm, networks, ConnectivityManager.TYPE_MOBILE);
         if (mobileNetwork != null && mobileNetwork.isConnected()) {
-            VASTLog.d(TAG, "Connected to Internet");
+            Log.d(TAG, "Connected to Internet");
             return true;
         }
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         if (activeNetwork != null && activeNetwork.isConnected()) {
-            VASTLog.d(TAG, "Connected to Internet");
+            Log.d(TAG, "Connected to Internet");
             return true;
         }
-        VASTLog.d(TAG, "No Internet connection");
+        Log.d(TAG, "No Internet connection");
         return false;
     }
 
     /**
      * Get the NetworkInfo for the connection with the given connectionType
-     * @param cm ConnectivityMonitor for the context
-     * @param networks List of
+     *
+     * @param cm             ConnectivityMonitor for the context
+     * @param networks       List of
      * @param connectionType Type of network connection, e.g., ConnectivityManager.TYPE_WIFI, etc
      * @return The NetworkInfo for the given connection type, or null if the connection type does
-     *         not exist
+     * not exist
      */
     private static NetworkInfo getNetworkInfo(ConnectivityManager cm, Network[] networks,
                                               int connectionType) {

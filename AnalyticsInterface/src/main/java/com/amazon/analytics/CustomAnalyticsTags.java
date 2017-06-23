@@ -18,7 +18,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.amazon.android.utils.FileHelper;
-import com.amazon.android.utils.Helpers;
+import com.amazon.android.utils.MapHelper;
 
 import java.util.HashMap;
 
@@ -51,7 +51,7 @@ public class CustomAnalyticsTags {
 
         // Read the file only if it exists.
         if (FileHelper.doesFileExist(context, context.getResources().getString(fileNameId))) {
-            mCustomTags = Helpers.loadStringMappingFromJsonFile(context, fileNameId);
+            mCustomTags = MapHelper.loadStringMappingFromJsonFile(context, fileNameId);
             Log.d(TAG, "Custom analytics tags initialized");
         }
     }

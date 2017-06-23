@@ -24,6 +24,7 @@ import com.amazon.identity.auth.device.authorization.api.AmazonAuthorizationMana
 
 
 import com.amazon.auth.IAuthentication;
+import com.amazon.auth.AuthenticationConstants;
 import com.amazon.identity.auth.device.shared.APIListener;
 
 import com.amazon.android.utils.Preferences;
@@ -95,6 +96,8 @@ public class LoginWithAmazonAuthentication implements IAuthentication {
             public void onSuccess(Bundle bundle) {
                 // If the token is null then return false.
                 if (bundle.get(mContext.getString(R.string.COM_AMAZON_IDENTITY_AUTH_DEVICE_AUTHORIZATION_TOKEN)) == null) {
+                    populateErrorBundle(bundle, AuthenticationConstants
+                            .AUTHENTICATION_ERROR_CATEGORY);
                     responseHandler.onFailure(bundle);
                 }
                 else {
@@ -106,6 +109,7 @@ public class LoginWithAmazonAuthentication implements IAuthentication {
             @Override
             public void onError(AuthError authError) {
                 // There is some other auth issue.
+                populateErrorBundle(bundle, String.valueOf(authError.getCategory()));
                 responseHandler.onFailure(bundle);
             }
         });
@@ -136,19 +140,22 @@ public class LoginWithAmazonAuthentication implements IAuthentication {
     @Override
     public void logout(Context context, final ResponseHandler responseHandler) {
 
+        final Bundle bundle = new Bundle();
+
         mAuthManager.clearAuthorizationState(new APIListener() {
             @Override
             public void onSuccess(Bundle results) {
 
                 Preferences.setBoolean(IS_LOGGED_IN, false);
-                responseHandler.onSuccess(new Bundle());
+                responseHandler.onSuccess(bundle);
             }
 
             @Override
             public void onError(AuthError authError) {
 
                 Log.e(TAG, "Error clearing authorization state.", authError);
-                responseHandler.onFailure(new Bundle());
+                populateErrorBundle(bundle, String.valueOf(authError.getCategory()));
+                responseHandler.onFailure(bundle);
             }
         });
     }
@@ -161,4 +168,19 @@ public class LoginWithAmazonAuthentication implements IAuthentication {
 
     }
 
+    /**
+     * Bundle to be sent on failures other than Authentication and Authorization
+     *
+     * @param errorCategory error category received
+     * @param bundle        Bundle to populate
+     */
+    private void populateErrorBundle(Bundle bundle, String errorCategory) {
+
+        Bundle errorBundle = new Bundle();
+        errorBundle.putString(
+                AuthenticationConstants.ERROR_CATEGORY,
+                errorCategory);
+        bundle.putBundle(
+                AuthenticationConstants.ERROR_BUNDLE, errorBundle);
+    }
 }

@@ -23,6 +23,8 @@ include ':app',
         ':DynamicParser',
         ':DataLoader',
         ':Utils',
+        // Uncomment when using ComScore Analytics
+        //':comscore',
         /* Interfaces */
         ':PurchaseInterface',
         ':AuthInterface',
@@ -59,3 +61,5 @@ project(':AMZNMediaPlayerComponent').projectDir = new File(rootProject.projectDi
 project(':PassThroughAdsComponent').projectDir = new File(rootProject.projectDir, '../PassThroughAdsComponent')
 project(':PassThroughLoginComponent').projectDir = new File(rootProject.projectDir, '../PassThroughLoginComponent')
 project(':LoggerAnalyticsComponent').projectDir = new File(rootProject.projectDir, '../LoggerAnalyticsComponent')
+// Uncomment when using ComScore Analytics
+//project(':comscore').projectDir = new File(rootProject.projectDir, '../ComScoreAnalyticsComponent/libs/comscore')

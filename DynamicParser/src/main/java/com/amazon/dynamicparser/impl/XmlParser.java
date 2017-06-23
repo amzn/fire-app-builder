@@ -51,12 +51,17 @@ public class XmlParser implements IParser {
     /**
      * Constant name tag for node text field.
      */
-    public final String TEXT_TAG = "#text";
+    public static final String TEXT_TAG = "#text";
+
+    /**
+     * Constant name tag for node cdata field.
+     */
+    public static final String CDATA_TAG = "#cdata-section";
 
     /**
      * Constant name tag for node attributes.
      */
-    public final String ATTRIBUTES_TAG = "#attributes";
+    public static final String ATTRIBUTES_TAG = "#attributes";
 
     /**
      * Debug tag.
@@ -228,7 +233,7 @@ public class XmlParser implements IParser {
             Object value;
 
             // If the node is a plain text node, assign its text content to 'value'.
-            if (node.getNodeName().equals(TEXT_TAG)) {
+            if (node.getNodeName().equals(TEXT_TAG) || node.getNodeName().equals(CDATA_TAG) ) {
                 value = node.getTextContent();
             }
             // Otherwise, recursively add its child nodes to the result.

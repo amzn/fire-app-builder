@@ -2,7 +2,8 @@
   "config": {
     "showRelatedContent": true,
     "useCategoryAsDefaultRelatedContent": true,
-    "searchAlgo": "basic"
+    "searchAlgo": "basic",
+    "enableCEA608": false
   },
   "branding": {
     "globalTheme": "AppTheme",

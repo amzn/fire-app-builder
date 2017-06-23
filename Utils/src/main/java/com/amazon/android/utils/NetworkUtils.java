@@ -177,7 +177,7 @@ public class NetworkUtils {
 
     /**
      * Adds a parameter with the given value to the query of a URL. It will not add the parameter
-     * if a value already exists for the parameter in the query.
+     * if a value already exists for the parameter in the query or if the URL has no query.
      *
      * @param urlString The URL.
      * @param parameter The parameter to add.
@@ -197,22 +197,25 @@ public class NetworkUtils {
             return newUrlString;
         }
 
-        // If the url doesn't have the parameter then just add it to the end.
-        if (queryParams.get(parameter) == null) {
-            newUrlString = urlString + "&" + parameter + "=" + value;
-        }
-        // If the url contains the parameter but with no value, insert the value.
-        else if (queryParams.get(parameter).isEmpty()) {
-            String[] split = urlString.split(parameter + "=");
-            if (split.length > 0) {
-                newUrlString = split[0] + parameter + "=" + value;
-                if (split.length > 1) {
-                    newUrlString += split[1];
+        // Only add the parameter if the original URL contains a query.
+        if (!queryParams.isEmpty()) {
+            // If the url doesn't have the parameter then just add it to the end.
+            if (queryParams.get(parameter) == null) {
+                newUrlString = urlString + "&" + parameter + "=" + value;
+            }
+            // If the url contains the parameter but with no value, insert the value.
+            else if (queryParams.get(parameter).isEmpty()) {
+                String[] split = urlString.split(parameter + "=");
+                if (split.length > 0) {
+                    newUrlString = split[0] + parameter + "=" + value;
+                    if (split.length > 1) {
+                        newUrlString += split[1];
+                    }
                 }
             }
-        }
-        else {
-            Log.d(TAG, "Cannot add parameter to URL because it already exists");
+            else {
+                Log.d(TAG, "Cannot add parameter to URL because it already exists");
+            }
         }
         return newUrlString;
     }
@@ -229,21 +232,23 @@ public class NetworkUtils {
         Map<String, String> queryParams = new HashMap<>();
         URL url = new URL(urlString);
         String query = url.getQuery();
-        String[] strParams = query.split("&");
+        if (query != null) {
+            String[] strParams = query.split("&");
 
-        for (String param : strParams) {
-            String[] split = param.split("=");
-            // Get the parameter name.
-            if (split.length > 0) {
-                String name = split[0];
-                // Get the parameter value.
-                if (split.length > 1) {
-                    String value = split[1];
-                    queryParams.put(name, value);
-                }
-                // If there is no value just put an empty string as placeholder.
-                else {
-                    queryParams.put(name, "");
+            for (String param : strParams) {
+                String[] split = param.split("=");
+                // Get the parameter name.
+                if (split.length > 0) {
+                    String name = split[0];
+                    // Get the parameter value.
+                    if (split.length > 1) {
+                        String value = split[1];
+                        queryParams.put(name, value);
+                    }
+                    // If there is no value just put an empty string as placeholder.
+                    else {
+                        queryParams.put(name, "");
+                    }
                 }
             }
         }

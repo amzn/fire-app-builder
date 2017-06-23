@@ -379,38 +379,39 @@ public class AMZNPlayer implements UAMP, SurfaceHolder.Callback {
     }
 
     /*
-     * TODO: Not implemented yet DEVTECH-2280
+     * {@inheritDoc}
      */
     @Override
     public int getTrackCount(TrackType trackType) {
 
-        return 0;
+        return mPlayer.getTrackCount(trackType);
     }
 
     /*
-     * TODO: Not implemented yet DEVTECH-2280
+     * {@inheritDoc}
      */
     @Override
     public MediaFormat getTrackFormat(TrackType trackType, int i) {
 
-        return null;
+        return mPlayer.getTrackFormat(trackType, i);
     }
 
     /*
-     * TODO: Not implemented yet DEVTECH-2280
+     * {@inheritDoc}
      */
     @Override
     public void setSelectedTrack(TrackType trackType, int i) {
 
+        mPlayer.setSelectedTrack(trackType, i);
     }
 
     /*
-     * TODO: Not implemented yet DEVTECH-2280
+     * {@inheritDoc}
      */
     @Override
     public int getSelectedTrack(TrackType trackType) {
 
-        return 0;
+        return mPlayer.getSelectedTrack(trackType);
     }
 
     /*

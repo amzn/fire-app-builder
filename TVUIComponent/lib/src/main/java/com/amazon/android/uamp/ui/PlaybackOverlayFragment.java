@@ -370,7 +370,9 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
                     trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_NEXT);
                     ContentBrowser.getInstance(getActivity()).verifyScreenSwitch(ContentBrowser
                                                                                          .CONTENT_RENDERER_SCREEN, extra ->
-                            next());
+                                                                                         next(),
+                                                                                 errorExtra ->
+                                                                                         ContentBrowser.getInstance(getActivity()).showAuthenticationErrorDialog(errorExtra));
                 }
                 else if (action.getId() == mClosedCaptioningAction.getId()) {
                     toggleCloseCaption();
@@ -380,7 +382,9 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
                     trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_PRE);
                     ContentBrowser.getInstance(getActivity()).verifyScreenSwitch(ContentBrowser
                                                                                          .CONTENT_RENDERER_SCREEN, extra ->
-                            prev());
+                                                                                         prev(),
+                                                                                 errorExtra ->
+                                                                                         ContentBrowser.getInstance(getActivity()).showAuthenticationErrorDialog(errorExtra));
                 }
                 else if (action.getId() == mFastForwardAction.getId()) {
                     fastForward();
@@ -940,7 +944,10 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
 
                 ContentBrowser.getInstance(getActivity()).verifyScreenSwitch(ContentBrowser
                                                                                      .CONTENT_RENDERER_SCREEN, extra ->
-                        mCallback.changeContent(content));
+                                                                                     mCallback
+                                                                                             .changeContent(content),
+                                                                             errorExtra ->
+                                                                                     ContentBrowser.getInstance(getActivity()).showAuthenticationErrorDialog(errorExtra));
             }
         }
     }

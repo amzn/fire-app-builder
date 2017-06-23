@@ -46,7 +46,7 @@ permissions and limitations under the License.
             android:layout_gravity="center"
             android:layout_centerInParent="true"></FrameLayout>
 
-    <com.amazon.android.uamp.textrenderer.SubtitleLayout
+    <com.google.android.exoplayer.text.SubtitleLayout
             android:id="@+id/subtitles"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

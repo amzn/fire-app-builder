@@ -44,8 +44,8 @@ android {
         applicationId "com.amazon.android.calypso"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 8
-        versionName "1.0.4"
+        versionCode 9
+        versionName "1.0.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }

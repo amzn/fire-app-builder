@@ -104,6 +104,8 @@ public class NetworkUtilsTest {
                 ".php?app_id=257&app_key=0ojbgtfcsq12&action" +
                 "=channels_videos&newparam=differentvalue";
 
+        String url5 = "http://www.someurlwithoutaquery.com";
+
         String param = "newparam";
         String value = "value1";
 
@@ -132,5 +134,8 @@ public class NetworkUtilsTest {
         // Test adding a new parameter to url that already contains the parameter.
         assertEquals("value1 should not have been added.",
                      expected3, NetworkUtils.addParameterToUrl(url4, param, value));
+        // Test adding a new parameter to a url that doesn't have a query.
+        assertEquals("value1 should not have been added.",
+                     url5, NetworkUtils.addParameterToUrl(url5, param, value));
     }
 }

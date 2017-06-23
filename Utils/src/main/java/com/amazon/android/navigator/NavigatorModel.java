@@ -84,6 +84,11 @@ public class NavigatorModel {
         public String searchAlgo;
 
         /**
+         * Enable CEA-608 closed caption flag. If enabled, we prioritize CEA-608 captions.
+         */
+        public boolean enableCEA608 = false;
+
+        /**
          * The number of global recommendations that the app should send; assuming there are
          * global recommendation recipes available.
          */

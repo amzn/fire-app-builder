@@ -44,12 +44,13 @@
  */
 package com.amazon.android.ads.vast.util;
 
-import com.amazon.android.ads.vast.model.VASTMediaFile;
-import com.amazon.android.ads.vast.processor.VASTMediaPicker;
+import com.amazon.android.ads.vast.model.vast.MediaFile;
+import com.amazon.android.ads.vast.processor.MediaPicker;
 
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import java.math.BigInteger;
 import java.util.Collections;
@@ -57,7 +58,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-public class DefaultMediaPicker implements VASTMediaPicker {
+public class DefaultMediaPicker implements MediaPicker {
 
     private static final String TAG = "DefaultMediaPicker";
     private static final int maxPixels = 5000;
@@ -85,7 +86,7 @@ public class DefaultMediaPicker implements VASTMediaPicker {
 
     @Override
     // given a list of MediaFiles, select the most appropriate one.
-    public VASTMediaFile pickVideo(List<VASTMediaFile> mediaFiles) {
+    public MediaFile pickVideo(List<MediaFile> mediaFiles) {
         //make sure that the list of media files contains the correct attributes
         if (mediaFiles == null || prefilterMediaFiles(mediaFiles) == 0) {
             return null;
@@ -94,30 +95,29 @@ public class DefaultMediaPicker implements VASTMediaPicker {
         return getBestMatch(mediaFiles);
     }
 
-	/*
+    /*
      * This method filters the list of mediafiles and return the count.
-	 * Validate that the media file objects contain the required attributes for the Default Media
-	 * Picker processing.
-	 * 
-	 * 		Required attributes:
-	 * 			1. type
-	 * 			2. height
-	 * 			3. width 
-	 * 			4. url
-	 */
+     * Validate that the media file objects contain the required attributes for the Default Media
+     * Picker processing.
+     *
+     * 		Required attributes:
+     * 			1. type
+     * 			2. height
+     * 			3. width
+     * 			4. url
+     */
+    private int prefilterMediaFiles(List<MediaFile> mediaFiles) {
 
-    private int prefilterMediaFiles(List<VASTMediaFile> mediaFiles) {
-
-        Iterator<VASTMediaFile> iter = mediaFiles.iterator();
+        Iterator<MediaFile> iter = mediaFiles.iterator();
 
         while (iter.hasNext()) {
 
-            VASTMediaFile mediaFile = iter.next();
+            MediaFile mediaFile = iter.next();
 
             // type attribute
             String type = mediaFile.getType();
             if (TextUtils.isEmpty(type)) {
-                VASTLog.d(TAG, "Validator error: mediaFile type empty");
+                Log.d(TAG, "Validator error: mediaFile type empty");
                 iter.remove();
                 continue;
             }
@@ -126,16 +126,13 @@ public class DefaultMediaPicker implements VASTMediaPicker {
             BigInteger height = mediaFile.getHeight();
 
             if (null == height) {
-                VASTLog
-                        .d(TAG, "Validator error: mediaFile height null");
+                Log.d(TAG, "Validator error: mediaFile height null");
                 iter.remove();
                 continue;
             }
             int videoHeight = height.intValue();
             if (!(0 < videoHeight && videoHeight < maxPixels)) {
-                VASTLog.d(TAG,
-                          "Validator error: mediaFile height invalid: "
-                                  + videoHeight);
+                Log.d(TAG, "Validator error: mediaFile height invalid: " + videoHeight);
                 iter.remove();
                 continue;
             }
@@ -143,15 +140,13 @@ public class DefaultMediaPicker implements VASTMediaPicker {
             // width attribute
             BigInteger width = mediaFile.getWidth();
             if (null == width) {
-                VASTLog.d(TAG, "Validator error: mediaFile width null");
+                Log.d(TAG, "Validator error: mediaFile width null");
                 iter.remove();
                 continue;
             }
             int videoWidth = width.intValue();
             if (!(0 < videoWidth && videoWidth < maxPixels)) {
-                VASTLog.d(TAG,
-                          "Validator error: mediaFile width invalid: "
-                                  + videoWidth);
+                Log.d(TAG, "Validator error: mediaFile width invalid: " + videoWidth);
                 iter.remove();
                 continue;
             }
@@ -159,7 +154,7 @@ public class DefaultMediaPicker implements VASTMediaPicker {
             // mediaFile url
             String url = mediaFile.getValue();
             if (TextUtils.isEmpty(url)) {
-                VASTLog.d(TAG, "Validator error: mediaFile url empty");
+                Log.d(TAG, "Validator error: mediaFile url empty");
                 iter.remove();
             }
         }
@@ -185,10 +180,10 @@ public class DefaultMediaPicker implements VASTMediaPicker {
 
     }
 
-    private class AreaComparator implements Comparator<VASTMediaFile> {
+    private class AreaComparator implements Comparator<MediaFile> {
 
         @Override
-        public int compare(VASTMediaFile obj1, VASTMediaFile obj2) {
+        public int compare(MediaFile obj1, MediaFile obj2) {
             // get area of the video of the two MediaFiles
             int obj1Area = obj1.getWidth().intValue() * obj1.getHeight().intValue();
             int obj2Area = obj2.getWidth().intValue() * obj2.getHeight().intValue();
@@ -196,7 +191,7 @@ public class DefaultMediaPicker implements VASTMediaPicker {
             // get the difference between the area of the MediaFile and the area of the screen
             int obj1Diff = Math.abs(obj1Area - deviceArea);
             int obj2Diff = Math.abs(obj2Area - deviceArea);
-            VASTLog.v(TAG, "AreaComparator: obj1:" + obj1Diff + " obj2:" + obj2Diff);
+            Log.v(TAG, "AreaComparator: obj1:" + obj1Diff + " obj2:" + obj2Diff);
 
             // choose the MediaFile which has the lower difference in area
             if (obj1Diff < obj2Diff) {
@@ -212,18 +207,18 @@ public class DefaultMediaPicker implements VASTMediaPicker {
 
     }
 
-    private boolean isMediaFileCompatible(VASTMediaFile media) {
+    private boolean isMediaFileCompatible(MediaFile media) {
 
         // check if the MediaFile is compatible with the device.
         // further checks can be added here
         return media.getType().matches(SUPPORTED_VIDEO_TYPE_REGEX);
     }
 
-    private VASTMediaFile getBestMatch(List<VASTMediaFile> list) {
+    private MediaFile getBestMatch(List<MediaFile> list) {
 
-        VASTLog.d(TAG, "getBestMatch");
+        Log.d(TAG, "getBestMatch");
 
-        for (VASTMediaFile media : list) {
+        for (MediaFile media : list) {
             if (isMediaFileCompatible(media)) {
                 return media;
             }

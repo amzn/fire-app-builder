@@ -210,13 +210,25 @@ public class FreeWheelAds implements IAds {
                         (position / 1000)) {
                     Log.d(TAG, "Mid roll matches at:" + position);
                     mMidrollSlotsIsPlayedList.set(i, true);
-                    startSlot();
+                    startSlot(IAds.MID_ROLL_AD);
                     slot.play();
                     break;
                 }
                 i++;
             }
         }
+    }
+
+    /**
+     * Return true if post roll ads are available; false otherwise. Currently this component does
+     * not support post roll ads so this method always returns false.
+     *
+     * @return False because post roll ads are not supported.
+     */
+    @Override
+    public boolean isPostRollAvailable() {
+
+        return false;
     }
 
     /**
@@ -359,8 +371,8 @@ public class FreeWheelAds implements IAds {
                             else {
                                 Log.e(TAG, "Request failed. Playing main content.");
                                 // Ad request failed, continue with the content.
-                                startSlot();
-                                endSlot(false);
+                                startSlot(null);
+                                endSlot(null);
                             }
                         }
                     }
@@ -420,7 +432,7 @@ public class FreeWheelAds implements IAds {
                 if (completedSlot.getTimePositionClass() ==
                         mAdConstants.TIME_POSITION_CLASS_MIDROLL()) {
                     // Set mid roll flag and end the ad slot.
-                    endSlot(true);
+                    endSlot(IAds.MID_ROLL_AD);
                 }
             }
         });
@@ -439,30 +451,37 @@ public class FreeWheelAds implements IAds {
                 ISlot nextSlot = mPreRollSlots.remove(0);
                 Log.d(TAG, "Playing preroll slot: " + nextSlot.getCustomId());
                 // Play next pre roll slot.
-                startSlot();
+                startSlot(IAds.PRE_ROLL_AD);
                 nextSlot.play();
             }
             else {
                 Log.d(TAG, "Finished all prerolls. Starting main content.");
-                endSlot(false);
+                endSlot(IAds.PRE_ROLL_AD);
             }
         }
         else {
-            endSlot(false);
+            endSlot(null);
         }
     }
 
     /**
      * Start Ad slot.
      * Notifies listener and captures ad slot start time.
+     *
+     * @param adType type of ad currently being played
      */
-    private void startSlot() {
+    private void startSlot(final String adType) {
 
         new Handler(mActivity.getMainLooper()).post(new Runnable() {
             public void run() {
                 // Let listener know about Ad slot start event.
                 if (mIAdsEvents != null) {
-                    mIAdsEvents.onAdSlotStarted(null);
+                    // Put ad metadata in a Bundle.
+                    Bundle extras = getBasicAdDetailBundle();
+                    if(adType != null) {
+                        extras.putString(AD_TYPE, adType);
+                    }
+                    mIAdsEvents.onAdSlotStarted(extras);
                 }
             }
         });
@@ -475,9 +494,9 @@ public class FreeWheelAds implements IAds {
      * End Ad slot.
      * Notifies listener, sends duration and disposes AdContext.
      *
-     * @param wasAMidRoll True if the ad is a mid roll ad, else false.
+     * @param adType type of ad currently being played
      */
-    private void endSlot(final boolean wasAMidRoll) {
+    private void endSlot(final String adType) {
 
         new Handler(mActivity.getMainLooper()).post(new Runnable() {
             public void run() {
@@ -485,10 +504,12 @@ public class FreeWheelAds implements IAds {
                 if (mIAdsEvents != null) {
                     // Calculate how long Ads played.
                     long adSlotTime = SystemClock.elapsedRealtime() - mAdSlotStartTime;
-                    // Put calculated time in an Bundle.
-                    Bundle extras = new Bundle();
-                    extras.putLong(DURATION, adSlotTime);
-                    extras.putBoolean(WAS_A_MID_ROLL, wasAMidRoll);
+                    // Put calculated time and ad metadata in a Bundle.
+                    Bundle extras = getBasicAdDetailBundle();
+                    extras.putLong(DURATION_PLAYED, adSlotTime);
+                    if(adType != null) {
+                        extras.putString(AD_TYPE, adType);
+                    }
                     // Let listener know about Ad slot stop event.
                     mIAdsEvents.onAdSlotEnded(extras);
                 }
@@ -520,5 +541,17 @@ public class FreeWheelAds implements IAds {
     public Bundle getExtra() {
 
         return mExtras;
+    }
+
+    /**
+     * provide basic ad details
+     *
+     * @return bundle containing ad details.
+     */
+    private Bundle getBasicAdDetailBundle() {
+
+        Bundle extras = new Bundle();
+        extras.putString(ID, mCurrentVideoAdId);
+        return extras;
     }
 }
