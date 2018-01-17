@@ -14,23 +14,22 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-    <string name="watch_now_1">今すぐ</string>
-    <string name="watch_now_2">観る</string>
-    <string name="watch_from_beginning_1">最初から</string>
-    <string name="watch_from_beginning_2">観る</string>
-    <string name="resume_1">再生を</string>
-    <string name="resume_2">再開</string>
-    <string name="premium_1">プレミアムに</string>
-    <string name="premium_2">アップグレード</string>
-    <string name="daily_pass_1">デイリー</string>
-    <string name="daily_pass_2">パス</string>
-    <string name="recommended_contents_header">おすすめコンテンツ</string>
-    <string name="optional_login_dialog_title">ログイン</string>
-    <string name="optional_login_dialog_message">今すぐログインしてアプリを最大限にご活用ください。</string>
-    <string name="now">今すぐ</string>
-    <string name="later">後で</string>
-    <string name="iap_error_dialog_title">購入エラー</string>
-    <string name="subscription_expired">サービスの期限が切れました!</string>
-    <string name="ok">@android:string/ok</string>
-    <string name="settings_start_fragment_tag">"設定アイテムを表示"</string>
+  <string name="watch_now_1">今すぐ</string>
+  <string name="watch_now_2">観る</string>
+  <string name="watch_from_beginning_1">最初から</string>
+  <string name="watch_from_beginning_2">観る</string>
+  <string name="resume_1">再生を</string>
+  <string name="resume_2">再開</string>
+  <string name="premium_1">プレミアムに</string>
+  <string name="premium_2">アップグレード</string>
+  <string name="daily_pass_1">デイリー</string>
+  <string name="daily_pass_2">パス</string>
+  <string name="recommended_contents_header">おすすめコンテンツ</string>
+  <string name="optional_login_dialog_title">ログイン</string>
+  <string name="optional_login_dialog_message">今すぐログインしてアプリを最大限にご活用ください。</string>
+  <string name="now">今すぐ</string>
+  <string name="later">後で</string>
+  <string name="iap_error_dialog_title">購入エラー</string>
+  <string name="subscription_expired">サービスの期限が切れました!</string>
+  <string name="ok">@android:string/ok</string>
 </resources>

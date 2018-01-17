@@ -14,17 +14,13 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-    <string name="title_activity_adobe_authentication">認証</string>
-    <string name="adobepass_login_instruction_line_1">コンピューターまたはモバイル端末を使用します。</string>
-    <string name="adobepass_login_instruction_line_3">以下のコード（大文字小文字を区別）を入力します。</string>
-    <string name="adobepass_login_instruction_line_4">読み込み中…</string>
-    <string name="btn_submit">送信</string>
-    <string name="btn_get_new_code">新しいコードを取得</string>
-    <string name="adobe_pass_error_authentication_message">アカウントの認証中にエラーが発生しました。後でもう一度お試しください。
-    </string>
-    <string name="adobe_pass_error_registration_message">アカウントの認証中にエラーが発生しました。後でもう一度お試しください。
-    </string>
-    <string name="adobe_pass_no_authorization_message">
-        このビデオはご契約中のサービスに含まれていません。ケーブルのサービスプランをアップグレードするには、ケーブルプロバイダーにご連絡ください。
-    </string>
+  <string name="title_activity_adobe_authentication">認証</string>
+  <string name="adobepass_login_instruction_line_1">コンピューターまたはモバイル端末を使用します。</string>
+  <string name="adobepass_login_instruction_line_3">以下のコード（大文字小文字を区別）を入力してください。</string>
+  <string name="adobepass_login_instruction_line_4">読み込み中…</string>
+  <string name="btn_submit">送信</string>
+  <string name="btn_get_new_code">新しいコードを取得</string>
+  <string name="adobe_pass_error_authentication_message">アカウントの認証中にエラーが発生しました。後でもう一度お試しください。</string>
+  <string name="adobe_pass_error_registration_message">アカウントの認証中にエラーが発生しました。後でもう一度お試しください。</string>
+  <string name="adobe_pass_no_authorization_message">このビデオは、ご契約中のパッケージでは視聴できません。視聴するには、ケーブルプロバイダーに連絡してパッケージをアップグレードしてください。</string>
 </resources>

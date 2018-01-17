@@ -18,6 +18,7 @@ permissions and limitations under the License.
     <string name="network_error_message">Network is currently unavailable. Please try again later.</string>
     <string name="registration_code_error_message">Error obtaining the registration code. Please dismiss this message and retry. </string>
     <string name="authentication_error_message">Error authenticating your details.\r\nPlease try entering your information again or contact your cable provider to get access to this content.</string>
+    <string name="authentication_system_error_message">You must update your Fire TV for the Hallmark app to work properly. To install the latest update, go to Settings &gt; Device &gt; About > Install System Update. If the problem persists, please contact Amazon Customer Service at Settings &gt; Help &gt; Contact Us.</string>
     <string name="authorization_error_message">You are not authorized to view this content.\r\nPlease contact your cable provider to get access to this content.</string>
     <string name="logout_success_message">Logout Successful.You shall soon be redirected to the details page.</string>
     <string name="logout_failure_message">Logout UnSuccessful. Please retry.</string>

@@ -38,13 +38,13 @@ import com.amazon.android.tv.tenfoot.R;
 import com.amazon.android.tv.tenfoot.presenter.CardPresenter;
 import com.amazon.android.tv.tenfoot.presenter.DetailsDescriptionPresenter;
 import com.amazon.android.tv.tenfoot.ui.activities.ContentDetailsActivity;
-import com.amazon.android.tv.tenfoot.utils.LeanbackHelpers;
+import com.amazon.android.utils.LeanbackHelpers;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
-import android.app.NotificationManager;
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -94,6 +94,10 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     private static final int DETAIL_THUMB_WIDTH = 264;
     private static final int DETAIL_THUMB_HEIGHT = 198;
 
+    private static final int MILLISECONDS_IN_SECOND = 1000;
+    private static final int SECONDS_IN_MINUTE = 60;
+    private static final int SECONDS_IN_HOUR = 60 * 60;
+
     private Content mSelectedContent;
 
     private ArrayObjectAdapter mAdapter;
@@ -107,7 +111,23 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     SparseArrayObjectAdapter mActionAdapter = new SparseArrayObjectAdapter();
 
     // Decides whether the action button should be enabled or not.
-    private boolean actionInProgress = false;
+    private boolean mActionInProgress = false;
+
+    private ContentBrowser.IContentActionListener mActionCompletedListener =
+            new ContentBrowser.IContentActionListener() {
+                @Override
+                public void onContentAction(Activity activity, Content content, int actionId) {
+
+                }
+
+                @Override
+                public void onContentActionCompleted(Activity activity, Content content,
+                                                     int actionId) {
+
+                    mActionInProgress = false;
+                }
+
+            };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -242,7 +262,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
             mActionAdapter.set(i++, LeanbackHelpers.translateActionToLeanBackAction(action));
         }
 
-        actionInProgress = false;
+        mActionInProgress = false;
     }
 
     private void setupDetailsOverviewRow() {
@@ -260,6 +280,14 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         int height = Helpers.convertDpToPixel(getActivity().getApplicationContext(),
                                               DETAIL_THUMB_HEIGHT);
 
+        long timeRemaining = ContentBrowser.getInstance(getActivity())
+                                           .getContentTimeRemaining(mSelectedContent);
+        double playbackPercentage = ContentBrowser.getInstance(getActivity())
+                                                  .getContentPlaybackPositionPercentage
+                                                          (mSelectedContent);
+
+        Log.d(TAG, "Time Remaining: " + timeRemaining);
+        Log.d(TAG, "Playback Percentage: " + playbackPercentage);
 
         SimpleTarget<Bitmap> bitmapTarget = new SimpleTarget<Bitmap>(width, height) {
             @Override
@@ -272,8 +300,42 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                 int cornerRadius =
                         getResources().getInteger(R.integer.details_overview_image_corner_radius);
 
-                row.setImageBitmap(getActivity(),
-                                   Helpers.roundCornerImage(getActivity(), resource, cornerRadius));
+                Bitmap bitmap = Helpers.roundCornerImage(getActivity(), resource, cornerRadius);
+
+                if (playbackPercentage > 0) {
+                    bitmap = Helpers.addProgress(getActivity(), bitmap, playbackPercentage);
+                }
+
+                long secondsRemaining = timeRemaining / MILLISECONDS_IN_SECOND;
+
+                if (secondsRemaining > 0) {
+
+                    long hours = 0;
+                    long minutes = 0;
+                    long seconds = 0;
+
+                    if (secondsRemaining >= SECONDS_IN_HOUR) {
+                        hours = secondsRemaining / SECONDS_IN_HOUR;
+                        secondsRemaining -= hours * SECONDS_IN_HOUR;
+                    }
+
+                    if (secondsRemaining >= SECONDS_IN_MINUTE) {
+                        minutes = secondsRemaining / SECONDS_IN_MINUTE;
+                        secondsRemaining -= minutes * SECONDS_IN_MINUTE;
+                    }
+
+                    seconds = secondsRemaining;
+
+                    Resources res = getResources();
+
+                    String durationText = res.getString(R.string.duration, hours, minutes, seconds);
+                    String timeRemainingText = res.getString(R.string.time_remaining, durationText);
+
+                    bitmap = Helpers.addTimeRemaining(getActivity(), bitmap, timeRemainingText);
+
+                }
+
+                row.setImageBitmap(getActivity(), bitmap);
 
                 mAdapter.notifyArrayItemRangeChanged(0, mAdapter.size());
             }
@@ -318,20 +380,23 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
 
         detailsPresenter.setOnActionClickedListener(action -> {
             try {
-                if (actionInProgress) {
+                if (mActionInProgress) {
                     return;
                 }
-                actionInProgress = true;
+                mActionInProgress = true;
 
                 int actionId = (int) action.getId();
                 Log.v(TAG, "detailsPresenter.setOnActionClicked:" + actionId);
 
-                ContentBrowser.getInstance(getActivity())
-                              .actionTriggered(getActivity(), mSelectedContent, actionId);
+                ContentBrowser.getInstance(getActivity()).actionTriggered(getActivity(),
+                                                                          mSelectedContent,
+                                                                          actionId,
+                                                                          mActionAdapter,
+                                                                          mActionCompletedListener);
             }
             catch (Exception e) {
                 Log.e(TAG, "caught exception while clicking action", e);
-                actionInProgress = false;
+                mActionInProgress = false;
             }
         });
         mPresenterSelector.addClassPresenter(DetailsOverviewRow.class, detailsPresenter);
@@ -382,7 +447,8 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
 
                 ContentBrowser.getInstance(getActivity())
                               .setLastSelectedContent(content)
-                              .switchToScreen(ContentBrowser.CONTENT_DETAILS_SCREEN, bundle);
+                              .switchToScreen(ContentBrowser.CONTENT_DETAILS_SCREEN, content,
+                                              bundle);
             }
         }
     }
@@ -393,7 +459,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         Log.v(TAG, "onResume called.");
         super.onResume();
         updateActionsProperties();
-        actionInProgress = false;
+        mActionInProgress = false;
     }
 
     /**

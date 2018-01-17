@@ -15,8 +15,8 @@
 package com.amazon.android.contentbrowser.recommendations;
 
 import com.amazon.android.contentbrowser.ContentLoader;
-import com.amazon.android.contentbrowser.database.ContentDatabaseHelper;
-import com.amazon.android.contentbrowser.database.RecommendationRecord;
+import com.amazon.android.contentbrowser.database.helpers.RecommendationDatabaseHelper;
+import com.amazon.android.contentbrowser.database.records.RecommendationRecord;
 import com.amazon.android.contentbrowser.helper.AnalyticsHelper;
 import com.amazon.android.model.content.Content;
 import com.amazon.android.model.content.ContentContainer;
@@ -42,7 +42,7 @@ import rx.subscriptions.CompositeSubscription;
  * It contains two main methods:
  * {@link #updateGlobalRecommendations(Context)} and
  * {@link #executeRelatedRecommendationsTask(Context, Content)}. This class relies heavily on the
- * {@link RecommendationSender} and {@link ContentDatabaseHelper} classes.
+ * {@link RecommendationSender} and {@link RecommendationDatabaseHelper} classes.
  */
 public class RecommendationManager {
 
@@ -166,8 +166,7 @@ public class RecommendationManager {
                 Log.d(TAG, "Sending related recommendations");
                 // Get the list of content ids to recommend.
                 List<String> relatedIds = content.getRecommendations();
-                mSender.sendRecommendationsForType(ContentDatabaseHelper.getInstance(context),
-                                                   RecommendationRecord.RELATED,
+                mSender.sendRecommendationsForType(RecommendationRecord.RELATED,
                                                    relatedIds,
                                                    mMaxRelated);
                 AnalyticsHelper.trackUpdateRelatedRecommendations(content);
@@ -191,12 +190,12 @@ public class RecommendationManager {
      */
     public void dismissRecommendation(String id) {
 
-        ContentDatabaseHelper database = ContentDatabaseHelper.getInstance(mContext);
-        if (database == null) {
+        RecommendationDatabaseHelper databaseHelper = RecommendationDatabaseHelper.getInstance();
+        if (databaseHelper == null) {
             Log.e(TAG, "Cannot dismiss recommendation because database is null");
             return;
         }
-        RecommendationRecord recommendation = database.getRecommendationByContentId(id);
+        RecommendationRecord recommendation = databaseHelper.getRecord(mContext, id);
         if (recommendation == null) {
             Log.e(TAG, "Recommendation was not found in database. Can not dismiss notification " +
                     "for content " + id);
@@ -212,7 +211,7 @@ public class RecommendationManager {
     public void cleanDatabase() {
 
         Log.d(TAG, "Starting to clean database of old records");
-        ContentDatabaseHelper databaseHelper = ContentDatabaseHelper.getInstance(mContext);
+        RecommendationDatabaseHelper databaseHelper = RecommendationDatabaseHelper.getInstance();
         if (databaseHelper == null) {
             Log.e(TAG, "Cannot clean database because database is null");
             return;
@@ -225,12 +224,12 @@ public class RecommendationManager {
             return;
         }
 
-        List<RecommendationRecord> records = databaseHelper.getExpiredRecommendations();
+        List<RecommendationRecord> records = databaseHelper.getExpiredRecommendations(mContext);
         for (RecommendationRecord record : records) {
 
             notificationManager.cancel(record.getRecommendationId());
         }
-        databaseHelper.removeExpiredRecords();
+        databaseHelper.purgeExpiredRecords(mContext);
         AnalyticsHelper.trackExpiredRecommendations(records.size());
         Log.d(TAG, "Done cleaning database");
     }
@@ -251,9 +250,9 @@ public class RecommendationManager {
                 (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.cancel(id);
-
-        ContentDatabaseHelper database = ContentDatabaseHelper.getInstance(mContext);
-        if (database != null && !database.deleteRecommendationByRecId(id)) {
+    
+        RecommendationDatabaseHelper databaseHelper = RecommendationDatabaseHelper.getInstance();
+        if (databaseHelper != null && !databaseHelper.deleteByRecId(mContext, id)) {
             Log.d(TAG, "Error deleting recommendation from database with id " + id);
             return;
         }
@@ -371,8 +370,7 @@ public class RecommendationManager {
             @Override
             protected Void doInBackground(Void... params) {
 
-                mSender.sendRecommendationsForType(ContentDatabaseHelper.getInstance(context),
-                                                   RecommendationRecord.GLOBAL, contentIds,
+                mSender.sendRecommendationsForType(RecommendationRecord.GLOBAL, contentIds,
                                                    mMaxGlobal);
                 return null;
             }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright 2015-present Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Amazon Software License (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    https://aws.amazon.com/asl/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:id="@android:id/background">
+            <nine-patch android:src="@drawable/progress_bar_horizontal_bg"
+                android:dither="true" />
+    </item>
+
+    <item android:id="@android:id/progress">
+        <clip>
+            <nine-patch android:src="@drawable/progress_bar_horizontal_fill"
+                android:dither="true" />
+        </clip>
+    </item>
+
+</layer-list>

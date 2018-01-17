@@ -6,7 +6,7 @@
  * you may not use this file except in compliance with the License.
  * A copy of the License is located at
  *
- *     http://aws.amazon.com/apache2.0/
+ *      http://aws.amazon.com/apache2.0/
  *
  * or in the "license" file accompanying this file. This file is distributed
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
@@ -35,6 +35,7 @@ import com.amazon.android.model.content.Content;
 import com.amazon.android.tv.tenfoot.R;
 import com.amazon.android.tv.tenfoot.presenter.CardPresenter;
 import com.amazon.android.tv.tenfoot.utils.ContentHelper;
+import com.amazon.android.uamp.mediaSession.MediaSessionController;
 import com.amazon.utils.StringManipulation;
 import com.amazon.android.utils.GlideHelper;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -87,7 +88,8 @@ import java.util.TimerTask;
 /**
  * Class for video playback with media control.
  */
-public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
+public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment
+        implements MediaSessionController.OnMediaSessionEventListener {
 
     private static final String TAG = PlaybackOverlayFragment.class.getSimpleName();
     private static final boolean SHOW_DETAIL = false;
@@ -369,8 +371,8 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
                 else if (action.getId() == mSkipNextAction.getId()) {
                     trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_NEXT);
                     ContentBrowser.getInstance(getActivity()).verifyScreenSwitch(ContentBrowser
-                                                                                         .CONTENT_RENDERER_SCREEN, extra ->
-                                                                                         next(),
+                                                                                         .CONTENT_RENDERER_SCREEN,
+                                                                                 mRelatedContentList.get(mCurrentItem + 1), extra -> next(),
                                                                                  errorExtra ->
                                                                                          ContentBrowser.getInstance(getActivity()).showAuthenticationErrorDialog(errorExtra));
                 }
@@ -381,8 +383,8 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
                 else if (action.getId() == mSkipPreviousAction.getId()) {
                     trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_PRE);
                     ContentBrowser.getInstance(getActivity()).verifyScreenSwitch(ContentBrowser
-                                                                                         .CONTENT_RENDERER_SCREEN, extra ->
-                                                                                         prev(),
+                                                                                         .CONTENT_RENDERER_SCREEN,
+                                                                                 mRelatedContentList.get(mCurrentItem - 1), extra -> prev(),
                                                                                  errorExtra ->
                                                                                          ContentBrowser.getInstance(getActivity()).showAuthenticationErrorDialog(errorExtra));
                 }
@@ -654,6 +656,18 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
         setSkipPreviousActionEnabled(mCurrentItem > 0);
         // If current content is the last content in the list, disable Next Action.
         setSkipNextActionEnabled(mCurrentItem < (mRelatedContentList.size() - 1));
+        // If the current content is live, disable fast-forward and rewind action.
+        disableActionsForLiveContent(mSelectedContent.getExtraValueAsBoolean(Content.LIVE_TAG));
+    }
+
+    /**
+     * Disables the fast forward and rewind action buttons if the selected content is live.
+     * @param isLive True if the content is live; false otherwise.
+     */
+    private void disableActionsForLiveContent(boolean isLive) {
+
+        setFastForwardActionEnabled(!isLive);
+        setRewindActionEnabled(!isLive);
     }
 
     private void notifyChanged(Action action) {
@@ -750,6 +764,9 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
             Log.d(TAG, "Current content is not the first content, so enable prev button");
         }
 
+        disableActionsForLiveContent(mRelatedContentList.get(mCurrentItem)
+                                                        .getExtraValueAsBoolean(Content.LIVE_TAG));
+
         mFfwRwdSpeed = INITIAL_SPEED;
         updatePlaybackRow(mCurrentItem);
     }
@@ -777,6 +794,9 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
             setSkipNextActionEnabled(true);
         }
 
+        disableActionsForLiveContent(mRelatedContentList.get(mCurrentItem)
+                                                        .getExtraValueAsBoolean(Content.LIVE_TAG));
+
         mFfwRwdSpeed = INITIAL_SPEED;
         updatePlaybackRow(mCurrentItem);
     }
@@ -791,7 +811,7 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
         if (currentTime > mDuration) {
             currentTime = mDuration;
         }
-        fastFR(currentTime);
+        seekTo(currentTime);
     }
 
     /**
@@ -804,10 +824,10 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
         if (currentTime < 0 || currentTime > mDuration) {
             currentTime = 0;
         }
-        fastFR(currentTime);
+        seekTo(currentTime);
     }
 
-    private void fastFR(int currentTime) {
+    private void seekTo(int currentTime) {
 
         tickle();
         mCallback.onFragmentFfwRwd(currentTime);
@@ -934,6 +954,42 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
 
     private final class ItemViewClickedListener implements OnItemViewClickedListener {
 
+        /**
+         * Change to recommended content user selected with handling of next/prev buttons.
+         *
+         * @param content Recommended content user selected.
+         */
+        private void changeToRecommendedContent(Content content) {
+
+            mCallback.changeContent(content);
+
+            // Find the index of the selected content in the related content list only if
+            // recommendations are enabled.
+            mCurrentItem = getCurrentContentIndex(content);
+
+            // check for the next button state.
+            if (mCurrentItem == (mRelatedContentList.size() - 1)) {
+                Log.d(TAG, "The selected content is the last content, so disable next button");
+                setSkipNextActionEnabled(false);
+            }
+            else {
+                Log.d(TAG, "Current content is not the last content, so enable next button");
+                setSkipNextActionEnabled(true);
+            }
+
+            // check for the previous button state.
+            if (mCurrentItem == 0) {
+                Log.d(TAG, "The selected content is the first content, so disable prev button");
+                setSkipPreviousActionEnabled(false);
+            }
+            else {
+                Log.d(TAG, "Current content is not the first content, so enable prev button");
+                setSkipPreviousActionEnabled(true);
+            }
+
+            disableActionsForLiveContent(content.getExtraValueAsBoolean(Content.LIVE_TAG));
+        }
+
         @Override
         public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
                                   RowPresenter.ViewHolder rowViewHolder, Row row) {
@@ -943,13 +999,68 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment {
                 trackAnalyticsAction(AnalyticsTags.ACTION_RECOMMENDED_CONTENT_CLICKED, content);
 
                 ContentBrowser.getInstance(getActivity()).verifyScreenSwitch(ContentBrowser
-                                                                                     .CONTENT_RENDERER_SCREEN, extra ->
-                                                                                     mCallback
-                                                                                             .changeContent(content),
+                                                                                     .CONTENT_RENDERER_SCREEN,
+                                                                             content,
+                                                                             extra ->
+                                                                                     changeToRecommendedContent(content),
                                                                              errorExtra ->
                                                                                      ContentBrowser.getInstance(getActivity()).showAuthenticationErrorDialog(errorExtra));
             }
         }
     }
 
+    /**
+     * Implementation of OnMediaSessionControllerCallback
+     */
+    @Override
+    public void onMediaSessionPlayPause(boolean playPause) {
+
+        togglePlayback(playPause);
+    }
+
+    /**
+     * Implementation of OnMediaSessionControllerCallback
+     */
+    @Override
+    public void onMediaSessionSeekTo(int position) {
+
+        if (position < 0) {
+            position = 0;
+        }
+        else if (position > mDuration) {
+            position = mDuration;
+        }
+        seekTo(position);
+    }
+
+    /**
+     * Implementation of OnMediaSessionControllerCallback
+     */
+    @Override
+    public void onMediaSessionSkipToNext() {
+
+        next();
+    }
+
+    /**
+     * Implementation of OnMediaSessionControllerCallback
+     */
+    @Override
+    public void onMediaSessionSkipToPrev() {
+
+        prev();
+    }
+
+    /**
+     * Implementation of OnMediaSessionControllerCallback
+     */
+    @Override
+    public int getCurrentPosition() {
+
+        int position = 0;
+        if (mCallback != null) {
+            position = mCallback.getCurrentPosition();
+        }
+        return position;
+    }
 }

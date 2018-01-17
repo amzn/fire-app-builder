@@ -29,11 +29,10 @@
 package com.amazon.android.tv.tenfoot.ui.activities;
 
 
-import com.amazon.android.configuration.ConfigurationManager;
 import com.amazon.android.contentbrowser.ContentBrowser;
-import com.amazon.android.contentbrowser.helper.FontManager;
+import com.amazon.android.contentbrowser.helper.ErrorHelper;
 import com.amazon.android.interfaces.ICancellableLoad;
-import com.amazon.android.ui.constants.ConfigurationConstants;
+import com.amazon.android.utils.ErrorUtils;
 import com.amazon.android.utils.Helpers;
 import com.amazon.android.tv.tenfoot.R;
 import com.amazon.android.tv.tenfoot.base.BaseActivity;
@@ -49,10 +48,6 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import java.util.Map;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * This is a splash activity to load when the app is initializing and loading its content.
@@ -111,26 +106,61 @@ public class SplashActivity extends BaseActivity implements ICancellableLoad {
         isLoadingCancelled = false;
         if (!getIntent().hasExtra(ContentBrowser.CONTENT_WILL_UPDATE)) {
             Log.d(TAG, "First loading");
-            new AsyncTask<Activity, Void, Void>() {
+            new AsyncTask<Activity, Void, String>() {
 
                 @Override
-                protected Void doInBackground(Activity... activity) {
+                protected String doInBackground(Activity... activity) {
 
                     ContentBrowser contentBrowser = ContentBrowser.getInstance(activity[0]);
                     try {
-                        configureFonts(contentBrowser);
+
+                        SplashActivity splashAct = (SplashActivity) activity[0];
+
                         contentBrowser.onAllModulesLoaded();
-                        contentBrowser.runGlobalRecipes(activity[0], (SplashActivity) activity[0]);
+
+                        // Notify content browser that the intent is coming from an app launch.
+                        splashAct.getIntent().putExtra(ContentBrowser.RESTORE_ACTIVITY, true);
+                        contentBrowser.runGlobalRecipes(splashAct, splashAct);
                     }
                     catch (Exception e) {
                         Log.e(TAG, "Failed to put data in cache for recipe ", e);
                     }
+                    catch (NoClassDefFoundError error) {
+                        Log.e("Did not find class ", error.getMessage());
+                        return error.toString();
+                    }
 
                     return null;
+                }
+
+                @Override
+                protected void onPostExecute(String error) {
+                    if(error != null && error.contains(NoClassDefFoundError.class.getSimpleName())) {
+                        Log.e(TAG, "onPostExecute "+error);
+                        showAuthErrorDialog();
+                    }
                 }
             }.execute(this);
 
         }
+    }
+
+    /**
+     * Shows an error dialog
+     */
+    private void showAuthErrorDialog() {
+        ErrorHelper.injectErrorFragment(this, ErrorUtils.ERROR_CATEGORY
+                .AUTHENTICATION_SYSTEM_ERROR, (errorDialogFragment, errorButtonType,
+                                               errorCategory) -> {
+            if (errorButtonType ==
+                    ErrorUtils.ERROR_BUTTON_TYPE.EXIT_APP) {
+                this.finishAffinity();
+            }
+        });
+    }
+    @Override
+    public void setRestoreActivityValues() {
+        // not restoring state.
     }
 
     /**
@@ -151,66 +181,6 @@ public class SplashActivity extends BaseActivity implements ICancellableLoad {
         super.onPause();
     }
 
-    /**
-     * Configures the fonts using the configuration settings from Navigator.json if present.
-     * Otherwise is uses default fonts defined in custom.xml.
-     *
-     * @param contentBrowser The instance of {@link ContentBrowser}.
-     */
-    private void configureFonts(ContentBrowser contentBrowser) {
-
-        configureFontPath(ConfigurationConstants.LIGHT_FONT,
-                          contentBrowser.getLightFontPath(),
-                          getResources().getString(R.string.default_light_font));
-
-        configureFontPath(ConfigurationConstants.BOLD_FONT,
-                          contentBrowser.getBoldFontPath(),
-                          getResources().getString(R.string.default_bold_font));
-
-        String regularFontPath =
-                configureFontPath(ConfigurationConstants.REGULAR_FONT,
-                                  contentBrowser.getRegularFontPath(),
-                                  getResources().getString(R.string.default_regular_font));
-
-        // Set the default font for the app.
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                                              .setDefaultFontPath(regularFontPath)
-                                              .setFontAttrId(R.attr.fontPath)
-                                              .build());
-
-    }
-
-    /**
-     * Adds a font path to the Configuration Manager.
-     *
-     * @param pathKey         The key to use to retrieve the font path from the Configuration
-     *                        Manager.
-     * @param settingFontPath The font path that was given from Navigator.json config file.
-     * @param defaultFontPath A default font to use if settings was not provided in the config
-     *                        file.
-     * @return The path that was stored in the Configuration Manager.
-     */
-    private String configureFontPath(String pathKey, String settingFontPath, String
-            defaultFontPath) {
-
-        ConfigurationManager manager = ConfigurationManager.getInstance(this);
-
-        // Get all device local fonts.
-        Map<String, String> fonts = FontManager.enumerateFonts();
-
-        // Figure out if default font path is needed.
-        String fontPath = settingFontPath == null ? defaultFontPath : settingFontPath;
-
-        // If the font path specifies a local device font name, replace it with the
-        // absolute path of the font. Otherwise, just handle it as a custom font path.
-        if (fonts.containsKey(fontPath)) {
-            fontPath = fonts.get(fontPath);
-        }
-
-        manager.setTypefacePathValue(pathKey, fontPath);
-
-        return fontPath;
-    }
 
 
 }

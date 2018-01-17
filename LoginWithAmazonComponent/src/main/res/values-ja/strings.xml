@@ -14,18 +14,15 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-    <string name="default_message">
-        Amazonログインへようこそ!\nはじめてログインする場合は、このアプリによるプロフィールデータへのアクセスを許可するよう要求されます。
-    </string>
-    <string name="login_button_content_description">"Amazonログインによる認証の
-        ボタン"
-    </string>
-    <string name="return_to_app">戻る</string>
-    <string name="APIKey_incorrect">APIKeyが正しくないかありません。</string>
-    <string name="profile_Login">プロフィール</string>
-    <string name="error_during_auth">認証中にエラーが発生しました。もう一度お試しください。</string>
-    <string name="error_getting_profile">プロフィール情報の取得中にエラーが発生しました。\nもう一度ログインしてください。</string>
-    <string name="auth_cancelled">認証がキャンセルされました</string>
-    <string name="Welcome">ようこそ、%sさん!</string>
-    <string name="Your_email_is">Eメール: %s</string>
+  <string name="default_message">Amazonログインへようこそ!\nはじめてログインする場合は、このアプリによるプロフィールデータへのアクセスを許可するよう要求されます。</string>
+  <string name="login_button_content_description">"Amazonログインによる認証の
+        ボタン"</string>
+  <string name="return_to_app">戻る</string>
+  <string name="incorrect_api_key">APIKeyが正しくないかありません。</string>
+  <string name="profile_Login">プロフィール</string>
+  <string name="error_during_auth">認証中にエラーが発生しました。もう一度お試しください。</string>
+  <string name="error_getting_profile">プロフィール情報の取得中にエラーが発生しました。\nもう一度ログインしてください。</string>
+  <string name="auth_cancelled">認証がキャンセルされました</string>
+  <string name="welcome">ようこそ、%sさん!</string>
+  <string name="your_email_is">Eメール: %s</string>
 </resources>

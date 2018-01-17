@@ -144,87 +144,87 @@ public class Content implements Serializable {
     /**
      * Constant for matching the title field name.
      */
-    public static final String TITLE_FIELD_NAME = "title";
+    public static final String TITLE_FIELD_NAME = "mTitle";
 
     /**
      * Constant for matching the description field name.
      */
-    public static final String DESCRIPTION_FIELD_NAME = "description";
+    public static final String DESCRIPTION_FIELD_NAME = "mDescription";
 
     /**
      * Constant for matching the id field name.
      */
-    public static final String ID_FIELD_NAME = "id";
+    public static final String ID_FIELD_NAME = "mId";
 
     /**
      * Constant for matching the subtitle field name.
      */
-    public static final String SUBTITLE_FIELD_NAME = "subtitle";
+    public static final String SUBTITLE_FIELD_NAME = "mSubtitle";
 
     /**
      * Constant for matching the url field name.
      */
-    public static final String URL_FIELD_NAME = "url";
+    public static final String URL_FIELD_NAME = "mUrl";
 
     /**
      * Constant for matching the cardImageUrl field name.
      */
-    public static final String CARD_IMAGE_URL_FIELD_NAME = "cardImageUrl";
+    public static final String CARD_IMAGE_URL_FIELD_NAME = "mCardImageUrl";
 
     /**
      * Constant for matching the backgroundImageUrl field name.
      */
-    public static final String BACKGROUND_IMAGE_URL_FIELD_NAME = "backgroundImageUrl";
+    public static final String BACKGROUND_IMAGE_URL_FIELD_NAME = "mBackgroundImageUrl";
 
     /**
      * Constant for matching the closed captions urls field name.
      */
-    public static final String CLOSED_CAPTION_FIELD_NAME = "closeCaptionUrls";
+    public static final String CLOSED_CAPTION_FIELD_NAME = "mCloseCaptionUrls";
 
     /**
      * Constant for matching the tags field name.
      */
-    public static final String TAGS_FIELD_NAME = "tags";
+    public static final String TAGS_FIELD_NAME = "mTags";
 
     /**
      * Constant for matching the recommendations field name.
      */
-    public static final String RECOMMENDATIONS_FIELD_NAME = "recommendations";
+    public static final String RECOMMENDATIONS_FIELD_NAME = "mRecommendations";
 
     /**
      * Constant for matching the available date field name.
      */
-    public static final String AVAILABLE_DATE_FIELD_NAME = "availableDate";
+    public static final String AVAILABLE_DATE_FIELD_NAME = "mAvailableDate";
 
     /**
      * Constant for matching the subscription required field name.
      */
-    public static final String SUBSCRIPTION_REQUIRED_FIELD_NAME = "subscriptionRequired";
+    public static final String SUBSCRIPTION_REQUIRED_FIELD_NAME = "mSubscriptionRequired";
 
     /**
      * Constant for matching the channel id field name.
      */
-    public static final String CHANNEL_ID_FIELD_NAME = "channelId";
+    public static final String CHANNEL_ID_FIELD_NAME = "mChannelId";
 
     /**
      * Constant for matching the duration field name.
      */
-    public static final String DURATION_FIELD_NAME = "duration";
+    public static final String DURATION_FIELD_NAME = "mDuration";
 
     /**
      * Constant for matching the ad cue points field name.
      */
-    public static final String AD_CUE_POINTS_FIELD_NAME = "adCuePoints";
+    public static final String AD_CUE_POINTS_FIELD_NAME = "mAdCuePoints";
 
     /**
      * Constant for matching the studio field name.
      */
-    public static final String STUDIO_FIELD_NAME = "studio";
+    public static final String STUDIO_FIELD_NAME = "mStudio";
 
     /**
      * Constant for matching the format field name.
      */
-    public static final String FORMAT_FIELD_NAME = "format";
+    public static final String FORMAT_FIELD_NAME = "mFormat";
 
     /**
      * Constant for getting adId out of extras.

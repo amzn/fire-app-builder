@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+  <string name="feed_error_message">Service indisponible. Veuillez réessayer ultérieurement.</string>
+  <string name="network_error_message">Réseau actuellement indisponible. Veuillez réessayer ultérieurement.</string>
+  <string name="registration_code_error_message">Erreur lors de l\'obtention du code d\'inscription. Veuillez ignorer ce message et réessayer. </string>
+  <string name="authentication_error_message">Erreur lors de l\'authentification de vos informations.\r\nVeuillez saisir vos informations à nouveau ou contacter votre opérateur TV pour obtenir l\'accès à ce contenu.</string>
+  <string name="authorization_error_message">Vous n\'êtes pas autorisé(e) à afficher ce contenu.\r\nVeuillez contacter votre opérateur TV pour obtenir l\'accès à ce contenu.</string>
+  <string name="logout_success_message">Déconnexion réussie.Vous serez bientôt redirigé(e) vers la page d\'informations.</string>
+  <string name="logout_failure_message">Échec de la déconnexion. Veuillez réessayer.</string>
+  <string name="playback_error_message">Échec de la lecture. Veuillez réessayer.</string>
+  <string name="try_again_label">Réessayer</string>
+  <string name="exit_app_label">Quitter l\'application</string>
+  <string name="go_to_network_settings_label">Se rendre dans Paramètres du réseau</string>
+  <string name="dismiss_label">Fermer</string>
+  <string name="login_label">Connexion		</string>
+  <string name="logout_label">Déconnexion</string>
+  <string name="slideshow_label">Paramétrage du diaporama</string>
+  <string name="auto_play_speed">Vitesse de la diapositive</string>
+  <string name="terms_title">Conditions d\'utilisation</string>
+  <string name="terms_description">Consulter les mentions légales.</string>
+  <string name="slideshow_title">Vitesse du diaporama</string>
+  <string name="slideshow_description">Définir la vitesse du diaporama.</string>
+  <string name="logout_description">Se déconnecter de votre compte.</string>
+  <string name="login_description">Se connecter à votre compte.</string>
+  <string name="logout_dialog_description">Êtes-vous sûr(e) de vouloir vous déconnecter&#160;?</string>
+  <string name="login_dialog_description">Vous n\'êtes pas connecté(e). Sélectionnez et lisez n\'importe quelle vidéo pour vous connecter.</string>
+  <string name="logout_dialog_option_1">Oui</string>
+  <string name="logout_dialog_option_2">Non</string>
+  <string name="btn_submit">ENVOYER</string>
+  <string name="btn_get_new_code">OBTENIR UN NOUVEAU CODE</string>
+  <string name="second_screen_login_instruction_line_1">Allez sur votre ordinateur ou appareil mobile</string>
+  <string name="second_screen_login_instruction_line_3">Saisissez le code sensible aux majuscules suivant&#160;:</string>
+  <string name="second_screen_login_instruction_line_4">Chargement…</string>
+</resources>

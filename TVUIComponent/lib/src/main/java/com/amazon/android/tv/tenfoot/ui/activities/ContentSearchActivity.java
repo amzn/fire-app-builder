@@ -41,7 +41,7 @@ import android.support.annotation.VisibleForTesting;
  */
 public class ContentSearchActivity extends BaseActivity {
 
-    private static final String TAG = ContentSearchActivity.class.getSimpleName();
+private static final String TAG = ContentSearchActivity.class.getSimpleName();
 
     @VisibleForTesting
     // This is the local ContentSearchFragment variable.
@@ -59,5 +59,10 @@ public class ContentSearchActivity extends BaseActivity {
         // Set the ContentSearchFragment.
         mFragment = (ContentSearchFragment) getFragmentManager()
                 .findFragmentById(R.id.content_search_fragment);
+    }
+
+    @Override
+    public void setRestoreActivityValues() {
+        // not saving this state.
     }
 }

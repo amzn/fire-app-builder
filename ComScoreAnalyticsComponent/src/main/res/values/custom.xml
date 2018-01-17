@@ -30,4 +30,52 @@ permissions and limitations under the License.
     <string name="comscore_key_5">comscore_key_5</string>
     <string name="comscore_key_6">comscore_key_6</string>
 
+    <!-- Content Classification type video+audio labels -->
+    <string name="premium_short_form_video_on_demand_content">vc11</string>
+    <string name="premium_long_form_video_on_demand_content">vc12</string>
+    <string name="premium_live_streaming_content">vc13</string>
+    <string name="user_generated_short_form_video_on_demand_content">vc21</string>
+    <string name="user_generated_long_form_video_on_demand_content">vc22</string>
+    <string name="user_generated_live_streaming_content">vc23</string>
+    <string name="bumpers_video_content">vc99</string>
+
+    <!-- Content Classification type audio-only labels -->
+    <string name="premium_short_form_audio_on_demand_content">ac11</string>
+    <string name="premium_long_form_audio_on_demand_content">ac12</string>
+    <string name="premium_live_streaming_audio_content">ac13</string>
+    <string name="user_generated_short_form_audio_on_demand_content">ac21</string>
+    <string name="user_generated_long_form_audio_on_demand_content">ac22</string>
+    <string name="user_generated_live_streaming_audio_content">ac23</string>
+    <string name="bumpers_audio_content">ac99</string>
+
+    <!-- Content Classification type general content label -->
+    <string name="other_content">vc00</string>
+    <string name="other_audio_content">ac00</string>
+
+    <!-- Advertisement Classification type Video+Audio labels -->
+    <string name="linear_pre_roll_video_on_demand_ad">va11</string>
+    <string name="linear_mid_roll_video_on_demand_ad">va12</string>
+    <string name="linear_post_roll_video_on_demand_ad">va13</string>
+    <string name="linear_live_ad">va21</string>
+    <string name="branded_entertainment_during_linear_pre_roll_ad">va31</string>
+    <string name="branded_entertainment_during_linear_mid_roll_ad">va32</string>
+    <string name="branded_entertainment_during_linear_post_roll_ad">va33</string>
+    <string name="branded_entertainment_as_content_ad">va34</string>
+    <string name="branded_entertainment_during_live_streaming_ad">va35</string>
+
+    <!-- Advertisement Classification type audio-only labels -->
+    <string name="linear_pre_roll_video_on_demand_audio_ad">aa11</string>
+    <string name="linear_mid_roll_video_on_demand_audio_ad">aa12</string>
+    <string name="linear_post_roll_video_on_demand_audio_ad">aa13</string>
+    <string name="linear_live_audio_ad">aa21</string>
+    <string name="branded_entertainment_during_linear_pre_roll_audio_ad">aa31</string>
+    <string name="branded_entertainment_during_linear_mid_roll_audio_ad">aa32</string>
+    <string name="branded_entertainment_during_linear_post_roll_audio_ad">aa33</string>
+    <string name="branded_entertainment_as_content_audio_ad">aa34</string>
+    <string name="branded_entertainment_during_live_streaming_audio_ad">aa35</string>
+
+    <!-- Advertisement Classification type general content label -->
+    <string name="other_ad">va00</string>
+    <string name="other_audio_ad">aa00</string>
+
 </resources>

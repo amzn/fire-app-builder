@@ -130,6 +130,21 @@ public class Tracking {
     public static final String PROGRESS_TYPE = "progress";
 
     /**
+     * VMAP tracking event to notify the ad break start.
+     */
+    public static final String BREAK_START_TYPE = "breakStart";
+
+    /**
+     * VMAP tracking event to notify the ad break end.
+     */
+    public static final String BREAK_END_TYPE = "breakEnd";
+
+    /**
+     * VMAP tracking event to notify the error occurred.
+     */
+    public static final String ERROR_TYPE = "error";
+
+    /**
      * Key to find the event attribute from the map.
      */
     private static final String EVENT_KEY = "event";

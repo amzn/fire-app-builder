@@ -20,8 +20,18 @@
  */
 package com.amazon.android.contentbrowser.helper;
 
+import com.amazon.android.configuration.ConfigurationManager;
+import com.amazon.android.contentbrowser.ContentBrowser;
+import com.amazon.android.contentbrowser.R;
+import com.amazon.android.ui.constants.ConfigurationConstants;
+
+import android.content.Context;
+
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * Font Manager class.
@@ -31,11 +41,71 @@ import java.util.HashMap;
 public class FontManager {
 
     /**
+     * Configures the fonts using the configuration settings from Navigator.json if present.
+     * Otherwise is uses default fonts defined in custom.xml.
+     *
+     * @param contentBrowser The instance of {@link ContentBrowser}.
+     */
+    public static void configureFonts(Context context, ContentBrowser contentBrowser) {
+
+        configureFontPath(context, ConfigurationConstants.LIGHT_FONT,
+                          contentBrowser.getLightFontPath(),
+                          context.getResources().getString(R.string.default_light_font));
+
+        configureFontPath(context, ConfigurationConstants.BOLD_FONT,
+                          contentBrowser.getBoldFontPath(),
+                          context.getResources().getString(R.string.default_bold_font));
+
+        String regularFontPath =
+                configureFontPath(context, ConfigurationConstants.REGULAR_FONT,
+                                  contentBrowser.getRegularFontPath(),
+                                  context.getResources().getString(R.string.default_regular_font));
+
+        // Set the default font for the app.
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                                              .setDefaultFontPath(regularFontPath)
+                                              .setFontAttrId(R.attr.fontPath)
+                                              .build());
+    }
+
+    /**
+     * Adds a font path to the Configuration Manager.
+     *
+     * @param pathKey         The key to use to retrieve the font path from the Configuration
+     *                        Manager.
+     * @param settingFontPath The font path that was given from Navigator.json config file.
+     * @param defaultFontPath A default font to use if settings was not provided in the config
+     *                        file.
+     * @return The path that was stored in the Configuration Manager.
+     */
+    private static String configureFontPath(Context context, String pathKey,
+                                            String settingFontPath, String defaultFontPath) {
+
+        ConfigurationManager manager = ConfigurationManager.getInstance(context);
+
+        // Get all device local fonts.
+        Map<String, String> fonts = FontManager.enumerateFonts();
+
+        // Figure out if default font path is needed.
+        String fontPath = settingFontPath == null ? defaultFontPath : settingFontPath;
+
+        // If the font path specifies a local device font name, replace it with the
+        // absolute path of the font. Otherwise, just handle it as a custom font path.
+        if (fonts != null && fonts.containsKey(fontPath)) {
+            fontPath = fonts.get(fontPath);
+        }
+
+        manager.setTypefacePathValue(pathKey, fontPath);
+
+        return fontPath;
+    }
+
+    /**
      * This function enumerates all fonts on Android system.
      *
      * @return HashMap with the font literal name as key, and the font absolute file name as value.
      */
-    public static HashMap<String, String> enumerateFonts() {
+    private static HashMap<String, String> enumerateFonts() {
 
         String[] fontdirs = {"/system/fonts", "/system/font", "/data/fonts"};
         HashMap<String, String> fonts = new HashMap();

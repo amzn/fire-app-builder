@@ -19,6 +19,7 @@ import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ImageViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
@@ -218,6 +219,28 @@ public class GlideHelper {
         @Override
         public boolean onResourceReady(Object resource, Object model, Target target, boolean
                 isFromMemoryCache, boolean isFirstResource) {
+
+            return false;
+        }
+    }
+
+    /**
+     * A debug helper class to listen for errors when loading image resources via Glide.
+     */
+    public static class DrawableListener implements RequestListener<String,GlideDrawable>  {
+
+        @Override
+        public boolean onException(Exception e, String model, Target<GlideDrawable> target,
+                                   boolean isFirstResource) {
+            Log.e(TAG, String.format(Locale.ROOT, "onException(%s, %s, %s, %s)", e, model, target,
+                                     isFirstResource), e);
+            return false;
+        }
+
+        @Override
+        public boolean onResourceReady(GlideDrawable resource, String model,
+                                       Target<GlideDrawable> target, boolean isFromMemoryCache,
+                                       boolean isFirstResource) {
 
             return false;
         }

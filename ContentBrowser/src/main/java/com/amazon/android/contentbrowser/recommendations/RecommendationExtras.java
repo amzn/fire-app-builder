@@ -128,10 +128,10 @@ class RecommendationExtras {
     static final String EXTRA_END_TIME = "com.amazon.extra.CONTENT_END_TIME";
 
     /**
-     * The recommendation's actions. Helps determine the context menu options displayed for each
-     * recommendation.
+     * The recommendation's action options. Helps determine the context menu options displayed for
+     * each recommendation.
      */
-    static final String EXTRA_ACTIONS = "com.amazon.extra.ACTIONS";
+    static final String EXTRA_ACTION_OPTION = "com.amazon.extra.ACTION_OPTION";
 
     /**
      * The last time the recommended item was watched.

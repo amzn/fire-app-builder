@@ -393,7 +393,35 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
         if (done) {
             mRowsAdapter.clear();
             HeaderItem header = new HeaderItem(getString(R.string.search_results, mQuery));
-            mRowsAdapter.add(new ListRow(header, mListRowAdapter));
+
+            int elementsInRow = (int) getResources().getInteger(R.integer
+                                                                        .num_of_search_elements_in_row);
+
+            int rows = mListRowAdapter.size() / elementsInRow;
+
+            if (mListRowAdapter.size() % elementsInRow > 0) {
+                rows++;
+            }
+
+            int index = 0;
+
+            for (int i = 0; i < rows; i++) {
+                ArrayObjectAdapter row = new ArrayObjectAdapter(new CardPresenter());
+
+                for (int j = index; j < (index + elementsInRow) && (j < mListRowAdapter.size());
+                     j++) {
+                    row.add(mListRowAdapter.get(j));
+                }
+
+                if (i > 0) {
+                    mRowsAdapter.add(new ListRow(row));
+                }
+                else {
+                    mRowsAdapter.add(new ListRow(header, row));
+                }
+
+                index += elementsInRow;
+            }
         }
         // Add the found content to the mListRowAdapter
         else {
@@ -423,7 +451,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
                 ContentBrowser.getInstance(getActivity())
                               .setLastSelectedContent(content)
-                              .switchToScreen(ContentBrowser.CONTENT_DETAILS_SCREEN,
+                              .switchToScreen(ContentBrowser.CONTENT_DETAILS_SCREEN, content,
                                               bundle);
             }
             else {

@@ -261,7 +261,7 @@ class RecommendationBuilder {
         notification.extras.putString(RecommendationExtras.EXTRA_PREVIEW_VIDEO_URL,
                                       mPreviewVideoUrl);
         notification.extras.putString(RecommendationExtras.EXTRA_IMDB_ID, mImdbId);
-        notification.extras.putIntegerArrayList(RecommendationExtras.EXTRA_ACTIONS, mActions);
+        notification.extras.putIntegerArrayList(RecommendationExtras.EXTRA_ACTION_OPTION, mActions);
         notification.extras.putLong(RecommendationExtras.EXTRA_LAST_WATCHED, mLastWatchedDateTime);
         return notification;
     }

@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+  <string name="facebook_error_authentication_message">Une erreur s\'est produite lors de l\'authentification du
+        compte. Veuillez réessayer ultérieurement.
+    </string>
+  <string name="access_token_null">Le token d\'accès est invalide. L\'utilisateur n\'est pas connecté.</string>
+  <string name="error_checking_token">Return map est invalide. Une erreur inconnue s\'est produite lors de la vérification du
+        token d\'accès.
+    </string>
+  <string name="error_checking_token_caught">Erreur interceptée lors de la vérification du token d\'accès</string>
+</resources>

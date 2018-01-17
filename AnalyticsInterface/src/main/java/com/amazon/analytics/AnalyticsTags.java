@@ -370,6 +370,16 @@ public class AnalyticsTags {
     public static final String ATTRIBUTE_ADVERTISEMENT_TYPE = "ATTRIBUTE_ADVERTISEMENT_TYPE";
 
     /**
+     * Customizable attribute to distinguish advertisement streams from content streams.
+     */
+    public static final String ATTRIBUTE_CLASSIFICATION_TYPE = "ATTRIBUTE_CLASSIFICATION_TYPE";
+
+    /**
+     * Customizable attribute for determining content stream is live.
+     */
+    public static final String ATTRIBUTE_LIVE_FEED = "ATTRIBUTE_LIVE_FEED";
+
+    /**
      * Customizable attribute for the number of seconds of ad watched.
      */
     public static final String ATTRIBUTE_AD_SECONDS_WATCHED = "ATTRIBUTE_AD_SECONDS_WATCHED";

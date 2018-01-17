@@ -129,7 +129,11 @@ public class AdSource {
             setCustomAdData(new CustomAdData(adSourceMap.get(CUSTOM_AD_DATA_KEY)));
         }
         else if (adSourceMap.get(VAST_AD_DATA_KEY) != null) {
-            setVastResponse(VastResponse.createInstance(adSourceMap.get(VAST_AD_DATA_KEY)));
+            Map<String, Map> vastAdDataMap = adSourceMap.get(VAST_AD_DATA_KEY);
+            if (vastAdDataMap.containsKey(VmapHelper.VAST_KEY)) {
+                setVastResponse(VastResponse.createInstance(vastAdDataMap.get(VmapHelper
+                                                                                      .VAST_KEY)));
+            }
         }
     }
 

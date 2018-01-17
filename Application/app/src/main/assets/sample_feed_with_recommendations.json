@@ -1031,7 +1031,8 @@
       "categories": [
         "Tips"
       ],
-      "channel_id": "6339"
+      "channel_id": "6339",
+      "live":true
     },
     {
       "id": "145987",
@@ -1058,7 +1059,8 @@
       "categories": [
         "Tips"
       ],
-      "channel_id": "6339"
+      "channel_id": "6339",
+      "live":true
     },
     {
       "id": "145986",
@@ -1084,7 +1086,8 @@
       "categories": [
         "Tips"
       ],
-      "channel_id": "6339"
+      "channel_id": "6339",
+      "live":true
     },
     {
       "id": "145985",
@@ -1110,7 +1113,8 @@
       "categories": [
         "Tips"
       ],
-      "channel_id": "6339"
+      "channel_id": "6339",
+      "live":true
     },
     {
       "id": "145984",
@@ -1214,7 +1218,8 @@
       "categories": [
         "Tips"
       ],
-      "channel_id": "6339"
+      "channel_id": "6339",
+      "live":true
     },
     {
       "id": "127315",
@@ -1240,7 +1245,8 @@
       "categories": [
         "Tips"
       ],
-      "channel_id": "6339"
+      "channel_id": "6339",
+      "live":true
     },
     {
       "id": "119090",
@@ -1396,7 +1402,8 @@
       "categories": [
         "Tips"
       ],
-      "channel_id": "6339"
+      "channel_id": "6339",
+      "live":true
     }
   ],
   "globalRecommendations": [

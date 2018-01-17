@@ -15,9 +15,10 @@
 package com.amazon.android.contentbrowser.recommendations;
 
 import com.amazon.android.contentbrowser.R;
-import com.amazon.android.contentbrowser.database.ContentDatabaseHelper;
-import com.amazon.android.contentbrowser.database.RecentRecord;
-import com.amazon.android.contentbrowser.database.RecommendationRecord;
+import com.amazon.android.contentbrowser.database.helpers.RecentDatabaseHelper;
+import com.amazon.android.contentbrowser.database.helpers.RecommendationDatabaseHelper;
+import com.amazon.android.contentbrowser.database.records.RecentRecord;
+import com.amazon.android.contentbrowser.database.records.RecommendationRecord;
 import com.amazon.android.contentbrowser.helper.LauncherIntegrationManager;
 import com.amazon.android.model.content.Content;
 import com.amazon.android.model.content.ContentContainer;
@@ -39,8 +40,8 @@ import static com.amazon.android.contentbrowser.helper.LauncherIntegrationManage
 /**
  * This class contains functionality to send, build, update, and dismiss recommendations. This is a
  * helper class for {@link RecommendationManager}. The method containing the main logic for sending
- * recommendations is {@link #sendRecommendationsForType(ContentDatabaseHelper, String, List, int)}.
- * This class relies heaving on {@link ContentDatabaseHelper} for database transactions.
+ * recommendations is {@link #sendRecommendationsForType(String, List, int)}.
+ * This class relies heavily on {@link RecommendationDatabaseHelper} for database transactions.
  */
 class RecommendationSender {
 
@@ -49,7 +50,6 @@ class RecommendationSender {
     private NotificationManager mNotificationManager;
     private Context mContext;
     private boolean mSendToNotificationManager;
-
 
     /**
      * Constructor.
@@ -78,17 +78,17 @@ class RecommendationSender {
      * Goes through the process for sending recommendations for the given type. Recommendations
      * will be dismissed, updated, and created as necessary.
      *
-     * @param database   The content database helper instance.
      * @param type       The type of recommendation. Types found in {@link RecommendationRecord}.
      * @param contentIds A list of content ids. Recommendations for these contents will be sent.
      * @param max        The maximum number of recommendations to send during this process.
      * @return False if any exceptions occurred throughout the process.
      */
-    boolean sendRecommendationsForType(ContentDatabaseHelper database, String type, List<String>
+    boolean sendRecommendationsForType(String type, List<String>
             contentIds, int max) {
 
         try {
-            if (database == null || type == null || type.isEmpty() ||
+            RecommendationDatabaseHelper databaseHelper = RecommendationDatabaseHelper.getInstance();
+            if (databaseHelper == null || type == null || type.isEmpty() ||
                     contentIds == null || contentIds.isEmpty() || max <= 0) {
                 Log.e(TAG, "Bad parameters for building global recommendations");
                 return false;
@@ -101,23 +101,23 @@ class RecommendationSender {
             }
 
             // A list of ids to use for new recommendations.
-            ArrayList<Integer> idsForNewRecs = buildRecommendationIdList(database, max);
+            ArrayList<Integer> idsForNewRecs = buildRecommendationIdList(max);
 
             // Get the list of recommendations records that will be updated.
             List<RecommendationRecord> recsToUpdate =
-                    database.getExistingRecommendationsByContentIds(contentIdsOfNewRecs);
+                    databaseHelper.getExistingRecommendationsByContentIds(mContext, contentIdsOfNewRecs);
 
             // Get the list of recommendations that need to be deleted to send the new ones
             List<RecommendationRecord> recsToDelete =
-                    getRecordsToDelete(database, type, contentIdsOfNewRecs.size(), recsToUpdate,
+                    getRecordsToDelete(type, contentIdsOfNewRecs.size(), recsToUpdate,
                                        max);
 
-            updateExistingRecommendations(database, type, recsToUpdate, contentIdsOfNewRecs,
+            updateExistingRecommendations(type, recsToUpdate, contentIdsOfNewRecs,
                                           idsForNewRecs);
 
-            deleteRecommendations(database, recsToDelete);
+            deleteRecommendations(recsToDelete);
 
-            sendNewRecommendations(database, type, idsForNewRecs, contentIdsOfNewRecs);
+            sendNewRecommendations(type, idsForNewRecs, contentIdsOfNewRecs);
 
         }
         catch (Exception e) {
@@ -137,16 +137,17 @@ class RecommendationSender {
      * database becomes out of sync with the device's database regarding notifications. However,
      * this does not pose much of a threat to user experience.
      *
-     * @param database            The database helper.
      * @param type                The type of recommendation.
      * @param idsForNewRecs       A list of available content ids.
      * @param contentIdsOfNewRecs Ids of the content to recommend.
      * @return True if recommendations were sent; false otherwise.
      */
-    boolean sendNewRecommendations(ContentDatabaseHelper database, String type, List<Integer>
+    boolean sendNewRecommendations(String type, List<Integer>
             idsForNewRecs, List<String> contentIdsOfNewRecs) {
-
-        if (contentIdsOfNewRecs == null || idsForNewRecs == null || database == null) {
+    
+        RecommendationDatabaseHelper databaseHelper = RecommendationDatabaseHelper.getInstance();
+    
+        if (contentIdsOfNewRecs == null || idsForNewRecs == null || databaseHelper == null) {
             Log.e(TAG, "Parameters should not be null");
             return false;
         }
@@ -159,10 +160,10 @@ class RecommendationSender {
 
             Integer recommendationId = idsForNewRecs.remove(0);
 
-            Notification notification = buildRecommendation(database, contentId,
+            Notification notification = buildRecommendation(contentId,
                                                             recommendationId, type);
-
-            database.addRecommendation(contentId, recommendationId, type);
+    
+            databaseHelper.addRecord(mContext, contentId, recommendationId, type);
 
             if (mSendToNotificationManager) {
                 sendToNotificationManager(mContext, recommendationId, notification);
@@ -179,14 +180,18 @@ class RecommendationSender {
      * database becomes out of sync with the device's database regarding notifications. However,
      * this does not pose much of a threat to user experience.
      *
-     * @param database     The database helper.
      * @param recsToDelete The recommendations to deleteByContentId.
      */
-    void deleteRecommendations(ContentDatabaseHelper database, List<RecommendationRecord>
-            recsToDelete) {
-
+    void deleteRecommendations(List<RecommendationRecord> recsToDelete) {
+    
+        RecommendationDatabaseHelper databaseHelper = RecommendationDatabaseHelper.getInstance();
+        if (databaseHelper == null) {
+            Log.e(TAG, "Database can not be instantiated so cannot delete recommendations.");
+            return;
+        }
+    
         for (RecommendationRecord record : recsToDelete) {
-            database.deleteRecommendationByRecId(record.getRecommendationId());
+            databaseHelper.deleteByRecId(mContext, record.getRecommendationId());
             if (mSendToNotificationManager) {
                 mNotificationManager.cancel(record.getRecommendationId());
             }
@@ -203,19 +208,21 @@ class RecommendationSender {
      * database becomes out of sync with the device's database regarding notifications. However,
      * this does not pose much of a threat to user experience.
      *
-     * @param database            The content database helper instance.
      * @param type                The type of recommendation.
      * @param recsToUpdate        The recommendation records to update in the database.
      * @param contentIdsOfNewRecs A list of content ids that need to be recommended.
      * @param idsForNewRecs       A list of ids to use for new recommendations.
      * @return False if the parameters were bad; true otherwise.
      */
-    boolean updateExistingRecommendations(ContentDatabaseHelper database, String type,
+    boolean updateExistingRecommendations(String type,
                                           List<RecommendationRecord> recsToUpdate,
                                           List<String> contentIdsOfNewRecs,
                                           List<Integer> idsForNewRecs) {
-
-        if (recsToUpdate == null || database == null || idsForNewRecs == null ||
+    
+    
+        RecommendationDatabaseHelper databaseHelper = RecommendationDatabaseHelper.getInstance();
+    
+        if (recsToUpdate == null || databaseHelper == null || idsForNewRecs == null ||
                 contentIdsOfNewRecs == null) {
             Log.e(TAG, "Parameters should not be null when updating recommendations");
             return false;
@@ -225,7 +232,7 @@ class RecommendationSender {
 
             // Update the record data. We can use same rec id but should update the type.
             record.setType(type);
-            database.updateRecommendation(record);
+            databaseHelper.updateRecord(mContext, record);
 
             // Remove the rec id so its not used later.
             idsForNewRecs.remove(Integer.valueOf(record.getRecommendationId()));
@@ -234,8 +241,7 @@ class RecommendationSender {
             contentIdsOfNewRecs.remove(record.getContentId());
 
             // Build new notification
-            Notification notification = buildRecommendation(database,
-                                                            record.getContentId(),
+            Notification notification = buildRecommendation(record.getContentId(),
                                                             record.getRecommendationId(), type);
             // Cancel old notification and send the new
             if (mSendToNotificationManager) {
@@ -254,19 +260,18 @@ class RecommendationSender {
      * be created, the recommendations records to be updated, and the max number of recommendations
      * to send.
      *
-     * @param database   The content database helper instance.
      * @param type       The type of recommendation.
      * @param numNewRecs The number of new recommendations to send.
      * @param updateRecs The recommendation records that will be updated.
      * @param max        The max number of recommendations to send.
      * @return A list of records to delete so the new recommendations can be sent.
      */
-    List<RecommendationRecord> getRecordsToDelete(ContentDatabaseHelper database,
-                                                  String type, int numNewRecs,
+    List<RecommendationRecord> getRecordsToDelete(String type, int numNewRecs,
                                                   List<RecommendationRecord>
                                                           updateRecs, int max) {
+        RecommendationDatabaseHelper databaseHelper = RecommendationDatabaseHelper.getInstance();
 
-        List<RecommendationRecord> recsFromDb = database.getRecommendationsWithType(type);
+        List<RecommendationRecord> recsFromDb = databaseHelper.getRecsWithType(mContext, type);
 
         List<RecommendationRecord> records = new ArrayList<>();
         int numToUpdate = updateRecs.size();
@@ -289,13 +294,12 @@ class RecommendationSender {
     /**
      * Builds the recommendation.
      *
-     * @param database         The database helper instance.
      * @param contentId        The content id.
      * @param recommendationId The recommendation id.
      * @param group            The recommendation type.
      * @return The recommendation.
      */
-    Notification buildRecommendation(ContentDatabaseHelper database, String contentId, int
+    Notification buildRecommendation(String contentId, int
             recommendationId, String group) {
 
         Content content = getContentFromRoot(contentId);
@@ -308,9 +312,10 @@ class RecommendationSender {
         // Try getting the content's playback progress (if it exists)
         int playbackProgress = 0;
         long lastWatchedDateTime = 0;
+        RecentDatabaseHelper database = RecentDatabaseHelper.getInstance();
         if (database != null) {
-            if (database.recentRecordExists(contentId)) {
-                RecentRecord record = database.getRecent(contentId);
+            if (database.recordExists(mContext, contentId)) { // Need to get recent db from content browser. Maybe shoudl do that for all instead of passing?
+                RecentRecord record = database.getRecord(mContext, contentId);
                 playbackProgress = (int) record.getPlaybackLocation();
                 lastWatchedDateTime = record.getLastWatched();
             }
@@ -418,14 +423,15 @@ class RecommendationSender {
      * Generates of list of recommendation ids to use from 1 to the n, the max number of
      * recommendations to send at one time.
      *
-     * @param database The content database instance helper.
      * @param max      The max number of recommendations to send at one time.
      * @return List of recommendation ids.
      */
-    private ArrayList<Integer> buildRecommendationIdList(ContentDatabaseHelper database, int max) {
+    private ArrayList<Integer> buildRecommendationIdList(int max) {
 
         ArrayList<Integer> ids = new ArrayList<>();
-        List<Integer> usedIds = database.getAllRecommendationsIds();
+        RecommendationDatabaseHelper databaseHelper = RecommendationDatabaseHelper.getInstance();
+        
+        List<Integer> usedIds = databaseHelper.getAllRecommendationsIds(mContext);
         int i = 1;
         while (ids.size() < max) {
             if (!usedIds.contains(i)) {

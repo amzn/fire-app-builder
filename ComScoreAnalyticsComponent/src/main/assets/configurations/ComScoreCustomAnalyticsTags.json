@@ -9,7 +9,9 @@
   "ATTRIBUTE_NUMBER_OF_SEGMENTS": "ns_st_tp",
   "ATTRIBUTE_SUBTITLE": "ns_st_ep",
   "ATTRIBUTE_VIDEO_DURATION": "ns_st_cl",
+  "ATTRIBUTE_AD_DURATION": "ns_st_cl",
   "ATTRIBUTE_VIDEO_ID": "ns_st_ci",
   "ATTRIBUTE_AD_ID": "ns_st_ci",
-  "ATTRIBUTE_ADVERTISEMENT_TYPE": "ns_st_ad"
+  "ATTRIBUTE_ADVERTISEMENT_TYPE": "ns_st_ad",
+  "ATTRIBUTE_CLASSIFICATION_TYPE" :"ns_st_ct"
 }

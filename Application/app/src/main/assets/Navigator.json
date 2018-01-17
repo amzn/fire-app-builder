@@ -3,7 +3,9 @@
     "showRelatedContent": true,
     "useCategoryAsDefaultRelatedContent": true,
     "searchAlgo": "basic",
-    "enableCEA608": false
+    "enableCEA608": false,
+    "enableRecentRow": true,
+    "maxNumberOfRecentItems": 5
   },
   "branding": {
     "globalTheme": "AppTheme",

@@ -30,23 +30,26 @@ permissions and limitations under the License.
      limitations under the License.
 -->
 <resources>
-    <string name="browse_title"><![CDATA[TenFootUI]]></string>
-    <string name="feed_reloading">再読込中</string>
-    <string name="feed_loading">読み込み中</string>
-    <string name="search_results">検索結果</string>
-    <string name="search_bar_hint">検索語を入力</string>
-    <string name="lb_search_bar_hint">@string/search_bar_hint</string>
-    <string name="lb_search_bar_hint_speech">@string/search_bar_hint</string>
-    <string name="video_title">ビデオタイトル</string>
-    <string name="video_subtitle">ビデオ副題</string>
-    <plurals name="search_results">
-        <item quantity="one">「%2$s」の検索結果%1$d件:</item>
-        <item quantity="other">「%2$s」の検索結果%1$d件:</item>
-    </plurals>
-    <string name="settings_title">設定</string>
-    <string name="copyright">Copyright 2015 Amazon.com, Inc. or its affiliates. All Rights
+  <string name="feed_reloading">再読込中</string>
+  <string name="feed_loading">読み込み中</string>
+  <string name="search_results">検索結果</string>
+  <string name="search_bar_hint">検索語を入力</string>
+  <string name="lb_search_bar_hint">@string/search_bar_hint</string>
+  <string name="lb_search_bar_hint_speech">@string/search_bar_hint</string>
+  <string name="video_title">ビデオタイトル</string>
+  <string name="video_subtitle">ビデオ副題</string>
+  <plurals name="search_results">
+    <item quantity="one">「%2$s」の検索結果%1$d件:</item>
+    <item quantity="other">「%2$s」の検索結果%1$d件:</item>
+  </plurals>
+  <string name="time_remaining">残り時間: %s</string>
+  <string name="duration">%1$d:%2$02d:%3$02d</string>
+  <string name="settings_title">設定</string>
+  <string name="copyright">Copyright 2015 Amazon.com, Inc. or its affiliates. All Rights
         Reserved.
     </string>
-    <string name="terms_title">利用規約</string>
-    <string name="related_contents">おすすめコンテンツ</string>
+  <string name="terms_title">利用規約</string>
+  <string name="related_contents">おすすめコンテンツ</string>
+  <string name="season">シーズン</string>
+  <string name="episode">エピソード</string>
 </resources>

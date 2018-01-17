@@ -6,11 +6,11 @@
   "modelType": "array",
   "query": "//item[./category='$$par0$$']",
   "matchList": [
-    "title/#text@title",
-    "guid/#text@id",
-    "itunes:subtitle/#text@description",
-    "media:content/#attributes/url@url",
-    "media:content/media:thumbnail/#attributes/url@cardImageUrl",
-    "media:content/media:thumbnail/#attributes/url@backgroundImageUrl"
+    "title/#text@mTitle",
+    "guid/#text@mId",
+    "itunes:subtitle/#text@mDescription",
+    "media:content/#attributes/url@mUrl",
+    "media:content/media:thumbnail/#attributes/url@mCardImageUrl",
+    "media:content/media:thumbnail/#attributes/url@mBackgroundImageUrl"
   ]
 }

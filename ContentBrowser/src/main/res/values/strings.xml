@@ -38,6 +38,11 @@ permissions and limitations under the License.
     line of the title -->
     <string name="daily_pass_1">Daily</string>
     <string name="daily_pass_2">Pass</string>
+    <!-- IMPORTANT: Following 3 strings are concatenated to generate the multi-line title of
+    Ad to Watchlist button and Remove from Watchlist button -->
+    <string name="watchlist_1">Add to</string>
+    <string name="watchlist_2">Remove from</string>
+    <string name="watchlist_3">Watchlist</string>
 
     <string name="recommended_contents_header">Recommended Content</string>
 
@@ -50,10 +55,7 @@ permissions and limitations under the License.
     <string name="subscription_expired">Your subscription expired!</string>
     <string name="ok">@android:string/ok</string>
 
-    <!-- Settings -->
-    <string name="settings_start_fragment_tag">"Show settings item"</string>
-
-    <string name="app_name">ContentBrowser</string>
+    <string translatable="false" name="app_name">ContentBrowser</string>
     <!-- Used in recommendations. Should be no more than 15 characters. -->
-    <string name="app_name_short">@string/app_name</string>
+    <string translatable="false" name="app_name_short">@string/app_name</string>
 </resources>

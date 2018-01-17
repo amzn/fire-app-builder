@@ -4,7 +4,10 @@
     "useCategoryAsDefaultRelatedContent": true,
     "searchAlgo": "basic",
     "numberOfGlobalRecommendations": 3,
-    "numberOfRelatedRecommendations": 3
+    "numberOfRelatedRecommendations": 3,
+    "enableCEA608": false,
+    "enableRecentRow": true,
+    "maxNumberOfRecentItems": 20
   },
   "branding": {
     "globalTheme": "AppTheme",

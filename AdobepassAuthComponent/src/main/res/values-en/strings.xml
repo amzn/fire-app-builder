@@ -14,20 +14,20 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-    <string name="title_activity_adobe_authentication">Authentication</string>
-    <string name="adobepass_login_instruction_line_1">Go to your computer or mobile device</string>
-    <string name="adobepass_login_instruction_line_3">Enter the following case-sensitive code:
+  <string name="title_activity_adobe_authentication">Authentication</string>
+  <string name="adobepass_login_instruction_line_1">Go to your computer or mobile device</string>
+  <string name="adobepass_login_instruction_line_3">Enter the following case-sensitive code:
     </string>
-    <string name="adobepass_login_instruction_line_4">Loading…</string>
-    <string name="btn_submit">SUBMIT</string>
-    <string name="btn_get_new_code">GET NEW CODE</string>
-    <string name="adobe_pass_error_authentication_message">There was an error authenticating the
+  <string name="adobepass_login_instruction_line_4">Loading…</string>
+  <string name="btn_submit">SUBMIT</string>
+  <string name="btn_get_new_code">GET NEW CODE</string>
+  <string name="adobe_pass_error_authentication_message">There was an error authenticating the
         account. Please try again later.
     </string>
-    <string name="adobe_pass_error_registration_message">There was an error authenticating the
+  <string name="adobe_pass_error_registration_message">There was an error authenticating the
         account. Please try again later.
     </string>
-    <string name="adobe_pass_no_authorization_message">Your subscription package does not include
-        this video. Please contact your provider in order to upgrade your subscription.
+  <string name="adobe_pass_no_authorization_message">Your subscription package does not include
+        this video. Please contact your cable provider in order to upgrade your subscription.
     </string>
 </resources>

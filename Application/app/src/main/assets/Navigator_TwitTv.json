@@ -2,7 +2,10 @@
   "config": {
     "showRelatedContent": true,
     "useCategoryAsDefaultRelatedContent": true,
-    "searchAlgo": "basic"
+    "searchAlgo": "basic",
+    "enableCEA608": false,
+    "enableRecentRow": true,
+    "maxNumberOfRecentItems": 20
   },
   "branding": {
     "globalTheme": "AppTheme",
@@ -19,6 +22,9 @@
       "contents": {
         "dataLoader": "recipes/TwitTvDataLoaderRecipe0.json",
         "dynamicParser": "recipes/TwitTvContentsRecipe.json"
+      },
+      "recipeConfig": {
+        "liveContent": true
       }
     }
   ],

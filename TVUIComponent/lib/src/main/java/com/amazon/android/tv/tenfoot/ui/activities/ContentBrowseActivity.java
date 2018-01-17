@@ -33,6 +33,7 @@ import com.amazon.android.configuration.ConfigurationManager;
 import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.model.Action;
 import com.amazon.android.model.content.Content;
+import com.amazon.android.tv.tenfoot.utils.BrowseHelper;
 import com.amazon.android.ui.constants.ConfigurationConstants;
 import com.amazon.android.ui.fragments.LogoutSettingsFragment;
 import com.amazon.android.utils.GlideHelper;
@@ -93,6 +94,7 @@ public class ContentBrowseActivity extends BaseActivity implements ContentBrowse
         Helpers.handleActivityEnterFadeTransition(this, ACTIVITY_ENTER_TRANSITION_FADE_DURATION);
 
         mContentTitle = (TextView) findViewById(R.id.content_detail_title);
+
         CalligraphyUtils.applyFontToTextView(this, mContentTitle, ConfigurationManager
                 .getInstance(this).getTypefacePath(ConfigurationConstants.BOLD_FONT));
 
@@ -174,7 +176,7 @@ public class ContentBrowseActivity extends BaseActivity implements ContentBrowse
      * @param description The description to display.
      * @param bgImageUrl  The URL of the image to display.
      */
-    private void callImageLoadSubscription(String title, String description, String bgImageUrl) {
+    public void callImageLoadSubscription(String title, String description, String bgImageUrl) {
 
         mContentImageLoadSubscription = Observable
                 .timer(UI_UPDATE_DELAY_IN_MS, TimeUnit.MILLISECONDS)
@@ -218,5 +220,11 @@ public class ContentBrowseActivity extends BaseActivity implements ContentBrowse
         }
 
         reportFullyDrawn();
+    }
+
+    @Override
+    public void setRestoreActivityValues() {
+
+        BrowseHelper.saveBrowseActivityState(this);
     }
 }

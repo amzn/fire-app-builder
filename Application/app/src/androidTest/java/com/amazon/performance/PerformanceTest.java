@@ -108,7 +108,7 @@ public class PerformanceTest {
      */
     private void init() throws Exception {
 
-        final String APP_NAME = "com.amazon.android.calypso";
+        final String APP_NAME = "com.fireappbuilder.android.calypso";
 
         // TODO: handle situations in which clearing logs takes an arbitrary amount of time
         // not needed for later versions of Android as Logcat supports time-based filtering

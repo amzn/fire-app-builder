@@ -14,13 +14,12 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-    <string name="facebook_error_authentication_message">There was an error authenticating the
+  <string name="facebook_error_authentication_message">There was an error authenticating the
         account. Please try again later.
     </string>
-    <string name="access_token_null">Access token is null. User not logged in.</string>
-    <string name="error_checking_token">Return map is null. Encountered an unknown error while
-        checking
+  <string name="access_token_null">Access token is null. User not logged in.</string>
+  <string name="error_checking_token">Return map is null. Encountered an unknown error while checking
         access token.
     </string>
-    <string name="error_checking_token_caught">Error caught while checking access token</string>
+  <string name="error_checking_token_caught">Error caught while checking access token</string>
 </resources>

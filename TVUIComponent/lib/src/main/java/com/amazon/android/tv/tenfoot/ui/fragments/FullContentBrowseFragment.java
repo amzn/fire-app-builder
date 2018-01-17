@@ -34,10 +34,9 @@ import com.amazon.android.model.Action;
 import com.amazon.android.model.content.Content;
 import com.amazon.android.model.content.ContentContainer;
 import com.amazon.android.tv.tenfoot.R;
-import com.amazon.android.tv.tenfoot.presenter.CardPresenter;
 import com.amazon.android.tv.tenfoot.presenter.CustomListRowPresenter;
-import com.amazon.android.tv.tenfoot.presenter.SettingsCardPresenter;
 import com.amazon.android.tv.tenfoot.ui.activities.ContentDetailsActivity;
+import com.amazon.android.tv.tenfoot.utils.BrowseHelper;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -47,7 +46,6 @@ import android.os.Bundle;
 import android.support.v17.leanback.app.BackgroundManager;
 import android.support.v17.leanback.app.BrowseFragment;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
-import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.ImageCardView;
 import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.OnItemViewClickedListener;
@@ -64,8 +62,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import java.util.List;
-
 /**
  * Main class to show ContentBrowseFragment with header and rows of content.
  */
@@ -76,7 +72,11 @@ public class FullContentBrowseFragment extends BrowseFragment {
     private ArrayObjectAdapter mRowsAdapter;
     private Drawable mDefaultBackground;
     private BackgroundManager mBackgroundManager;
-    private ArrayObjectAdapter settingsAdapter;
+    private ArrayObjectAdapter mSettingsAdapter;
+    private ListRow mRecentListRow = null;
+    private ListRow mWatchlistListRow = null;
+    private int mLoginButtonIndex;
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -85,8 +85,10 @@ public class FullContentBrowseFragment extends BrowseFragment {
         super.onActivityCreated(savedInstanceState);
         EventBus.getDefault().register(this);
         mRowsAdapter = new ArrayObjectAdapter(new CustomListRowPresenter());
-        addSettingsActionsToRowAdapter(mRowsAdapter);
-        loadContents();
+        BrowseHelper.loadRootContentContainer(getActivity(), mRowsAdapter);
+        mSettingsAdapter = BrowseHelper.addSettingsActionsToRowAdapter(getActivity(), mRowsAdapter);
+        mLoginButtonIndex = BrowseHelper.getLoginButtonIndex(mSettingsAdapter);
+
         setAdapter(mRowsAdapter);
 
         prepareBackgroundManager();
@@ -114,6 +116,24 @@ public class FullContentBrowseFragment extends BrowseFragment {
             }
         }
         return view;
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        ArrayObjectAdapter rowsAdapter = (ArrayObjectAdapter) getAdapter();
+
+
+        if (ContentBrowser.getInstance(getActivity()).isRecentRowEnabled()) {
+            mRecentListRow = BrowseHelper.updateContinueWatchingRow(getActivity(),
+                                                                    mRecentListRow, rowsAdapter);
+        }
+
+        if (ContentBrowser.getInstance(getActivity()).isWatchlistRowEnabled()) {
+            mWatchlistListRow  = BrowseHelper.updateWatchlistRow(getActivity(), mWatchlistListRow,
+                                                                 mRecentListRow, rowsAdapter);
+        }
     }
 
     private void prepareBackgroundManager() {
@@ -150,60 +170,9 @@ public class FullContentBrowseFragment extends BrowseFragment {
         });
     }
 
-    private void loadContents() {
-
-        Log.i(TAG, "Loading contents...");
-
-        ContentContainer rootContentContainer = ContentBrowser.getInstance(getActivity())
-                                                              .getRootContentContainer();
-
-        CardPresenter cardPresenter = new CardPresenter();
-
-        for (ContentContainer contentContainer : rootContentContainer.getContentContainers()) {
-
-            HeaderItem header = new HeaderItem(0, contentContainer.getName());
-            ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(cardPresenter);
-
-            for (ContentContainer innerContentContainer : contentContainer.getContentContainers()) {
-                listRowAdapter.add(innerContentContainer);
-            }
-
-            for (Content content : contentContainer.getContents()) {
-                listRowAdapter.add(content);
-            }
-
-            mRowsAdapter.add(mRowsAdapter.size() - 1, new ListRow(header, listRowAdapter));
-        }
-    }
-
-    private void addSettingsActionsToRowAdapter(ArrayObjectAdapter arrayObjectAdapter) {
-
-        List<Action> settings = ContentBrowser.getInstance(getActivity())
-                                              .getSettingsActions();
-
-        if (settings != null && !settings.isEmpty()) {
-
-            SettingsCardPresenter cardPresenter = new SettingsCardPresenter();
-            settingsAdapter = new ArrayObjectAdapter(cardPresenter);
-
-            for (Action item : settings) {
-                settingsAdapter.add(item);
-            }
-        }
-        else {
-            Log.d(TAG, "No settings were found");
-        }
-
-        if (settingsAdapter != null) {
-            // Create settings header and row.
-            HeaderItem header = new HeaderItem(0, getString(R.string.settings_title));
-            arrayObjectAdapter.add(0, new ListRow(header, settingsAdapter));
-        }
-    }
-
     /**
      * /**
-     * Event bus listener method to listen for authentication updates from AUthHelper and update
+     * Event bus listener method to listen for authentication updates from AuthHelper and update
      * the login action status in settings.
      *
      * @param authenticationStatusUpdateEvent Broadcast event for update in authentication status.
@@ -212,8 +181,10 @@ public class FullContentBrowseFragment extends BrowseFragment {
     public void onAuthenticationStatusUpdateEvent(AuthHelper.AuthenticationStatusUpdateEvent
                                                           authenticationStatusUpdateEvent) {
 
-        if (settingsAdapter != null) {
-            settingsAdapter.notifyArrayItemRangeChanged(0, settingsAdapter.size());
+        if (mSettingsAdapter != null) {
+            if (mLoginButtonIndex != -1) {
+                mSettingsAdapter.notifyArrayItemRangeChanged(mLoginButtonIndex, 1);
+            }
         }
     }
 
@@ -271,7 +242,8 @@ public class FullContentBrowseFragment extends BrowseFragment {
 
                 ContentBrowser.getInstance(getActivity())
                               .setLastSelectedContent(content)
-                              .switchToScreen(ContentBrowser.CONTENT_DETAILS_SCREEN, bundle);
+                              .switchToScreen(ContentBrowser.CONTENT_DETAILS_SCREEN, content,
+                                              bundle);
             }
             else if (item instanceof ContentContainer) {
                 ContentContainer contentContainer = (ContentContainer) item;

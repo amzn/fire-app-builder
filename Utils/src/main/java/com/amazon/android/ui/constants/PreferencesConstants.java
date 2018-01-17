@@ -20,7 +20,22 @@ package com.amazon.android.ui.constants;
 public class PreferencesConstants {
 
     /**
-     * Constant for the MVPD.
+     * Constant for the MVPD logo url.
      */
     public static final String MVPD_LOGO_URL = "mvpd";
+
+    /**
+     * Constant for the MVPD display name.
+     */
+    public static final String MVPD_DISPLAY_NAME = "mvpd_display_name";
+
+    /**
+     * Constant for the last open activity of the app.
+     */
+    public static final String LAST_ACTIVITY = "last_activity";
+
+    /**
+     * Constant for the time the app was last opened.
+     */
+    public static final String TIME_LAST_SAVED = "last_time_saved";
 }

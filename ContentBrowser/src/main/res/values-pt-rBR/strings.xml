@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+  <string name="watch_now_1">Assistir</string>
+  <string name="watch_now_2">Agora</string>
+  <string name="watch_from_beginning_1">Assistir</string>
+  <string name="watch_from_beginning_2">do início</string>
+  <string name="resume_1">Reiniciar</string>
+  <string name="resume_2">Reprodução</string>
+  <string name="premium_1">Ir</string>
+  <string name="premium_2">Premium</string>
+  <string name="daily_pass_1">diário</string>
+  <string name="daily_pass_2">Passe</string>
+  <string name="recommended_contents_header">Conteúdo recomendado</string>
+  <string name="optional_login_dialog_title">Acessar</string>
+  <string name="optional_login_dialog_message">Acesse agora para aproveitar ao máximo o seu aplicativo.</string>
+  <string name="now">Agora</string>
+  <string name="later">Mais tarde</string>
+  <string name="iap_error_dialog_title">Erro de compra</string>
+  <string name="subscription_expired">Sua inscrição expirou!</string>
+  <string name="ok">@android:string/ok</string>
+</resources>

@@ -22,7 +22,7 @@ permissions and limitations under the License.
         Amazon"
     </string>
     <string name="return_to_app">Return</string>
-    <string name="APIKey_incorrect">APIKey is incorrect or does not exist.</string>
+    <string name="incorrect_api_key">APIKey is incorrect or does not exist.</string>
     <string name="profile_Login">profile</string>
     <string name="error_during_auth">Error during authorization. Please try again.</string>
     <string name="error_getting_profile">Error retrieving profile information.\nPlease log in
@@ -30,7 +30,7 @@ permissions and limitations under the License.
     </string>
     <string name="auth_cancelled">Authorization cancelled</string>
 
-    <string name="Welcome">Welcome, %s!</string>
-    <string name="Your_email_is">Your email is %s</string>
+    <string name="welcome">Welcome, %s!</string>
+    <string name="your_email_is">Your email is %s</string>
 
 </resources>

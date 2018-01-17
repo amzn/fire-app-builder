@@ -31,5 +31,8 @@ allprojects {
     repositories {
         jcenter()
         mavenCentral()
+        if (rootProject.hasProperty('mavenUrl')) {
+            maven { url rootProject.mavenUrl }
+        }
     }
 }

@@ -14,14 +14,21 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.amazon.android.calypso">
+          package="com.fireappbuilder.android.calypso">
+
+    <uses-feature android:name="android.software.leanback" android:required="true"/>
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
+
+    <!-- Permission for getting voice command controls using media session -->
+    <uses-permission android:name="com.amazon.permission.media.session.voicecommandcontrol"/>
 
     <application
             android:allowBackup="true"
             android:label="@string/app_name"
             android:name="com.amazon.android.tv.tenfoot.base.TenFootApp"
             android:icon="@drawable/app_logo"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:banner="@drawable/app_banner">
         <activity
                 android:name="com.amazon.android.tv.tenfoot.ui.activities.SplashActivity"
                 android:screenOrientation="landscape"

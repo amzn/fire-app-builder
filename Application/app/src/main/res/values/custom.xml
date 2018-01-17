@@ -15,6 +15,11 @@ permissions and limitations under the License.
 -->
 <resources>
 
+    <string translatable="false" name="app_name">Fire App Builder</string>
+    <!-- The app's display name that should have a max of 15 characters
+         Currently used with recommendations on the Home Screen -->
+    <string translatable="false" name="app_name_short">FireAppBuilder</string>
+
     <!-- App colors -->
 
     <!-- The background color of the screens. -->
@@ -67,11 +72,16 @@ permissions and limitations under the License.
     <drawable name="company_logo">@drawable/fire_app_builder_white_2</drawable>
     <!-- App icon -->
     <drawable name="app_logo">@mipmap/ic_launcher</drawable>
+    <!-- App banner. Note: Used for Google Play Store -->
+    <drawable name="app_banner">@drawable/placeholder_banner</drawable>
     <!-- Content preview window customization -->
     <dimen name="content_image_height">350dp</dimen>
     <dimen name="content_image_width">540dp</dimen>
     <!-- Size of gradient fade for content preview window -->
     <dimen name="content_image_gradient_size">100dp</dimen>
+    <!-- A grace period used when selecting recent records that have been started but not
+        finished. Measured in milliseconds. -->
+    <integer name="recent_grace_period">10000</integer>
 
     <!-- End of Browse Customization -->
 

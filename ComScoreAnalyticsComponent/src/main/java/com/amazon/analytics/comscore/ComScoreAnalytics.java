@@ -16,6 +16,7 @@ package com.amazon.analytics.comscore;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.Log;
 
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.amazon.ads.IAds;
 import com.amazon.analytics.AnalyticsTags;
 import com.amazon.analytics.CustomAnalyticsTags;
 import com.amazon.android.utils.FileHelper;
@@ -82,6 +84,16 @@ public class ComScoreAnalytics implements IAnalytics {
     private Set<String> mHiddenEventSet;
     private Set<String> mViewEventSet;
 
+    /**
+     * Resource context to be used to get classification type string
+     */
+    private Resources mComScoreRes;
+
+    /**
+     * time in milliseconds to check for long duration video
+     */
+    private static final int DURATION_LONG_VIDEO = 60000;
+
     // Is the playback screen the current screen?
     private boolean mOnPlaybackScreen = false;
 
@@ -140,6 +152,7 @@ public class ComScoreAnalytics implements IAnalytics {
 
         mCustomTags.init(context, R.string.comscore_analytics_custom_tags);
         initEventTags(context, R.string.comscore_analytics_event_tags);
+        mComScoreRes = context.getResources();
 
         Log.d(TAG, "Configuration complete");
     }
@@ -214,6 +227,105 @@ public class ComScoreAnalytics implements IAnalytics {
         else {
             Log.d(TAG, "Ending lifecycle data collection for " + activityName);
             Analytics.notifyExitForeground();
+        }
+    }
+
+    /**
+     * Check if current content is live content.
+     *
+     * @param attributes attributes received from analytics helper.
+     * @return is live content or not.
+     */
+    boolean isLiveContent(HashMap<String, String> attributes) {
+
+        return (attributes.containsKey(AnalyticsTags.ATTRIBUTE_LIVE_FEED) &&
+                Boolean.valueOf(attributes.get(AnalyticsTags.ATTRIBUTE_LIVE_FEED)));
+    }
+
+    /**
+     * check if current content is long duration content as per ComScore definition
+     *
+     * @param attributes attributes received from analytics helper.
+     * @return is long duration video or not.
+     */
+    boolean isLongFormVideoContent(HashMap<String, String> attributes) {
+
+        return (attributes.containsKey(AnalyticsTags.ATTRIBUTE_VIDEO_DURATION) &&
+                Integer.valueOf(attributes.get(AnalyticsTags.ATTRIBUTE_VIDEO_DURATION)) >=
+                        DURATION_LONG_VIDEO);
+    }
+
+    /**
+     * Get content classification type label to be added with other attributes for Com Score.
+     * Currently checking only for Live vs on demand video content
+     *
+     * @param attributes attributes received from analytics helper.
+     * @return classification type label.
+     */
+    private String getContentClassificationTypeLabel(HashMap<String, String> attributes) {
+
+        if (attributes != null) {
+
+            //This is a live streaming content
+            if (isLiveContent(attributes)) {
+                return mComScoreRes.getString(R.string.premium_live_streaming_content);
+            }
+
+            //checking for long or short duration video on demand content
+            if (isLongFormVideoContent(attributes)) {
+                return mComScoreRes.getString(R.string.premium_long_form_video_on_demand_content);
+            }
+            else {
+                return mComScoreRes.getString(R.string.premium_short_form_video_on_demand_content);
+            }
+        }
+        return mComScoreRes.getString(R.string.other_content);
+    }
+
+    /**
+     * Get Ad classification type label to be added with other attributes for Com Score.
+     * Currently checking only for ads during Live vs on demand video
+     *
+     * @param attributes attributes received from analytics helper.
+     * @return classification type label.
+     */
+    private String getAdClassificationTypeLabel(HashMap<String, String> attributes) {
+
+        if (attributes != null) {
+
+            //This is a live streaming content
+            if (isLiveContent(attributes)) {
+                return mComScoreRes.getString(R.string.linear_live_ad);
+            }
+
+            //checking for current Ad type
+            if (attributes.containsKey(AnalyticsTags.ATTRIBUTE_ADVERTISEMENT_TYPE)) {
+                switch (attributes.get(AnalyticsTags.ATTRIBUTE_ADVERTISEMENT_TYPE)) {
+                    case IAds.PRE_ROLL_AD:
+                        return mComScoreRes.getString(R.string.linear_pre_roll_video_on_demand_ad);
+                    case IAds.MID_ROLL_AD:
+                        return mComScoreRes.getString(R.string.linear_mid_roll_video_on_demand_ad);
+                    case IAds.POST_ROLL_AD:
+                        return mComScoreRes.getString(R.string.linear_post_roll_video_on_demand_ad);
+                }
+            }
+        }
+        return mComScoreRes.getString(R.string.other_ad);
+    }
+
+    /**
+     * Remove content tags from ad analytics tags as ComScore doesn't provide separate
+     * id and duration tags for content and ad.
+     *
+     * @param attributes attributes received from analytics helper.
+     */
+    private void removeOverlappedTagsInAdData(HashMap<String, String> attributes) {
+
+        if (attributes.containsKey(AnalyticsTags.ATTRIBUTE_VIDEO_ID)) {
+            attributes.remove(AnalyticsTags.ATTRIBUTE_VIDEO_ID);
+        }
+        if (attributes.containsKey(AnalyticsTags.ATTRIBUTE_VIDEO_DURATION)) {
+            attributes.remove(AnalyticsTags.ATTRIBUTE_VIDEO_DURATION);
         }
     }
 
@@ -342,6 +454,8 @@ public class ComScoreAnalytics implements IAnalytics {
     private void trackPlaybackStarted(HashMap<String, Object> attributes) {
 
         mCurrentContentMetadata = convertMapToStrings(attributes);
+        mCurrentContentMetadata.put(AnalyticsTags.ATTRIBUTE_CLASSIFICATION_TYPE,
+                                    getContentClassificationTypeLabel(mCurrentContentMetadata));
         mStreamingAnalytics.createPlaybackSession();
         mStreamingAnalytics.getPlaybackSession().setAsset(mCustomTags.getCustomTags
                 (mCurrentContentMetadata, false));
@@ -356,6 +470,10 @@ public class ComScoreAnalytics implements IAnalytics {
     private void trackAdStarted(HashMap<String, Object> attributes) {
 
         mCurrentAdMetadata = convertMapToStrings(attributes);
+        //Remove Video Content id and duration as ComScore does not provide separate tags for Ad.
+        removeOverlappedTagsInAdData(mCurrentAdMetadata);
+        mCurrentAdMetadata.put(AnalyticsTags.ATTRIBUTE_CLASSIFICATION_TYPE,
+                               getAdClassificationTypeLabel(mCurrentAdMetadata));
         mStreamingAnalytics.getPlaybackSession().setAsset(mCustomTags.getCustomTags
                 (mCurrentAdMetadata, false));
         mStreamingAnalytics.notifyPlay(0);
@@ -369,8 +487,8 @@ public class ComScoreAnalytics implements IAnalytics {
     private void trackAdFinished(HashMap<String, Object> attributes) {
 
         mCurrentAdMetadata = convertMapToStrings(attributes);
-        mStreamingAnalytics.getPlaybackSession().setAsset(mCustomTags.getCustomTags
-                (mCurrentAdMetadata, false));
+        //Remove Video Content id and duration as ComScore does not provide separate tags for Ad.
+        removeOverlappedTagsInAdData(mCurrentAdMetadata);
         mStreamingAnalytics.notifyEnd(getCurrentPosition(attributes));
     }
 

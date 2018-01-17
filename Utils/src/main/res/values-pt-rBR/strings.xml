@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+  <string name="feed_error_message">O serviço está indisponível. Tente novamente mais tarde.</string>
+  <string name="network_error_message">Rede indisponível no momento. Tente novamente mais tarde.</string>
+  <string name="registration_code_error_message">Erro ao obter código de registro. Descarte esta mensagem e tente novamente. </string>
+  <string name="authentication_error_message">Erro ao autenticar detalhes.\r\nTente digitar suas informações novamente ou entre em contato com o seu provedor de TV a cabo para ter acesso a este conteúdo.</string>
+  <string name="authorization_error_message">Você não tem autorização para acessar este conteúdo\r\nEntre em contato com o seu provedor de TV a cabo para ter acesso a este conteúdo.</string>
+  <string name="logout_success_message">Saída com êxito. Você será direcionado à página de detalhes em breve.</string>
+  <string name="logout_failure_message">Falha ao sair. Tente novamente.</string>
+  <string name="playback_error_message">Falha na reprodução. Tente novamente.</string>
+  <string name="try_again_label">Tente novamente</string>
+  <string name="exit_app_label">Sair do aplicativo</string>
+  <string name="go_to_network_settings_label">Ir para Configurações de rede</string>
+  <string name="dismiss_label">Descartar</string>
+  <string name="login_label">Conectar-se</string>
+  <string name="logout_label">Sair</string>
+  <string name="slideshow_label">Configuração da apresentação de slides</string>
+  <string name="auto_play_speed">Velocidade dos slides</string>
+  <string name="terms_title">Termos de uso</string>
+  <string name="terms_description">Revisar os avisos legais.</string>
+  <string name="slideshow_title">Velocidade da apresentação de slides</string>
+  <string name="slideshow_description">Definir a velocidade da apresentação de slides.</string>
+  <string name="logout_description">Sair da sua conta.</string>
+  <string name="login_description">Acesse sua conta</string>
+  <string name="logout_dialog_description">Tem certeza de que quer sair? </string>
+  <string name="login_dialog_description">Você não está conectado. Selecione e reproduza qualquer vídeo para se conectar.</string>
+  <string name="logout_dialog_option_1">Sim</string>
+  <string name="logout_dialog_option_2">Não</string>
+  <string name="btn_submit">ENVIAR</string>
+  <string name="btn_get_new_code">OBTER NOVO CÓDIGO</string>
+  <string name="second_screen_login_instruction_line_1">Ir para seu computador ou dispositivo móvel</string>
+  <string name="second_screen_login_instruction_line_3">Digite o seguinte código que diferencia entre maiúsculas e minúsculas:</string>
+  <string name="second_screen_login_instruction_line_4">Carregando…</string>
+</resources>

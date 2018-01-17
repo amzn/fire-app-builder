@@ -62,7 +62,7 @@ public class ContentTranslatorTest {
 
         String titleText = "Good Content";
         Content content = new Content();
-        assertTrue(mContentTranslator.setMemberVariable(content, "title", titleText));
+        assertTrue(mContentTranslator.setMemberVariable(content, "mTitle", titleText));
         assertEquals(content.getTitle(), titleText);
     }
 
@@ -74,7 +74,7 @@ public class ContentTranslatorTest {
     public void testSetMemberVariableId() throws Exception {
 
         Content content = new Content();
-        assertTrue(mContentTranslator.setMemberVariable(content, "id", "1"));
+        assertTrue(mContentTranslator.setMemberVariable(content, "mId", "1"));
         assertEquals(content.getId(), "1");
     }
 
@@ -87,7 +87,7 @@ public class ContentTranslatorTest {
 
         String descriptionText = "some description text";
         Content content = new Content();
-        assertTrue(mContentTranslator.setMemberVariable(content, "description", descriptionText));
+        assertTrue(mContentTranslator.setMemberVariable(content, "mDescription", descriptionText));
         assertEquals(content.getDescription(), descriptionText);
     }
 
@@ -100,7 +100,7 @@ public class ContentTranslatorTest {
 
         String subtitleText = "A subtitle";
         Content content = new Content();
-        assertTrue(mContentTranslator.setMemberVariable(content, "subtitle", subtitleText));
+        assertTrue(mContentTranslator.setMemberVariable(content, "mSubtitle", subtitleText));
         assertEquals(content.getSubtitle(), subtitleText);
     }
 
@@ -113,7 +113,7 @@ public class ContentTranslatorTest {
 
         String urlText = "www.someUrl.com";
         Content content = new Content();
-        assertTrue(mContentTranslator.setMemberVariable(content, "url", urlText));
+        assertTrue(mContentTranslator.setMemberVariable(content, "mUrl", urlText));
         assertEquals(content.getUrl(), urlText);
     }
 
@@ -126,7 +126,7 @@ public class ContentTranslatorTest {
 
         String urlText = "www.someUrl.com";
         Content content = new Content();
-        assertTrue(mContentTranslator.setMemberVariable(content, "cardImageUrl", urlText));
+        assertTrue(mContentTranslator.setMemberVariable(content, "mCardImageUrl", urlText));
         assertEquals(content.getCardImageUrl(), urlText);
     }
 
@@ -139,7 +139,7 @@ public class ContentTranslatorTest {
 
         String urlText = "www.someUrl.com";
         Content content = new Content();
-        assertTrue(mContentTranslator.setMemberVariable(content, "backgroundImageUrl", urlText));
+        assertTrue(mContentTranslator.setMemberVariable(content, "mBackgroundImageUrl", urlText));
         assertEquals(content.getBackgroundImageUrl(), urlText);
     }
 
@@ -152,7 +152,7 @@ public class ContentTranslatorTest {
 
         String tags = "['tag1', 'tag2', 'tag3']";
         Content content = new Content();
-        assertTrue(mContentTranslator.setMemberVariable(content, "tags", tags));
+        assertTrue(mContentTranslator.setMemberVariable(content, "mTags", tags));
         assertEquals(content.getTags().size(), 3);
     }
 
@@ -323,7 +323,7 @@ public class ContentTranslatorTest {
     @Test
     public void testMapToModelWithBadRecipeTitle() throws Exception {
 
-        Recipe badRecipe = Recipe.newInstance(getBadContentRecipeJsonString("title"));
+        Recipe badRecipe = Recipe.newInstance(getBadContentRecipeJsonString("mTitle"));
 
         Content content = mContentTranslator.mapToModel(createValidMap(), badRecipe);
         assertNull("Content should be null due to bad translation", content);
@@ -337,7 +337,7 @@ public class ContentTranslatorTest {
     @Test
     public void testMapToModelWithBadRecipeDescription() throws Exception {
 
-        Recipe badRecipe = Recipe.newInstance(getBadContentRecipeJsonString("description"));
+        Recipe badRecipe = Recipe.newInstance(getBadContentRecipeJsonString("mDescription"));
 
         Content content = mContentTranslator.mapToModel(createValidMap(), badRecipe);
         assertNull("Content should be null due to bad translation", content);
@@ -351,7 +351,7 @@ public class ContentTranslatorTest {
     @Test
     public void testMapToModelWithBadRecipeUrl() throws Exception {
 
-        Recipe badRecipe = Recipe.newInstance(getBadContentRecipeJsonString("url"));
+        Recipe badRecipe = Recipe.newInstance(getBadContentRecipeJsonString("mUrl"));
 
         Content content = mContentTranslator.mapToModel(createValidMap(), badRecipe);
         assertNull("Content should be null due to bad translation", content);
@@ -364,7 +364,7 @@ public class ContentTranslatorTest {
     @Test
     public void testMapToModelWithBadRecipeCardImageUrl() throws Exception {
 
-        Recipe badRecipe = Recipe.newInstance(getBadContentRecipeJsonString("cardImageUrl"));
+        Recipe badRecipe = Recipe.newInstance(getBadContentRecipeJsonString("mCardImageUrl"));
 
         Content content = mContentTranslator.mapToModel(createValidMap(), badRecipe);
         assertNull("Content should be null due to bad translation", content);
@@ -378,7 +378,7 @@ public class ContentTranslatorTest {
     @Test
     public void testMapToModelWithBadRecipeBackgroundImageUrl() throws Exception {
 
-        Recipe badRecipe = Recipe.newInstance(getBadContentRecipeJsonString("backgroundImageUrl"));
+        Recipe badRecipe = Recipe.newInstance(getBadContentRecipeJsonString("mBackgroundImageUrl"));
 
         Content content = mContentTranslator.mapToModel(createValidMap(), badRecipe);
         assertNull("Content should be null due to bad translation", content);
@@ -407,11 +407,11 @@ public class ContentTranslatorTest {
     private String getBadContentRecipeJsonString(String skipMatchItem, String extraMatchItem) {
 
         final List<String> matchList = new ArrayList<>();
-        matchList.add("title@title");
-        matchList.add("description@description");
-        matchList.add("urls/url@url");
-        matchList.add("urls/cardImageUrl@cardImageUrl");
-        matchList.add("urls/backgroundImageUrl@backgroundImageUrl");
+        matchList.add("title@mTitle");
+        matchList.add("description@mDescription");
+        matchList.add("urls/url@mUrl");
+        matchList.add("urls/cardImageUrl@mCardImageUrl");
+        matchList.add("urls/backgroundImageUrl@mBackgroundImageUrl");
 
         // Create the matchList, excluding skipMatchItem
         StringBuilder matchListStringBuilder = new StringBuilder();

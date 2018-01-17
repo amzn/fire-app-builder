@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+  <string name="title_activity_adobe_authentication">Autenticación</string>
+  <string name="adobepass_login_instruction_line_1">Accede a tu equipo o dispositivo móvil</string>
+  <string name="adobepass_login_instruction_line_3">Introduce el siguiente código (distingue entre mayúsculas y minúsculas):</string>
+  <string name="adobepass_login_instruction_line_4">Cargando…</string>
+  <string name="btn_submit">ENVIAR</string>
+  <string name="btn_get_new_code">OBTENER UN CÓDIGO NUEVO</string>
+  <string name="adobe_pass_error_authentication_message">Se ha producido un error al autenticar la cuenta. Vuelve a intentarlo más tarde.</string>
+  <string name="adobe_pass_error_registration_message">Se ha producido un error al autenticar la cuenta. Vuelve a intentarlo más tarde.</string>
+  <string name="adobe_pass_no_authorization_message">Tu suscripción no incluye este vídeo. Ponte en contacto con el proveedor del servicio para actualizar la suscripción.</string>
+</resources>

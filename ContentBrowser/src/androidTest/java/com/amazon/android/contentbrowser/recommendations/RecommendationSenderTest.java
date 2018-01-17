@@ -15,8 +15,9 @@
 package com.amazon.android.contentbrowser.recommendations;
 
 
-import com.amazon.android.contentbrowser.database.ContentDatabaseHelper;
-import com.amazon.android.contentbrowser.database.RecommendationRecord;
+import com.amazon.android.contentbrowser.database.ContentDatabase;
+import com.amazon.android.contentbrowser.database.helpers.RecommendationDatabaseHelper;
+import com.amazon.android.contentbrowser.database.records.RecommendationRecord;
 import com.amazon.android.model.content.Content;
 import com.amazon.android.model.content.ContentContainer;
 import com.amazon.android.utils.Helpers;
@@ -32,6 +33,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import android.app.Notification;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
@@ -42,6 +44,9 @@ import java.util.Arrays;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
+/**
+ * Test class for {@link RecommendationSender}.
+ */
 public class RecommendationSenderTest {
 
     private final String LOGCAT_COMMAND = "logcat -d RecommendationSender:D *:S";
@@ -70,7 +75,7 @@ public class RecommendationSenderTest {
 
         mSender = new RecommendationSender(InstrumentationRegistry.getContext(), mRoot, false);
 
-        Field instance = ContentDatabaseHelper.class.getDeclaredField("sInstance");
+        Field instance = ContentDatabase.class.getDeclaredField("sInstance");
         instance.setAccessible(true);
         instance.set(null, null);
     }
@@ -104,8 +109,8 @@ public class RecommendationSenderTest {
     @Test
     public void testSendNewRecommendations() throws Exception {
 
-        ContentDatabaseHelper databaseHelper =
-                ContentDatabaseHelper.getInstance((InstrumentationRegistry.getContext()));
+        RecommendationDatabaseHelper databaseHelper = RecommendationDatabaseHelper.getInstance();
+        Context context = InstrumentationRegistry.getContext();
         String type = RecommendationRecord.GLOBAL;
 
         List<String> contendIds = new ArrayList<>(Arrays.asList("1", "2", "3"));
@@ -113,30 +118,27 @@ public class RecommendationSenderTest {
 
         // Happy case. Send three recommendations.
         assertTrue("Recommendations should have been sent successfully.",
-                   mSender.sendNewRecommendations(databaseHelper, type, recommendationIds,
-                                                  contendIds));
+                   mSender.sendNewRecommendations(type, recommendationIds, contendIds));
         assertEquals("3 global recommendations should be found in the database.", 3,
-                     databaseHelper.getRecommendationsWithType(RecommendationRecord.GLOBAL).size());
+                     databaseHelper.getRecsWithType(context, RecommendationRecord.GLOBAL).size());
 
         // Test sending empty list of content ids.
         assertTrue("Recommendations should have been sent successfully.",
-                   mSender.sendNewRecommendations(databaseHelper, type, recommendationIds,
-                                                  new ArrayList<>()));
+                   mSender.sendNewRecommendations(type, recommendationIds, new ArrayList<>()));
         assertEquals("No new recommendations should have been saved to the database.", 3,
-                     databaseHelper.getRecommendationsWithType(RecommendationRecord.GLOBAL).size());
+                     databaseHelper.getRecsWithType(context, RecommendationRecord.GLOBAL).size());
 
         // Test that not enough rec ids is handled by sending 2 rec ids for 3 content ids.
         recommendationIds = new ArrayList<>(Arrays.asList(1, 2, 3));
         recommendationIds.remove(0);
         assertFalse("Recommendations should not have been sent successfully",
-                    mSender.sendNewRecommendations(databaseHelper, type, recommendationIds,
-                                                   contendIds));
+                    mSender.sendNewRecommendations(type, recommendationIds, contendIds));
 
         // Test null input is handled.
         assertFalse("Recommendations should not have been sent successfully",
-                    mSender.sendNewRecommendations(null, type, null, null));
+                    mSender.sendNewRecommendations(type, null, null));
 
-        databaseHelper.close();
+        databaseHelper.getDatabase(context).close();
 
     }
 
@@ -145,29 +147,29 @@ public class RecommendationSenderTest {
      */
     @Test
     public void testDeleteRecommendations() throws Exception {
-
-        ContentDatabaseHelper databaseHelper =
-                ContentDatabaseHelper.getInstance((InstrumentationRegistry.getContext()));
-
+    
+        RecommendationDatabaseHelper databaseHelper = RecommendationDatabaseHelper.getInstance();
+        Context context = InstrumentationRegistry.getContext();
+    
         assertNotNull(databaseHelper);
-        databaseHelper.clearDatabase();
+        databaseHelper.clearDatabase(context);
 
         RecommendationRecord r1 = new RecommendationRecord("1", 1, RecommendationRecord.GLOBAL);
         RecommendationRecord r2 = new RecommendationRecord("2", 2, RecommendationRecord.GLOBAL);
         RecommendationRecord r3 = new RecommendationRecord("3", 3, RecommendationRecord.GLOBAL);
 
-        databaseHelper.addRecommendation(r1);
-        databaseHelper.addRecommendation(r2);
-        databaseHelper.addRecommendation(r3);
+        databaseHelper.addRecord(context, r1);
+        databaseHelper.addRecord(context, r2);
+        databaseHelper.addRecord(context, r3);
 
         List<RecommendationRecord> list = new ArrayList<>(Arrays.asList(r1, r2, r3));
 
-        mSender.deleteRecommendations(databaseHelper, list);
+        mSender.deleteRecommendations(list);
 
         assertEquals("Recommendations should have been deleted", 0,
-                     databaseHelper.getRecommendationsWithType(RecommendationRecord.GLOBAL).size());
+                     databaseHelper.getRecsWithType(context, RecommendationRecord.GLOBAL).size());
 
-        databaseHelper.close();
+        databaseHelper.getDatabase(context).close();
     }
 
     /**
@@ -175,15 +177,15 @@ public class RecommendationSenderTest {
      */
     @Test
     public void testUpdateRecommendations() throws Exception {
-
-        ContentDatabaseHelper databaseHelper =
-                ContentDatabaseHelper.getInstance((InstrumentationRegistry.getContext()));
+    
+        RecommendationDatabaseHelper databaseHelper = RecommendationDatabaseHelper.getInstance();
+        Context context = InstrumentationRegistry.getContext();
         String type = RecommendationRecord.GLOBAL;
 
         RecommendationRecord r1 = new RecommendationRecord("1", 1, RecommendationRecord.RELATED);
 
         assertNotNull(databaseHelper);
-        databaseHelper.addRecommendation(r1);
+        databaseHelper.addRecord(context, r1);
 
         List<RecommendationRecord> list = new ArrayList<>();
         list.add(r1);
@@ -193,19 +195,19 @@ public class RecommendationSenderTest {
         List<String> contentIdsForNewRecs = new ArrayList<>(Arrays.asList("1", "2", "3"));
 
         assertTrue("Recommendations should have been updated successfully",
-                   mSender.updateExistingRecommendations(databaseHelper, type, list,
-                                                         contentIdsForNewRecs, idsForNewRecs));
+                   mSender.updateExistingRecommendations(type, list, contentIdsForNewRecs,
+                                                         idsForNewRecs));
 
         assertFalse("Id should have been removed.", idsForNewRecs.contains(1));
         assertFalse("Id should have been removed.", contentIdsForNewRecs.contains("1"));
 
-        RecommendationRecord updatedR1 = databaseHelper.getRecommendationByContentId("1");
+        RecommendationRecord updatedR1 = databaseHelper.getRecord(context, "1");
         assertTrue("Record should have been updated", updatedR1.getType().equals
                 (RecommendationRecord.GLOBAL));
 
         assertFalse("Recommendations should not be updated with null input parameters",
-                    mSender.updateExistingRecommendations(null, type, null, null, null));
-        databaseHelper.close();
+                    mSender.updateExistingRecommendations(type, null, null, null));
+        databaseHelper.getDatabase(context).close();
     }
 
     /**
@@ -213,17 +215,17 @@ public class RecommendationSenderTest {
      */
     @Test
     public void testGetRecordsToDelete() throws Exception {
-
-        ContentDatabaseHelper databaseHelper =
-                ContentDatabaseHelper.getInstance((InstrumentationRegistry.getContext()));
+    
+        RecommendationDatabaseHelper databaseHelper = RecommendationDatabaseHelper.getInstance();
+        Context context = InstrumentationRegistry.getContext();
         String type = RecommendationRecord.GLOBAL;
 
         // Case 1:
         // Database empty; new 5; update 0; max 5
         assertNotNull(databaseHelper);
-        databaseHelper.clearDatabase();
-        List<RecommendationRecord> toDelete = mSender.getRecordsToDelete(databaseHelper, type, 5,
-                                                                         new ArrayList<>(), 5);
+        databaseHelper.clearDatabase(context);
+        List<RecommendationRecord> toDelete = mSender.getRecordsToDelete(type, 5, new ArrayList<>(),
+                                                                         5);
         assertTrue("No recommendations should be deleted", toDelete.isEmpty());
 
         // Case 2:
@@ -232,11 +234,11 @@ public class RecommendationSenderTest {
         RecommendationRecord r2 = new RecommendationRecord("2", 2, RecommendationRecord.GLOBAL);
         RecommendationRecord r3 = new RecommendationRecord("3", 3, RecommendationRecord.GLOBAL);
 
-        databaseHelper.addRecommendation(r1);
-        databaseHelper.addRecommendation(r2);
-        databaseHelper.addRecommendation(r3);
+        databaseHelper.addRecord(context, r1);
+        databaseHelper.addRecord(context, r2);
+        databaseHelper.addRecord(context, r3);
 
-        toDelete = mSender.getRecordsToDelete(databaseHelper, type, 4, new ArrayList<>(), 5);
+        toDelete = mSender.getRecordsToDelete(type, 4, new ArrayList<>(), 5);
         assertEquals("3 recommendations should be deleted", 2, toDelete.size());
         assertTrue("Rec with id 1 should be deleted", toDelete.contains(r1));
         assertTrue("Rec with id 2 should be deleted", toDelete.contains(r2));
@@ -248,20 +250,20 @@ public class RecommendationSenderTest {
         toUpdate.add(r2);
         toUpdate.add(r3);
 
-        toDelete = mSender.getRecordsToDelete(databaseHelper, type, 5, toUpdate, 5);
+        toDelete = mSender.getRecordsToDelete(type, 5, toUpdate, 5);
         assertTrue("No recommendations should be deleted", toDelete.isEmpty());
 
         // Case 4
         // Database 3, new 10, update 0; max 5
-        toDelete = mSender.getRecordsToDelete(databaseHelper, type, 10, new ArrayList<>(), 5);
+        toDelete = mSender.getRecordsToDelete(type, 10, new ArrayList<>(), 5);
         assertEquals("3 recommendations should be deleted", 3, toDelete.size());
 
         // Case 5
         // Database 3, new 1, update 0; max 5
-        toDelete = mSender.getRecordsToDelete(databaseHelper, type, 1, new ArrayList<>(), 5);
+        toDelete = mSender.getRecordsToDelete(type, 1, new ArrayList<>(), 5);
         assertTrue("No recommendations should be deleted", toDelete.isEmpty());
 
-        databaseHelper.close();
+        databaseHelper.getDatabase(context).close();
     }
 
     /**
@@ -269,65 +271,65 @@ public class RecommendationSenderTest {
      */
     @Test
     public void testBuildGlobalRecommendations() throws Exception {
-
-        ContentDatabaseHelper databaseHelper =
-                ContentDatabaseHelper.getInstance((InstrumentationRegistry.getContext()));
+    
+        RecommendationDatabaseHelper databaseHelper = RecommendationDatabaseHelper.getInstance();
+        Context context = InstrumentationRegistry.getContext();
         String type = RecommendationRecord.GLOBAL;
 
         // Build one recommendation. Database starts off empty.
         assertNotNull(databaseHelper);
-        databaseHelper.clearDatabase();
+        databaseHelper.clearDatabase(context);
         List<String> ids = new ArrayList<>();
         ids.add("1");
         assertTrue("Recommendations should build with no problems",
-                   mSender.sendRecommendationsForType(databaseHelper, type, ids, 5));
+                   mSender.sendRecommendationsForType(type, ids, 5));
         assertEquals("Database should contain one recommendation", 1,
-                     databaseHelper.getRecommendationsCount());
+                     databaseHelper.getCount(context));
         assertTrue("Recommendation 1 should exist in database",
-                   databaseHelper.recommendationWithContentIdExists("1"));
+                   databaseHelper.recordExists(context, "1"));
 
         // Build three more recommendations. The max # of recommendations at one time is 5.
         ids = new ArrayList<>(Arrays.asList("1", "2", "3", "4"));
         assertTrue("Recommendations should build with no problems",
-                   mSender.sendRecommendationsForType(databaseHelper, type, ids, 5));
+                   mSender.sendRecommendationsForType(type, ids, 5));
         assertEquals("Database should contain 4 recommendations", 4,
-                     databaseHelper.getRecommendationsCount());
+                     databaseHelper.getCount(context));
         assertTrue("Recommendation 1 should exist in database",
-                   databaseHelper.recommendationWithContentIdExists("1"));
+                   databaseHelper.recordExists(context, "1"));
         assertTrue("Recommendation 2 should exist in database",
-                   databaseHelper.recommendationWithContentIdExists("2"));
+                   databaseHelper.recordExists(context, "2"));
         assertTrue("Recommendation 3 should exist in database",
-                   databaseHelper.recommendationWithContentIdExists("3"));
+                   databaseHelper.recordExists(context, "3"));
         assertTrue("Recommendation 4 should exist in database",
-                   databaseHelper.recommendationWithContentIdExists("4"));
+                   databaseHelper.recordExists(context, "4"));
 
         // In this case we want to update 2 recommendations (1 and 4) and build 4 new ones.
         // Since the max is 5 at one time, we're expected 8 to not be included. Expecting recs
         // 2 and 3 to be deleted from database, and 5, 6, 7 to be added.
         ids = new ArrayList<>(Arrays.asList("1", "5", "6", "4", "7", "8"));
         assertTrue("Recommendations should build with no problems",
-                   mSender.sendRecommendationsForType(databaseHelper, type, ids, 5));
+                   mSender.sendRecommendationsForType(type, ids, 5));
         assertEquals("Database should contain 5 recommendations", 5,
-                     databaseHelper.getRecommendationsCount());
+                     databaseHelper.getCount(context));
         assertTrue("Recommendation 1 should exist in database",
-                   databaseHelper.recommendationWithContentIdExists("1"));
+                   databaseHelper.recordExists(context, "1"));
         assertTrue("Recommendation 4 should exist in database",
-                   databaseHelper.recommendationWithContentIdExists("4"));
+                   databaseHelper.recordExists(context, "4"));
         assertTrue("Recommendation 5 should exist in database",
-                   databaseHelper.recommendationWithContentIdExists("5"));
+                   databaseHelper.recordExists(context, "5"));
         assertTrue("Recommendation 6 should exist in database",
-                   databaseHelper.recommendationWithContentIdExists("6"));
+                   databaseHelper.recordExists(context, "6"));
         assertTrue("Recommendation 7 should exist in database",
-                   databaseHelper.recommendationWithContentIdExists("7"));
+                   databaseHelper.recordExists(context, "7"));
         assertFalse("Recommendation 2 should not exist in database",
-                    databaseHelper.recommendationWithContentIdExists("2"));
+                    databaseHelper.recordExists(context, "2"));
         assertFalse("Recommendation 3 should not exist in database",
-                    databaseHelper.recommendationWithContentIdExists("3"));
+                    databaseHelper.recordExists(context, "3"));
 
         assertFalse("Bad parameters should have been caught",
-                    mSender.sendRecommendationsForType(null, null, null, 0));
+                    mSender.sendRecommendationsForType(null, null, 0));
 
-        databaseHelper.close();
+        databaseHelper.getDatabase(context).close();
     }
 
     /**
@@ -343,44 +345,45 @@ public class RecommendationSenderTest {
         Content c4 = createNewContent("4");
         root.addContent(c1).addContent(c2).addContent(c3);
         mSender.setRootContentContainer(root);
-
-        ContentDatabaseHelper databaseHelper = ContentDatabaseHelper.getInstance(
-                (InstrumentationRegistry.getContext()));
+    
+        RecommendationDatabaseHelper databaseHelper = RecommendationDatabaseHelper.getInstance();
+        Context context = InstrumentationRegistry.getContext();
+        
         String type = RecommendationRecord.RELATED;
         assertNotNull(databaseHelper);
-        databaseHelper.clearDatabase();
+        databaseHelper.clearDatabase(context);
 
         // Send recommendations for content 1 --> Should recommend content 2.
         List<String> ids = c1.getExtraStringValueAsList(Content.RECOMMENDATIONS_FIELD_NAME);
         assertTrue("Recommendations should build with no problems",
-                   mSender.sendRecommendationsForType(databaseHelper, type, ids, 3));
+                   mSender.sendRecommendationsForType(type, ids, 3));
         assertTrue("Recommendation for content 2 should exist",
-                   databaseHelper.recommendationWithContentIdExists("2"));
+                   databaseHelper.recordExists(context, "2"));
 
         // Send related recommendations for content 1, 2, 3 --> Should recommend content 2, 3, 4
         ids.addAll(c2.getExtraStringValueAsList(Content.RECOMMENDATIONS_FIELD_NAME));
         ids.addAll(c3.getExtraStringValueAsList(Content.RECOMMENDATIONS_FIELD_NAME));
         assertTrue("Recommendations should build with no problems",
-                   mSender.sendRecommendationsForType(databaseHelper, type, ids, 3));
+                   mSender.sendRecommendationsForType(type, ids, 3));
         assertTrue("Recommendation for content 3 should exist",
-                   databaseHelper.recommendationWithContentIdExists("3"));
+                   databaseHelper.recordExists(context, "3"));
         assertTrue("Recommendation for content 4 should exist",
-                   databaseHelper.recommendationWithContentIdExists("4"));
+                   databaseHelper.recordExists(context, "4"));
 
         // Send related recommendations for content 1, 2, 3, 4 --> Should recommend content 2, 3, 4,
         // since max is only 3.
         ids.addAll(c1.getExtraStringValueAsList(Content.RECOMMENDATIONS_FIELD_NAME));
         ids.addAll(c4.getExtraStringValueAsList(Content.RECOMMENDATIONS_FIELD_NAME));
         assertTrue("Recommendations should build with no problems",
-                   mSender.sendRecommendationsForType(databaseHelper, type, ids, 3));
+                   mSender.sendRecommendationsForType(type, ids, 3));
         assertTrue("Recommendation for content 2 should exist",
-                   databaseHelper.recommendationWithContentIdExists("2"));
+                   databaseHelper.recordExists(context,"2"));
         assertTrue("Recommendation for content 3 should exist",
-                   databaseHelper.recommendationWithContentIdExists("3"));
+                   databaseHelper.recordExists(context, "3"));
         assertTrue("Recommendation for content 4 should exist",
-                   databaseHelper.recommendationWithContentIdExists("4"));
+                   databaseHelper.recordExists(context, "4"));
         assertFalse("Recommendation for content 5 should not exist",
-                    databaseHelper.recommendationWithContentIdExists("5"));
+                    databaseHelper.recordExists(context, "5"));
 
     }
 
@@ -413,9 +416,7 @@ public class RecommendationSenderTest {
         RecommendationSender sender =
                 new RecommendationSender(InstrumentationRegistry.getTargetContext(), mRoot, false);
 
-        Notification notification = sender.buildRecommendation(
-                ContentDatabaseHelper.getInstance(InstrumentationRegistry.getContext()),
-                "1", 1, RecommendationRecord.GLOBAL);
+        Notification notification = sender.buildRecommendation("1", 1, RecommendationRecord.GLOBAL);
 
         assertEquals("Notification should have Global group type.",
                      RecommendationRecord.GLOBAL, notification.getGroup());
@@ -443,9 +444,8 @@ public class RecommendationSenderTest {
 
         Helpers.clearLogs(CLEAR_LOG_DELAY);
 
-        Notification notification = sender.buildRecommendation(
-                ContentDatabaseHelper.getInstance(InstrumentationRegistry.getContext()),
-                id, recId, RecommendationRecord.GLOBAL);
+        Notification notification = sender.buildRecommendation(id, recId,
+                                                               RecommendationRecord.GLOBAL);
 
         assertNull("Notification should be null", notification);
         assertTrue("Should have found \"" + RECOMMENDATION_ERROR_MESSAGE + "\" in the logs for" +

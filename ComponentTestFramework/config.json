@@ -90,10 +90,6 @@
 		"dir": "../ContentBrowser"
 	},
 	{
-		"componentName": "ImageViewerComponent",
-		"dir": "../ImageViewerComponent"
-	},
-	{
 		"componentName": "AmazonInAppPurchaseComponent",
 		"dir": "../AmazonInAppPurchaseComponent"
 	},

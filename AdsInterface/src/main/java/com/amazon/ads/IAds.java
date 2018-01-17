@@ -70,6 +70,16 @@ public interface IAds {
     String CORRELATOR_PARAMETER = "correlator";
 
     /**
+     * Constant for getting the videos extras bundle from the ad implementation's extras bundle.
+     */
+    String VIDEO_EXTRAS = "video";
+
+    /**
+     * Constant for getting the video duration long out of the video extras bundle.
+     */
+    String VIDEO_DURATION = "duration";
+
+    /**
      * Major version number.
      */
     int major = 0;
@@ -89,9 +99,9 @@ public interface IAds {
     void init(Context context, FrameLayout frameLayout, Bundle extras);
 
     /**
-     * Method to show Pre Roll Ads.
+     * Method to show Ads.
      */
-    void showPreRollAd();
+    void showAds();
 
     /**
      * Interface for Ads events.
@@ -141,7 +151,8 @@ public interface IAds {
         START,
         RESUME,
         PAUSE,
-        STOP
+        STOP,
+        DESTROY
     }
 
     /**
@@ -180,4 +191,23 @@ public interface IAds {
      * @return Bundle for extra data.
      */
     Bundle getExtra();
+
+    /**
+     * Gets the total number of segments in ad.
+     * Indicates the total number of segments of the content media, which is equal to the number of
+     * mid-roll ad pods + 1. Value is 1 if there are no mid-roll ad pods for the content media.
+     *
+     * @return int number of total segments.
+     */
+    int getNumberOfSegments();
+
+    /**
+     * Get the current segment number of the content based on the mid roll ads list.
+     *
+     * @param position playback location of current Content.
+     * @param duration total duration of the current Content.
+     * @return the current segment of the content media. Start with value 1 and calculated based on
+     * mid roll ads.
+     */
+    int getCurrentContentSegmentNumber(long position, long duration);
 }

@@ -14,23 +14,13 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-    <string name="title_activity_adobe_authentication">Authentifizierung</string>
-    <string name="adobepass_login_instruction_line_1">Gehen Sie zu Ihrem Computer oder Mobilgerät
-    </string>
-    <string name="adobepass_login_instruction_line_3">Geben Sie den folgenden Code ein
-        (Groß-/Kleinschreibung beachten):
-    </string>
-    <string name="adobepass_login_instruction_line_4">Wird geladen…</string>
-    <string name="btn_submit">SENDEN</string>
-    <string name="btn_get_new_code">NEUEN CODE ANFORDERN</string>
-    <string name="adobe_pass_error_authentication_message">Bei der Authentifizierung des Kontos ist
-        ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.
-    </string>
-    <string name="adobe_pass_error_registration_message">Bei der Authentifizierung des Kontos ist
-        ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.
-    </string>
-    <string name="adobe_pass_no_authorization_message">Dieses Video ist nicht in Ihrem Abonnement
-        enthalten. Bitte kontaktieren Sie Ihren Anbieter, um ein Upgrade für Ihr Abonnement zu
-        erhalten.
-    </string>
+  <string name="title_activity_adobe_authentication">Authentifizierung</string>
+  <string name="adobepass_login_instruction_line_1">Gehen Sie zu Ihrem Computer oder Mobilgerät</string>
+  <string name="adobepass_login_instruction_line_3">Geben Sie den folgenden Code ein (Groß-/Kleinschreibung beachten):</string>
+  <string name="adobepass_login_instruction_line_4">Wird geladen…</string>
+  <string name="btn_submit">SENDEN</string>
+  <string name="btn_get_new_code">NEUEN CODE ANFORDERN</string>
+  <string name="adobe_pass_error_authentication_message">Bei der Authentifizierung des Kontos ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.</string>
+  <string name="adobe_pass_error_registration_message">Bei der Authentifizierung des Kontos ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.</string>
+  <string name="adobe_pass_no_authorization_message">Dieses Video ist nicht in Ihrem Abonnement enthalten. Bitte kontaktieren Sie Ihren Dienstanbieter, um Ihr Abonnement zu ändern.</string>
 </resources>

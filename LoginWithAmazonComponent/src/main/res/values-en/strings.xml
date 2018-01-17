@@ -14,21 +14,20 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-    <string name="default_message">Welcome to Log In with Amazon!\nIf this is your first time
-        logging
+  <string name="default_message">Welcome to Log In with Amazon!\nIf this is your first time logging
         in, you will be asked to give permission for this application to access your profile data.
     </string>
-    <string name="login_button_content_description">"Button for authorisation through Log In with
+  <string name="login_button_content_description">"Button for authorisation through Log In with
         Amazon"
     </string>
-    <string name="return_to_app">Return</string>
-    <string name="APIKey_incorrect">APIKey is incorrect or does not exist.</string>
-    <string name="profile_Login">profile</string>
-    <string name="error_during_auth">Error during authorisation. Please try again.</string>
-    <string name="error_getting_profile">Error retrieving profile information.\nPlease log in
+  <string name="return_to_app">Return</string>
+  <string name="incorrect_api_key">APIKey is incorrect or does not exist.</string>
+  <string name="profile_Login">profile</string>
+  <string name="error_during_auth">Error during authorisation. Please try again.</string>
+  <string name="error_getting_profile">Error retrieving profile information.\nPlease log in
         again.
     </string>
-    <string name="auth_cancelled">Authorisation cancelled</string>
-    <string name="Welcome">Welcome, %s!</string>
-    <string name="Your_email_is">Your e-mail is %s</string>
+  <string name="auth_cancelled">Authorisation cancelled</string>
+  <string name="welcome">Welcome, %s!</string>
+  <string name="your_email_is">Your e-mail is %s</string>
 </resources>

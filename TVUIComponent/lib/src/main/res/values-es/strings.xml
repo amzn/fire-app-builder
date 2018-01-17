@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+This file was modified by Amazon:
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<!--
+     Copyright (C) 2014 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+  <string name="feed_reloading">Volviendo a cargar</string>
+  <string name="feed_loading">Cargando</string>
+  <string name="search_results">Resultados de la búsqueda</string>
+  <string name="search_bar_hint">Estoy buscando…</string>
+  <string name="lb_search_bar_hint">@string/search_bar_hint</string>
+  <string name="lb_search_bar_hint_speech">@string/search_bar_hint</string>
+  <string name="video_title">Título del vídeo</string>
+  <string name="video_subtitle">Subtítulo del vídeo</string>
+  <plurals name="search_results">
+    <item quantity="one">%1$d resultado para \"%2$s\":</item>
+    <item quantity="other">%1$d resultados para \"%2$s\":</item>
+  </plurals>
+  <string name="time_remaining">Tiempo restante: %s</string>
+  <string name="duration">%1$d:%2$02d:%3$02d</string>
+  <string name="settings_title">Configuración</string>
+  <string name="copyright">Copyright 2015 Amazon.com, Inc. o sus afiliados. Todos los derechos reservados.</string>
+  <string name="terms_title">Términos de uso</string>
+  <string name="related_contents">Contenido recomendado</string>
+  <string name="season">Temporada</string>
+  <string name="episode">Episodio</string>
+</resources>

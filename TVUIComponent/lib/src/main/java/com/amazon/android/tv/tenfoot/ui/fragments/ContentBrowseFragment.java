@@ -34,9 +34,11 @@ import com.amazon.android.model.Action;
 import com.amazon.android.model.content.Content;
 import com.amazon.android.model.content.ContentContainer;
 import com.amazon.android.tv.tenfoot.R;
-import com.amazon.android.tv.tenfoot.presenter.CardPresenter;
 import com.amazon.android.tv.tenfoot.presenter.CustomListRowPresenter;
-import com.amazon.android.tv.tenfoot.presenter.SettingsCardPresenter;
+import com.amazon.android.tv.tenfoot.ui.activities.ContentBrowseActivity;
+import com.amazon.android.tv.tenfoot.utils.BrowseHelper;
+import com.amazon.android.ui.constants.PreferencesConstants;
+import com.amazon.android.utils.Preferences;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -46,7 +48,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v17.leanback.app.RowsFragment;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
-import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.OnItemViewClickedListener;
 import android.support.v17.leanback.widget.OnItemViewSelectedListener;
@@ -57,7 +58,6 @@ import android.support.v17.leanback.widget.RowPresenter;
 import android.support.v17.leanback.widget.VerticalGridView;
 import android.util.Log;
 
-import java.util.List;
 
 /**
  * This fragment displays content in horizontal rows for browsing. Each row has its title displayed
@@ -68,7 +68,10 @@ public class ContentBrowseFragment extends RowsFragment {
     private static final String TAG = ContentBrowseFragment.class.getSimpleName();
     private static final int WAIT_BEFORE_FOCUS_REQUEST_MS = 500;
     private OnBrowseRowListener mCallback;
-    private ArrayObjectAdapter settingsAdapter = null;
+    private ArrayObjectAdapter mSettingsAdapter = null;
+    private ListRow mRecentListRow = null;
+    private ListRow mWatchlistListRow = null;
+    private int mLoginButtonIndex;
 
     // Container Activity must implement this interface.
     public interface OnBrowseRowListener {
@@ -88,8 +91,7 @@ public class ContentBrowseFragment extends RowsFragment {
         }
         catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString() +
-                                                 " must implement " +
-                                                 "OnBrowseRowListener: " + e);
+                                                 " must implement OnBrowseRowListener: " + e);
         }
 
         CustomListRowPresenter customListRowPresenter = new CustomListRowPresenter();
@@ -98,12 +100,13 @@ public class ContentBrowseFragment extends RowsFragment {
         // Uncomment this code to remove shadow from the cards
         //customListRowPresenter.setShadowEnabled(false);
 
-        ArrayObjectAdapter mRowsAdapter = new ArrayObjectAdapter(customListRowPresenter);
+        ArrayObjectAdapter rowsAdapter = new ArrayObjectAdapter(customListRowPresenter);
 
-        loadRootContentContainer(mRowsAdapter);
-        addSettingsActionsToRowAdapter(mRowsAdapter);
+        BrowseHelper.loadRootContentContainer(getActivity(), rowsAdapter);
+        mSettingsAdapter = BrowseHelper.addSettingsActionsToRowAdapter(getActivity(), rowsAdapter);
+        mLoginButtonIndex = BrowseHelper.getLoginButtonIndex(mSettingsAdapter);
 
-        setAdapter(mRowsAdapter);
+        setAdapter(rowsAdapter);
 
         setOnItemViewClickedListener(new ItemViewClickedListener());
         setOnItemViewSelectedListener(new ItemViewSelectedListener());
@@ -120,8 +123,24 @@ public class ContentBrowseFragment extends RowsFragment {
         }, WAIT_BEFORE_FOCUS_REQUEST_MS);
     }
 
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        ArrayObjectAdapter rowsAdapter = (ArrayObjectAdapter) getAdapter();
+
+        if (ContentBrowser.getInstance(getActivity()).isRecentRowEnabled()) {
+            mRecentListRow = BrowseHelper.updateContinueWatchingRow(getActivity(),
+                                                                    mRecentListRow, rowsAdapter);
+        }
+        if (ContentBrowser.getInstance(getActivity()).isWatchlistRowEnabled()) {
+            mWatchlistListRow = BrowseHelper.updateWatchlistRow(getActivity(), mWatchlistListRow,
+                                                                mRecentListRow, rowsAdapter);
+        }
+    }
+
     /**
-     * Event bus listener method to listen for authentication updates from AUthHelper and update
+     * Event bus listener method to listen for authentication updates from AuthHelper and update
      * the login action status in settings.
      *
      * @param authenticationStatusUpdateEvent Broadcast event for update in authentication status.
@@ -130,56 +149,27 @@ public class ContentBrowseFragment extends RowsFragment {
     public void onAuthenticationStatusUpdateEvent(AuthHelper.AuthenticationStatusUpdateEvent
                                                           authenticationStatusUpdateEvent) {
 
-        if (settingsAdapter != null) {
-            settingsAdapter.notifyArrayItemRangeChanged(0, settingsAdapter.size());
-        }
-    }
+        if (mSettingsAdapter != null) {
+            if (mLoginButtonIndex != -1) {
+                mSettingsAdapter.notifyArrayItemRangeChanged(mLoginButtonIndex, 1);
 
-    private void loadRootContentContainer(ArrayObjectAdapter rowsAdapter) {
-
-        ContentContainer rootContentContainer = ContentBrowser.getInstance(getActivity())
-                                                              .getRootContentContainer();
-
-        CardPresenter cardPresenter = new CardPresenter();
-
-        for (ContentContainer contentContainer : rootContentContainer.getContentContainers()) {
-
-            HeaderItem header = new HeaderItem(0, contentContainer.getName());
-            ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(cardPresenter);
-
-            for (ContentContainer innerContentContainer : contentContainer.getContentContainers()) {
-                listRowAdapter.add(innerContentContainer);
+                // Update the details preview if the action occurred from the home screen.
+                if (Preferences.getString(PreferencesConstants.LAST_ACTIVITY)
+                               .equals(ContentBrowser.CONTENT_HOME_SCREEN)) {
+                    if (authenticationStatusUpdateEvent.isUserAuthenticated()) {
+                        ((ContentBrowseActivity) getActivity()).callImageLoadSubscription(
+                                getString(R.string.logout_label),
+                                getString(R.string.logout_description),
+                                null);
+                    }
+                    else {
+                        ((ContentBrowseActivity) getActivity()).callImageLoadSubscription(
+                                getString(R.string.login_label),
+                                getString(R.string.login_description),
+                                null);
+                    }
+                }
             }
-
-            for (Content content : contentContainer.getContents()) {
-                listRowAdapter.add(content);
-            }
-
-            rowsAdapter.add(new ListRow(header, listRowAdapter));
-        }
-    }
-
-    private void addSettingsActionsToRowAdapter(ArrayObjectAdapter arrayObjectAdapter) {
-
-        List<Action> settings = ContentBrowser.getInstance(getActivity()).getSettingsActions();
-
-        if (settings != null && !settings.isEmpty()) {
-
-            SettingsCardPresenter cardPresenter = new SettingsCardPresenter();
-            settingsAdapter = new ArrayObjectAdapter(cardPresenter);
-
-            for (Action item : settings) {
-                settingsAdapter.add(item);
-            }
-        }
-        else {
-            Log.d(TAG, "No settings were found");
-        }
-
-        if (settingsAdapter != null) {
-            // Create settings header and row
-            HeaderItem header = new HeaderItem(0, getString(R.string.settings_title));
-            arrayObjectAdapter.add(new ListRow(header, settingsAdapter));
         }
     }
 
@@ -195,8 +185,7 @@ public class ContentBrowseFragment extends RowsFragment {
 
                 ContentBrowser.getInstance(getActivity())
                               .setLastSelectedContent(content)
-                              .switchToScreen(ContentBrowser.CONTENT_DETAILS_SCREEN);
-
+                              .switchToScreen(ContentBrowser.CONTENT_DETAILS_SCREEN, content);
             }
             else if (item instanceof ContentContainer) {
                 ContentContainer contentContainer = (ContentContainer) item;

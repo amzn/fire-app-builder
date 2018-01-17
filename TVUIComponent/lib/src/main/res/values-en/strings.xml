@@ -30,23 +30,26 @@ permissions and limitations under the License.
      limitations under the License.
 -->
 <resources>
-    <string name="browse_title"><![CDATA[TenFootUI]]></string>
-    <string name="feed_reloading">Reloading</string>
-    <string name="feed_loading">Loading</string>
-    <string name="search_results">Search Results</string>
-    <string name="search_bar_hint">I\'m looking for…</string>
-    <string name="lb_search_bar_hint">@string/search_bar_hint</string>
-    <string name="lb_search_bar_hint_speech">@string/search_bar_hint</string>
-    <string name="video_title">Video Title</string>
-    <string name="video_subtitle">Video Subtitle</string>
-    <plurals name="search_results">
-        <item quantity="one">%1$d result for \"%2$s\":</item>
-        <item quantity="other">%1$d results for \"%2$s\":</item>
-    </plurals>
-    <string name="settings_title">Settings</string>
-    <string name="copyright">Copyright 2015 Amazon.com, Inc. or its affiliates. All Rights
+  <string name="feed_reloading">Reloading</string>
+  <string name="feed_loading">Loading</string>
+  <string name="search_results">Search Results</string>
+  <string name="search_bar_hint">I\'m looking for…</string>
+  <string name="lb_search_bar_hint">@string/search_bar_hint</string>
+  <string name="lb_search_bar_hint_speech">@string/search_bar_hint</string>
+  <string name="video_title">Video Title</string>
+  <string name="video_subtitle">Video Subtitle</string>
+  <plurals name="search_results">
+    <item quantity="one">%1$d result for \"%2$s\":</item>
+    <item quantity="other">%1$d results for \"%2$s\":</item>
+  </plurals>
+  <string name="time_remaining">Time Remaining: %s</string>
+  <string name="duration">%1$d:%2$02d:%3$02d</string>
+  <string name="settings_title">Settings</string>
+  <string name="copyright">Copyright 2015 Amazon.com, Inc. or its affiliates. All Rights
         Reserved.
     </string>
-    <string name="terms_title">Terms of Use</string>
-    <string name="related_contents">Recommended Content</string>
+  <string name="terms_title">Terms of Use</string>
+  <string name="related_contents">Recommended Content</string>
+  <string name="season">Season</string>
+  <string name="episode">Episode</string>
 </resources>

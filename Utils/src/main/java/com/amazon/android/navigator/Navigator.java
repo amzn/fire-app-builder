@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * A copy of the License is located at
  *
- * http://aws.amazon.com/apache2.0/
+ *     http://aws.amazon.com/apache2.0/
  *
  * or in the "license" file accompanying this file. This file is distributed
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
@@ -15,11 +15,8 @@
 package com.amazon.android.navigator;
 
 import com.amazon.android.interfaces.IActivityTransition;
-import com.amazon.android.recipe.Recipe;
-import com.amazon.android.utils.FileHelper;
 import com.amazon.utils.StringManipulation;
 import com.amazon.utils.ds.Graph;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import android.app.Activity;
 import android.app.Application;

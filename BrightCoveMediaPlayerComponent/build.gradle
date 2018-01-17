@@ -1,0 +1,65 @@
+/**
+ * Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * A copy of the License is located at
+ *
+ *     http://aws.amazon.com/apache2.0/
+ *
+ * or in the "license" file accompanying this file. This file is distributed
+ * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            testCoverageEnabled true
+        }
+    }
+    packagingOptions {
+        pickFirst 'META-INF/LICENSE'
+        exclude 'META-INF/rxjava.properties'
+
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:23.1.1'
+
+    //Load the version based on user defined in gradle.properties or default
+    if (rootProject.hasProperty('compileUrl')) {
+        compile rootProject.compileUrl
+    } else {
+        compile 'com.brightcove.player:exoplayer:5.0.3'
+    }
+
+    compile project(':ModuleInterface')
+    compile project(':UAMP')
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven { url 'http://repo.brightcove.com/releases' }
+}

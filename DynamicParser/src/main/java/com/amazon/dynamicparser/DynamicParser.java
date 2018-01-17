@@ -721,6 +721,7 @@ public class DynamicParser implements IRecipeCooker {
             }
             // Fill KeyDataPath to mExtras HashMap which needs to be Map<String, Object>
             if (recipe.containsItem(Recipe.KEY_DATA_TYPE_TAG)) {
+
                 String keyDataPath = recipe.getItemAsString(Recipe.KEY_DATA_TYPE_TAG);
 
                 String fieldPath = keyDataPath.substring(0,
@@ -733,6 +734,19 @@ public class DynamicParser implements IRecipeCooker {
                     addValueToExtrasWithReflection(Recipe.KEY_DATA_TYPE_TAG, value.toString(),
                                                    instance, clazz);
 
+                }
+            }
+            // Fill ContentType to mExtras HashMap which needs to be Map<String, Object>
+            if (recipe.containsItem(Recipe.CONTENT_TYPE_TAG)) {
+
+                String keyDataPath = recipe.getItemAsString(Recipe.CONTENT_TYPE_TAG);
+                String fieldPath = keyDataPath.substring(0,
+                                                         keyDataPath.indexOf(PATH_NAME_SEPARATOR));
+                Object value = PathHelper.getValueByPath(map, fieldPath);
+                if (value != null) {
+
+                    addValueToExtrasWithReflection(Recipe.CONTENT_TYPE_TAG, value.toString(),
+                                                   instance, clazz);
                 }
             }
             // Check if the recipe states that this content is live and add to object if so.
@@ -846,9 +860,17 @@ public class DynamicParser implements IRecipeCooker {
         Object value = PathHelper.getValueByPath(map, fieldPath);
 
         if (value != null) {
-            Field field = clazz.getDeclaredField(fieldName);
-            field.setAccessible(true);
-
+            Field field;
+            try {
+                field = clazz.getDeclaredField(fieldName);
+                field.setAccessible(true);
+            }
+            catch (NoSuchFieldException e) {
+                Log.d(TAG, "Could not find specified field " + fieldName + " while creating " +
+                        "object with reflection. Adding it to extras.");
+                addValueToExtrasWithReflection(fieldName, value, instance, clazz);
+                return;
+            }
             // If we are setting the key data path, get the map from the field. This must be a
             // Map<String, Object> and put the value in the map with the keyDataPath tag.
             if (keyDataPath) {
@@ -916,9 +938,8 @@ public class DynamicParser implements IRecipeCooker {
             }
         }
         else {
-            Log.e(TAG, "Could not find a value by following the path " + path + " using map.");
-            throw new ValueNotFoundException("Could not find a value by following the path " +
-                                                     path + " using map.");
+            Log.w(TAG, "Value for " + fieldName + " was null so not set for Content, this may be " +
+                    "intentional.");
         }
     }
 

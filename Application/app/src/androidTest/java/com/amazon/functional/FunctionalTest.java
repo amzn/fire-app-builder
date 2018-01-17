@@ -165,7 +165,7 @@ public class FunctionalTest {
      * Do functional tests related to the details screen.
      *
      * Important: make sure to clear the application data first using this command:
-     *     adb shell pm clear com.amazon.android.calypso
+     *     adb shell pm clear com.fireappbuilder.android.calypso
      * or else this part of the test may fail.
      */
     private void checkVideoDetails() throws Exception {

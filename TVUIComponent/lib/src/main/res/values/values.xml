@@ -19,6 +19,7 @@ permissions and limitations under the License.
     <integer name="details_description_max_characters">1700</integer>
     <integer name="background_timer_delay">300</integer>
     <integer name="details_overview_image_corner_radius">5</integer>
+    <integer name="num_of_search_elements_in_row">5</integer>
 
     <!-- Global Search -->
     <!-- The action label for global search -->

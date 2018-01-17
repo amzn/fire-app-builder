@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+  <string name="feed_error_message">Servizio non disponibile. Riprova più tardi.</string>
+  <string name="network_error_message">Rete al momento non disponibile. Riprova più tardi.</string>
+  <string name="registration_code_error_message">Errore nell\'ottenere il codice di registrazione. Ignora questo messaggio e riprova. </string>
+  <string name="authentication_error_message">Errore di autenticazione dei tuoi dettagli.\r\nProva a inserire di nuovo le tue informazioni o contatta il gestore del tuo servizio TV per ottenere accesso a questi contenuti.</string>
+  <string name="authorization_error_message">Non sei autorizzato a visualizzare questi contenuti.\r\nContatta il gestore del tuo servizio TV per ottenere accesso a questi contenuti.</string>
+  <string name="logout_success_message">Conclusione accesso riuscita. Verrai a breve reindirizzato alla pagina dei dettagli.</string>
+  <string name="logout_failure_message">Conclusione accesso non riuscita. Riprova.</string>
+  <string name="playback_error_message">Riproduzione non riuscita. Riprova.</string>
+  <string name="try_again_label">Riprova</string>
+  <string name="exit_app_label">Esci dall\'applicazione</string>
+  <string name="go_to_network_settings_label">Vai alle impostazioni di rete</string>
+  <string name="dismiss_label">Ignora</string>
+  <string name="login_label">Accedi</string>
+  <string name="logout_label">Concludi accesso</string>
+  <string name="slideshow_label">Impostazioni presentazione</string>
+  <string name="auto_play_speed">Velocità di scorrimento</string>
+  <string name="terms_title">Termini di utilizzo</string>
+  <string name="terms_description">Leggi le note legali.</string>
+  <string name="slideshow_title">Velocità della presentazione</string>
+  <string name="slideshow_description">Imposta la velocità della presentazione.</string>
+  <string name="logout_description">Concludi l\'accesso al tuo account.</string>
+  <string name="login_description">Accedi al tuo account.</string>
+  <string name="logout_dialog_description">Vuoi davvero concludere l\'accesso?</string>
+  <string name="login_dialog_description">Non hai eseguito l\'accesso. Seleziona e riproduci qualsiasi video per accedere.</string>
+  <string name="logout_dialog_option_1">Sì</string>
+  <string name="logout_dialog_option_2">No</string>
+  <string name="btn_submit">INVIA</string>
+  <string name="btn_get_new_code">OTTIENI NUOVO CODICE</string>
+  <string name="second_screen_login_instruction_line_1">Accedi al computer o dispositivo mobile</string>
+  <string name="second_screen_login_instruction_line_3">Inserisci il codice seguente (distingue maiuscole/minuscole):</string>
+  <string name="second_screen_login_instruction_line_4">Caricamento…</string>
+</resources>

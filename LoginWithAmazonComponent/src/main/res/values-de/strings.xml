@@ -14,21 +14,20 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-    <string name="default_message">Willkommen bei Amazon!\nWenn Sie sich zum ersten Mal anmelden,
+  <string name="default_message">Willkommen bei Amazon!\nWenn Sie sich zum ersten Mal anmelden,
         werden Sie aufgefordert, dieser App den Zugang zu Ihren Profildaten zu erlauben.
     </string>
-    <string name="login_button_content_description">Taste zur Autorisierung durch Anmeldung mit
+  <string name="login_button_content_description">Taste zur Autorisierung durch Anmeldung mit
         Amazon
     </string>
-    <string name="return_to_app">Zurück</string>
-    <string name="APIKey_incorrect">APIKey ist falsch oder existiert nicht.</string>
-    <string name="profile_Login">Profil</string>
-    <string name="error_during_auth">Autorisierungsfehler. Bitte versuchen Sie es erneut.</string>
-    <string name="error_getting_profile">Fehler beim Abrufen der Profilinformationen.\nBitte melden
-        Sie sich
+  <string name="return_to_app">Zurück</string>
+  <string name="incorrect_api_key">APIKey ist falsch oder existiert nicht.</string>
+  <string name="profile_Login">Profil</string>
+  <string name="error_during_auth">Autorisierungsfehler. Bitte versuchen Sie es erneut.</string>
+  <string name="error_getting_profile">Fehler beim Abrufen der Profilinformationen.\nBitte melden Sie sich
         erneut an
     </string>
-    <string name="auth_cancelled">Autorisierung abgebrochen</string>
-    <string name="Welcome">Willkommen %s!</string>
-    <string name="Your_email_is">Ihre E-Mail ist %s</string>
+  <string name="auth_cancelled">Autorisierung abgebrochen</string>
+  <string name="welcome">Willkommen %s!</string>
+  <string name="your_email_is">Ihre E-Mail ist %s</string>
 </resources>

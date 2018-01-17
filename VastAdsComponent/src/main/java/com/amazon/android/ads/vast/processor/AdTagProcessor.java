@@ -15,6 +15,7 @@
 package com.amazon.android.ads.vast.processor;
 
 import com.amazon.android.ads.vast.model.vast.VastResponse;
+import com.amazon.android.ads.vast.model.vmap.AdBreak;
 import com.amazon.android.ads.vast.model.vmap.VmapResponse;
 import com.amazon.android.utils.NetworkUtils;
 import com.amazon.dynamicparser.IParser;
@@ -23,6 +24,7 @@ import com.amazon.dynamicparser.impl.XmlParser;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,7 +50,8 @@ public class AdTagProcessor {
         vast,
         error,
         error_model_creation,
-        validation_error
+        validation_error,
+        no_ad_break_found
     }
 
     /**
@@ -92,39 +95,46 @@ public class AdTagProcessor {
             return AdTagType.error;
         }
 
-        XmlParser parser = new XmlParser();
-        try {
-            Map<String, Map> xmlMap = (Map<String, Map>) parser.parse(xmlData);
+        if (xmlData != null) {
+            XmlParser parser = new XmlParser();
+            try {
+                Map<String, Map> xmlMap = (Map<String, Map>) parser.parse(xmlData);
 
-            if (xmlMap != null) {
-                Map attributes = xmlMap.get(XmlParser.ATTRIBUTES_TAG);
+                if (xmlMap != null) {
+                    Map attributes = xmlMap.get(XmlParser.ATTRIBUTES_TAG);
 
-                try {
-                    if (attributes != null && attributes.containsKey(XMLNS_VMAP_KEY)) {
-                        mVmapResponse = VmapResponse.createInstance(xmlMap);
-                        type = AdTagType.vmap;
+                    try {
+                        if (attributes != null && attributes.containsKey(XMLNS_VMAP_KEY)) {
+                            mVmapResponse = VmapResponse.createInstance(xmlMap);
+                            //Validate the vmap response
+                            if (!ResponseValidator.validateVMAPResponse(mVmapResponse)) {
+                                return AdTagType.validation_error;
+                            }
+                            //VMAP specification supports no Ad break so we will not fire error
+                            // urls if no ad break found
+                            if (mVmapResponse == null) {
+                                return AdTagType.no_ad_break_found;
+                            }
+                            type = AdTagType.vmap;
+                        }
+                        else {
+                            Log.d(TAG, "Converting VAST response into VMAP response");
+                            VastResponse vastResponse = VastResponse.createInstance(xmlMap);
+                            mVmapResponse = VmapResponse.createInstanceWithVast(vastResponse);
+                            type = AdTagType.vast;
+                        }
+                        return type;
                     }
-                    else {
-                        Log.d(TAG, "Converting VAST response into VMAP response");
-                        VastResponse vastResponse = VastResponse.createInstance(xmlMap);
-                        mVmapResponse = VmapResponse.createInstanceWithVast(vastResponse);
-                        type = AdTagType.vast;
+                    catch (IllegalArgumentException e) {
+                        Log.e(TAG, "Caught IllegalArgumentException.", e);
+                        return AdTagType.error_model_creation;
                     }
-                    if (!ResponseValidator.validate(mVmapResponse, mMediaPicker)) {
-                        return AdTagType.validation_error;
-                    }
-                    return type;
-                }
-                catch (IllegalArgumentException e) {
-                    Log.e(TAG, "Caught IllegalArgumentException.", e);
-                    return AdTagType.error_model_creation;
                 }
             }
+            catch (IParser.InvalidDataException e) {
+                Log.e(TAG, "Data could not be parsed. ", e);
+            }
         }
-        catch (IParser.InvalidDataException e) {
-            Log.e(TAG, "Data could not be parsed. ", e);
-        }
-
         return AdTagType.error;
     }
 

@@ -14,7 +14,6 @@
  */
 package com.amazon.android.ads.vast.model.vmap;
 
-import com.amazon.android.ads.vast.model.vast.MediaFile;
 import com.amazon.dynamicparser.impl.XmlParser;
 import com.amazon.utils.DateAndTimeHelper;
 import com.amazon.utils.ListUtils;
@@ -118,6 +117,7 @@ public class AdBreak {
 
     /**
      * Represents the ad data that will be used to fill the ad break.
+     *
      */
     private AdSource mAdSource; // optional
 
@@ -130,11 +130,6 @@ public class AdBreak {
      * Container for Extensions that provide ability to express information not supported by VMAP.
      */
     private List<Extension> mExtensions; // optional
-
-    /**
-     * The selected media file. This will be used to display the ad video.
-     */
-    private String mSelectedMediaFileUrl;
 
     /**
      * Constructor.
@@ -196,9 +191,10 @@ public class AdBreak {
      *
      * @param timeOffset The time offset.
      */
-    public void setTimeOffset(String timeOffset) {
+    public AdBreak setTimeOffset(String timeOffset) {
 
         mTimeOffset = timeOffset;
+        return this;
     }
 
     /**
@@ -322,64 +318,38 @@ public class AdBreak {
     }
 
     /**
-     * Get the time offset converted to seconds.
+     * Get the time offset converted to seconds, in relation to the duration of the video.
      *
+     * @param duration The duration of the video that the ad is for.
      * @return Time offset in seconds.
      */
-    public double getConvertedTimeOffset() {
+    public double getConvertedTimeOffset(long duration) {
 
-        // TODO: handle other time offsets (DEVTECH-4139)
-        return DateAndTimeHelper.convertDateFormatToSeconds(mTimeOffset);
-    }
-
-    /**
-     * Get the selected media file URL.
-     *
-     * @return The selected media file URL.
-     */
-    public String getSelectedMediaFileUrl() {
-
-        return mSelectedMediaFileUrl;
-    }
-
-    /**
-     * Set the selected media file URL. This URL will be used to play the video.
-     *
-     * @param selectedMediaFileUrl The selected media file URL.
-     */
-    public void setSelectedMediaFileUrl(String selectedMediaFileUrl) {
-
-        mSelectedMediaFileUrl = selectedMediaFileUrl;
-    }
-
-    /**
-     * Get the media files from the ad source.
-     *
-     * @return List of media files.
-     */
-    public List<MediaFile> getMediaFiles() {
-
-        List<MediaFile> mediaFiles = new ArrayList<>();
-        if (mAdSource != null && mAdSource.getVastResponse() != null) {
-            mediaFiles.addAll(mAdSource.getVastResponse().getMediaFiles());
+        if (mTimeOffset.equals(TIME_OFFSET_START)) {
+            return 0;
         }
-
-        return mediaFiles;
-    }
-
-    /**
-     * Get the impressions from the ad source.
-     *
-     * @return List of the impression strings.
-     */
-    public List<String> getImpressions() {
-
-        List<String> impressions = new ArrayList<>();
-        if (mAdSource != null && mAdSource.getVastResponse() != null) {
-            impressions.addAll(mAdSource.getVastResponse().getImpressions());
+        // If the time offset is END but the duration is 0 this is probably because the player
+        // does not know the duration yet so we can't translate END to a numeric value at this time.
+        else if (mTimeOffset.equals(TIME_OFFSET_END) && duration != 0) {
+            return duration;
         }
-
-        return impressions;
+        // Convert percentage to seconds of duration.
+        else if (mTimeOffset.matches("\\d{1,3}%")) {
+            String[] split = mTimeOffset.split("%");
+            double percentage = Double.valueOf(split[0]) / 100;
+            if (Double.valueOf(split[0]) > 0 && duration == 0) {
+                Log.e(TAG, "Can't calculate offset because duration is unknown.");
+                return -1;
+            }
+            return duration * percentage;
+        }
+        // Convert time format to seconds.
+        else if (mTimeOffset.matches(("\\d+:\\d{2}:\\d{2}(.\\d{3})?"))) {
+            return DateAndTimeHelper.convertDateFormatToSeconds(mTimeOffset);
+        }
+        Log.e(TAG, "Time offset did not match any allowed representations. timeOffset: " +
+                mTimeOffset + " ,duration: " + duration);
+        return -1;
     }
 
     /**
@@ -394,21 +364,7 @@ public class AdBreak {
         if (getTrackingEvents() != null && getTrackingEvents().size() > 0) {
             Tracking.addTrackingEventsToMap(trackingUrls, getTrackingEvents());
         }
-        else if (getAdSource().getVastResponse() != null) {
-            trackingUrls.putAll(getAdSource().getVastResponse().getTrackingUrls());
-        }
-
         return trackingUrls;
-    }
-
-    /**
-     * Get the error URLs from the ad source.
-     *
-     * @return List of error URLs.
-     */
-    public List<String> getErrorUrls() {
-
-        return null;
     }
 
     /**
@@ -438,7 +394,6 @@ public class AdBreak {
                 ", mAdSource=" + mAdSource +
                 ", mTrackingEvents=" + mTrackingEvents +
                 ", mExtensions=" + mExtensions +
-                ", mSelectedMediaFileUrl='" + mSelectedMediaFileUrl + '\'' +
                 '}';
     }
 }

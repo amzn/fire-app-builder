@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!--
-This file was modified by Amazon: 
+This file was modified by Amazon:
 Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,23 +30,24 @@ permissions and limitations under the License.
      limitations under the License.
 -->
 <resources>
-    <string name="browse_title"><![CDATA[TenFootUI]]></string>
-    <string name="feed_reloading">Wird neu geladen</string>
-    <string name="feed_loading">Wird geladen</string>
-    <string name="search_results">Suchergebnisse</string>
-    <string name="search_bar_hint">Ich suche nach…</string>
-    <string name="lb_search_bar_hint">@string/search_bar_hint</string>
-    <string name="lb_search_bar_hint_speech">@string/search_bar_hint</string>
-    <string name="video_title">Videotitel</string>
-    <string name="video_subtitle">Video-Untertitel</string>
-    <plurals name="search_results">
-        <item quantity="one">%1$d Ergebnis für „%2$s“:</item>
-        <item quantity="other">%1$d Ergebnisse für „%2$s“:</item>
-    </plurals>
-    <string name="settings_title">Einstellungen</string>
-    <string name="copyright">Copyright 2015 Amazon.com, Inc. oder den damit verbundenen Unternehmen.
-        Alle Rechte vorbehalten.
-    </string>
-    <string name="terms_title">Nutzungsbedingungen</string>
-    <string name="related_contents">Empfohlener Inhalt</string>
+  <string name="feed_reloading">Wird neu geladen</string>
+  <string name="feed_loading">Wird geladen</string>
+  <string name="search_results">Suchergebnisse</string>
+  <string name="search_bar_hint">Ich suche nach…</string>
+  <string name="lb_search_bar_hint">@string/search_bar_hint</string>
+  <string name="lb_search_bar_hint_speech">@string/search_bar_hint</string>
+  <string name="video_title">Videotitel</string>
+  <string name="video_subtitle">Video-Untertitel</string>
+  <plurals name="search_results">
+    <item quantity="one">%1$d Ergebnis für „%2$s“:</item>
+    <item quantity="other">%1$d Ergebnisse für „%2$s“:</item>
+  </plurals>
+  <string name="time_remaining">Verbleibende Zeit: %s</string>
+  <string name="duration">%1$d:%2$02d:%3$02d</string>
+  <string name="settings_title">Einstellungen</string>
+  <string name="copyright">Copyright 2015 Amazon.com, Inc. oder Tochtergesellschaften. Alle Rechte vorbehalten.</string>
+  <string name="terms_title">Nutzungsbedingungen</string>
+  <string name="related_contents">Empfohlener Inhalt</string>
+  <string name="season">Staffel</string>
+  <string name="episode">Folge</string>
 </resources>

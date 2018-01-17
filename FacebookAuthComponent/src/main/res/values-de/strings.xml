@@ -14,13 +14,8 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-    <string name="facebook_error_authentication_message">Bei der Authentifizierung des Kontos ist
-        ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.
-    </string>
-    <string name="access_token_null">Zugriffstoken ist null. Nutzer nicht angemeldet.</string>
-    <string name="error_checking_token">Return map ist null. Unbekannter Fehler beim Prüfen des
-        Zugriffstokens erkannt.
-    </string>
-    <string name="error_checking_token_caught">Fehler beim Prüfen des Zugriffstokens erkannt
-    </string>
+  <string name="facebook_error_authentication_message">Bei der Authentifizierung des Kontos ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.</string>
+  <string name="access_token_null">Zugriffstoken ist null. Nutzer nicht angemeldet.</string>
+  <string name="error_checking_token">Return map ist null. Unbekannter Fehler beim Prüfen des Zugriffstokens erkannt.</string>
+  <string name="error_checking_token_caught">Fehler beim Prüfen des Zugriffstokens erkannt</string>
 </resources>

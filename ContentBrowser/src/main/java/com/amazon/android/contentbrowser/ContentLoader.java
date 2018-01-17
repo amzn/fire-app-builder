@@ -31,6 +31,8 @@ import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import rx.Observable;
 
@@ -217,6 +219,7 @@ public class ContentLoader {
                                                      Recipe dataLoaderRecipeForContents,
                                                      Recipe dynamicParserRecipeForContents) {
 
+        Map<String, Content> parsedContent = new HashMap();
         return observable.concatMap(contentContainerAsObject -> {
             ContentContainer contentContainer = (ContentContainer) contentContainerAsObject;
             if (DEBUG_RECIPE_CHAIN) {
@@ -251,6 +254,13 @@ public class ContentLoader {
                 }
                 Content content = (Content) contentAsObject;
                 if (content != null) {
+                    //check if this content has already been parsed for some other container
+                    content = checkForParsedContent(parsedContent, content);
+                    //Add information of free content available with container
+                    if (contentContainer.getExtraStringValue(Recipe.CONTENT_TYPE_TAG) != null) {
+                        content.setExtraValue(Recipe.CONTENT_TYPE_TAG, contentContainer
+                                .getExtraStringValue(Recipe.CONTENT_TYPE_TAG));
+                    }
                     contentContainer.addContent(content);
                 }
                 return Pair.create(contentContainer, contentAsObject);
@@ -401,6 +411,23 @@ public class ContentLoader {
                     }
                     return contentId;
                 });
+    }
+
+    /**
+     * Check if this content has already been parsed for some other container.
+     *
+     * @param parsedContent Map of previously parsed content objects.
+     * @param content       Content object which need to be checked.
+     * @return previously created content object or current object.
+     */
+    private Content checkForParsedContent(Map<String, Content> parsedContent, Content content) {
+
+        if (parsedContent.containsKey(content.getId())) {
+            return parsedContent.get(content.getId());
+        }
+        //Add current content in parsedContent map
+        parsedContent.put(content.getId(), content);
+        return content;
     }
 
     /**

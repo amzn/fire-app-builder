@@ -46,6 +46,11 @@ public class Recipe {
     public static final String LIVE_FEED_TAG = "live";
 
     /**
+     * Constant to use for stating that content is a free or premium content.
+     */
+    public static final String CONTENT_TYPE_TAG = "contentType";
+
+    /**
      * Map for recipe items.
      */
     private Map mMap;

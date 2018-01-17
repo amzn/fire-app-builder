@@ -5,9 +5,9 @@
   "modelType": "",
   "conversionType": "",
   "query": "",
-  "matchList": ["title@title", "subtitle@subtitle", "description@description",
-    "urls/url@url", "urls/cardImageUrl@cardImageUrl",
-    "urls/backgroundImageUrl@backgroundImageUrl", "tags@tags", "key1@key1",
+  "matchList": ["title@mTitle", "subtitle@mSubtitle", "description@mDescription",
+    "urls/url@mUrl", "urls/cardImageUrl@mCardImageUrl",
+    "urls/backgroundImageUrl@mBackgroundImageUrl", "tags@mTags", "key1@key1",
     "urls/url@key2"],
   "keyDataPath": ""
 }

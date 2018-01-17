@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+  <string name="default_message">Te damos a la bienvenida a Identificación con Amazon.\nSi es la primera vez que inicias sesión, deberás conceder permiso a esta aplicación para que acceda a los datos de tu perfil.</string>
+  <string name="login_button_content_description">"Botón para conseguir autorización a través de Identificación con Amazon"</string>
+  <string name="return_to_app">Volver</string>
+  <string name="incorrect_api_key">APIKey es incorrecto o no existe.</string>
+  <string name="profile_Login">perfil</string>
+  <string name="error_during_auth">Error en la autorización. Vuelve a intentarlo.</string>
+  <string name="error_getting_profile">Error al recuperar la información del perfil.\nIdentifícate de nuevo.</string>
+  <string name="auth_cancelled">Autorización cancelada</string>
+  <string name="welcome">Te damos la bienvenida, %s</string>
+  <string name="your_email_is">Tu e-mail es %s</string>
+</resources>

@@ -29,8 +29,13 @@
 
 package com.amazon.android.tv.tenfoot.ui.activities;
 
+import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.tv.tenfoot.R;
 import com.amazon.android.tv.tenfoot.base.BaseActivity;
+import com.amazon.android.tv.tenfoot.utils.BrowseHelper;
+import com.amazon.android.ui.constants.PreferencesConstants;
+import com.amazon.android.utils.Preferences;
+import com.amazon.utils.DateAndTimeHelper;
 
 import android.os.Bundle;
 
@@ -50,5 +55,11 @@ public class FullContentBrowseActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.full_content_browse_activity_layout);
+    }
+
+    @Override
+    public void setRestoreActivityValues() {
+
+        BrowseHelper.saveBrowseActivityState(this);
     }
 }

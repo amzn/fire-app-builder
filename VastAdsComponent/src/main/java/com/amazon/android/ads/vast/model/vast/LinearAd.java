@@ -44,6 +44,11 @@ public class LinearAd extends VastAd {
     private static final String TRACKING_EVENTS_KEY = "TrackingEvents";
 
     /**
+     * Key to get VideoClicks element.
+     */
+    private static final String VIDEO_CLICKS_KEY = "VideoClicks";
+
+    /**
      * Key to get Duration element.
      */
     private static final String DURATION_KEY = "Duration";
@@ -52,6 +57,11 @@ public class LinearAd extends VastAd {
      * The ad duration of the linear creative. "HH:MM.SS.mmm" format.
      */
     private String mDuration;
+
+    /**
+     * The video click elements.
+     */
+    private VideoClicks mVideoClicks; // optional
 
     /**
      * Constructor.
@@ -76,6 +86,11 @@ public class LinearAd extends VastAd {
 
             for (Map<String, Map> trackingMap : trackingList) {
                 super.addTrackingEvent(new Tracking(trackingMap));
+            }
+
+            Map<String, Map> videoClickElementsMap = linearAdMap.get(VIDEO_CLICKS_KEY);
+            if (videoClickElementsMap != null) {
+                setVideoClicks(new VideoClicks(videoClickElementsMap));
             }
 
             Map<String, String> durationMap = linearAdMap.get(DURATION_KEY);
@@ -103,10 +118,31 @@ public class LinearAd extends VastAd {
         mDuration = duration;
     }
 
+    /**
+     * Get the videoClicks object.
+     *
+     * @return The videoClicks object.
+     */
+    public VideoClicks getVideoClicks() {
+
+        return mVideoClicks;
+    }
+
+    /**
+     * Set the videoClicks object.
+     *
+     * @param videoClicks The videoClicks object to be set.
+     */
+    public void setVideoClicks(VideoClicks videoClicks) {
+
+        mVideoClicks = videoClicks;
+    }
+
     @Override
     public String toString() {
 
         return "LinearAd{" +
+                "mVideoClicks=" + mVideoClicks +
                 "mDuration='" + mDuration + '\'' +
                 "mMediaFiles=" + super.getMediaFiles() +
                 ", mTrackingEvents=" + super.getTrackingEvents() +

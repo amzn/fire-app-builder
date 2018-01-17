@@ -27,7 +27,7 @@ permissions and limitations under the License.
     <!-- Your app name to be displayed by launcher -->
     <string name="launcher_integration_app_display_name">Fire App Builder</string>
     <!--Your package name, should be same as in AndroidManifest-->
-    <string name="launcher_integration_intent_package_value">com.amazon.android.calypso</string>
+    <string name="launcher_integration_intent_package_value">com.fireappbuilder.android.calypso</string>
     <!-- Activity to start on receiving broadcasts from Launcher -->
     <string name="launcher_integration_intent_class_value">"com.amazon.android.tv.tenfoot.ui.activities.SplashActivity</string>
     <!-- Default value for MVPD URL. Replace in app's custom.xml with real URL. This string should
@@ -35,4 +35,7 @@ permissions and limitations under the License.
     <string name="mvpd_url">DEFAULT_MVPD_URL</string>
     <!-- App icon -->
     <drawable name="app_logo">@mipmap/ic_launcher</drawable>
+    <!-- A grace period used when selecting recent records that have been started but not
+    finished. Measured in milliseconds. Default of 10 seconds.-->
+    <integer name="recent_grace_period">10000</integer>
 </resources>

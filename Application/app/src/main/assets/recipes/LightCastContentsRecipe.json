@@ -6,12 +6,12 @@
   "modelType": "array",
   "query": "$[?(@.categories[0] in [$$par0$$])]",
   "matchList": [
-    "title@title",
-    "id@id",
-    "description@description",
-    "videoURL@url",
-    "imgURL@cardImageUrl",
-    "imgURL@backgroundImageUrl",
-    "channel_id@channelId"
+    "title@mTitle",
+    "id@mId",
+    "description@mDescription",
+    "videoURL@mUrl",
+    "imgURL@mCardImageUrl",
+    "imgURL@mBackgroundImageUrl",
+    "channel_id@mChannelId"
   ]
 }

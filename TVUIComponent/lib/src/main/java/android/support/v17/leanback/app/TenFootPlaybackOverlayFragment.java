@@ -155,11 +155,13 @@ public class TenFootPlaybackOverlayFragment extends DetailsFragment {
     private boolean mResetControlsToPrimaryActionsPending;
     private View mPlayPauseView = null;
     private View mFastForwardView = null;
+    private View mFastForwardViewIcon = null;
     private View mSkipPreviousView = null;
     private View mSkipPreviousViewIcon = null;
     private View mSkipNextView = null;
     private View mSkipNextViewIcon = null;
     private View mRewindView = null;
+    private View mRewindViewIcon = null;
     private View mVideoDetailsSectionView = null;
     private boolean mKeyPressed = false;
     private int mKeyCode = -1;
@@ -367,11 +369,9 @@ public class TenFootPlaybackOverlayFragment extends DetailsFragment {
     }
 
     /**
-     * Initializes the control views of the content.
-     * This method will only initialize the views once and multiple calls to this method will not
-     * change anything.
-     * If for some reason you need to re-initialize the views set mPlayPauseView = null before
-     * calling this method again.
+     * Initializes the control views of the content. This method will only initialize the views once
+     * and multiple calls to this method will not change anything. If for some reason you need to
+     * re-initialize the views set mPlayPauseView = null before calling this method again.
      */
     private void initializeControlViews() {
         // If the play/pause view is null, we will try to the currently focused view and walk
@@ -395,8 +395,12 @@ public class TenFootPlaybackOverlayFragment extends DetailsFragment {
 
                     mRewindView = ((ViewGroup) parent.getChildAt(playPauseIndex - 1))
                             .getChildAt(index);
+                    mRewindViewIcon = ((ViewGroup) parent.getChildAt(playPauseIndex - 1))
+                            .getChildAt(index + 1);
                     mFastForwardView = ((ViewGroup) parent.getChildAt(playPauseIndex + 1))
                             .getChildAt(index);
+                    mFastForwardViewIcon = ((ViewGroup) parent.getChildAt(playPauseIndex + 1))
+                            .getChildAt(index + 1);
                     mSkipNextView = ((ViewGroup) parent.getChildAt(playPauseIndex + 2))
                             .getChildAt(index);
                     mSkipNextViewIcon = ((ViewGroup) parent.getChildAt(playPauseIndex + 2))
@@ -415,27 +419,21 @@ public class TenFootPlaybackOverlayFragment extends DetailsFragment {
     }
 
     /**
-     * Disabling an action renders the button un-clickable and sets its alpha value to 30%,
-     * enabling reverses this effect.
+     * Enables or disables the skip next action. Disabling an action renders the button
+     * un-clickable and sets its alpha value to 30%, enabling reverses this effect.
      *
      * @param enabled True if the skip next action should be enabled; false otherwise.
      */
     protected void setSkipNextActionEnabled(boolean enabled) {
 
         Log.d(TAG, "setSkipNextActionEnabled enabled? " + enabled);
-        initializeControlViews(); // To make sure views are initialized before we try enabling them
-        if (mSkipNextView != null) {
-            mSkipNextView.setClickable(enabled);
-        }
-        if (mSkipNextViewIcon != null) {
-            mSkipNextViewIcon.setAlpha(enabled ? ENABLED_BUTTON_ALPHA_VALUE :
-                                               DISABLED_BUTTON_ALPHA_VALUE);
-        }
+        initializeControlViews(); // To make sure views are initialized before we try disabling them
+        setActionEnabled(mSkipNextView, mSkipNextViewIcon, enabled);
     }
 
     /**
-     * Disabling an action renders the button un-clickable and sets its alpha value to 30%,
-     * enabling reverses this effect.
+     * Enables or disables the skip previous action. Disabling an action renders the button
+     * un-clickable and sets its alpha value to 30%, enabling reverses this effect.
      *
      * @param enabled True if the skip previous action should be enabled; false otherwise.
      */
@@ -443,12 +441,51 @@ public class TenFootPlaybackOverlayFragment extends DetailsFragment {
 
         Log.d(TAG, "setSkipPreviousActionEnabled enabled? " + enabled);
         initializeControlViews(); // To make sure views are initialized before we try disabling them
-        if (mSkipPreviousView != null) {
-            mSkipPreviousView.setClickable(enabled);
+        setActionEnabled(mSkipPreviousView, mSkipPreviousViewIcon, enabled);
+    }
+
+    /**
+     * Enables or disables the fast-forward action button. Disabling an action renders the
+     * button un-clickable and sets its alpha value to 30%, enabling reverses this effect.
+     *
+     * @param enabled True if the fast-forward action should be enabled; false otherwise.
+     */
+    protected void setFastForwardActionEnabled(boolean enabled) {
+
+        Log.d(TAG, "setFastForwardActionEnabled enabled? " + enabled);
+        initializeControlViews(); // To make sure views are initialized before we try disabling them
+        setActionEnabled(mFastForwardView, mFastForwardViewIcon, enabled);
+    }
+
+    /**
+     * Enables or disables the rewind action button. Disabling an action renders the
+     * button un-clickable and sets its alpha value to 30%, enabling reverses this effect.
+     *
+     * @param enabled True if the fast-forward action should be enabled; false otherwise.
+     */
+    protected void setRewindActionEnabled(boolean enabled) {
+
+        Log.d(TAG, "setRewindActionEnabled enabled? " + enabled);
+        initializeControlViews(); // To make sure views are initialized before we try disabling them
+        setActionEnabled(mRewindView, mRewindViewIcon, enabled);
+    }
+
+    /**
+     * Enables or disables a playback action. Disabling an action renders the button un-clickable
+     * and sets its alpha value to 30%, enabling reverses this effect.
+     *
+     * @param actionView     The playback action view.
+     * @param actionViewIcon The playback action view icon.
+     * @param enabled        True if the action should be enabled; false otherwise.
+     */
+    private void setActionEnabled(View actionView, View actionViewIcon, boolean enabled) {
+
+        if (actionView != null) {
+            actionView.setClickable(enabled);
         }
-        if (mSkipPreviousViewIcon != null) {
-            mSkipPreviousViewIcon.setAlpha(enabled ? ENABLED_BUTTON_ALPHA_VALUE :
-                                                   DISABLED_BUTTON_ALPHA_VALUE);
+        if (actionViewIcon != null) {
+            actionViewIcon.setAlpha(enabled ? ENABLED_BUTTON_ALPHA_VALUE :
+                                            DISABLED_BUTTON_ALPHA_VALUE);
         }
     }
 

@@ -64,8 +64,8 @@ public class LoginWithAmazonActivity extends Activity {
             mAuthManager = new AmazonAuthorizationManager(this, Bundle.EMPTY);
         }
         catch (IllegalArgumentException e) {
-            showAuthToast(getString(R.string.APIKey_incorrect));
-            Log.e(TAG, getString(R.string.APIKey_incorrect, e));
+            showAuthToast(getString(R.string.incorrect_api_key));
+            Log.e(TAG, getString(R.string.incorrect_api_key), e);
         }
         setContentView(R.layout.activity_main);
 
@@ -278,12 +278,13 @@ public class LoginWithAmazonActivity extends Activity {
                 });
             }
             else {
+
                 StringBuilder profileBuilder = new StringBuilder();
 
-                profileBuilder.append(String.format(getString(R.string.Welcome), profileBundle
+                profileBuilder.append(String.format(getString(R.string.welcome), profileBundle
                         .getString(AuthzConstants.PROFILE_KEY.NAME.val)));
-
-                profileBuilder.append(String.format(getString(R.string.Your_email_is),
+                profileBuilder.append(" ");
+                profileBuilder.append(String.format(getString(R.string.your_email_is),
                                                     profileBundle.getString(
                                                             AuthzConstants.PROFILE_KEY.EMAIL.val)));
 

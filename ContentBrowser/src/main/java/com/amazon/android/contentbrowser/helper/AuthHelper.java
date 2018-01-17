@@ -52,7 +52,6 @@ import android.widget.ImageView;
 
 import rx.Observable;
 import rx.Subscriber;
-import rx.operators.OperatorIfThen;
 
 /**
  * Authentication helper class.
@@ -278,7 +277,8 @@ public class AuthHelper {
      * @param extras Bundle.
      * @return Error category.
      */
-    String retrieveErrorCategory(Bundle extras){
+    String retrieveErrorCategory(Bundle extras) {
+
         Bundle bundle = extras.getBundle(AuthenticationConstants.ERROR_BUNDLE);
         String authErrorCategory = DEFAULT_AUTH_ERROR;
         if (bundle != null) {
@@ -335,12 +335,20 @@ public class AuthHelper {
                     Log.d(TAG, "User is authenticated");
                     broadcastAuthenticationStatus(true);
                     handleSuccessCase(subscriber, extras);
+                    // Try getting the MVPD provider name from extras to set the display logo.
+                    String mvpdName = extras.getString(PreferencesConstants.MVPD_DISPLAY_NAME);
+                    if (mvpdName != null) {
+                        Preferences.setString(PreferencesConstants.MVPD_LOGO_URL,
+                                              mContentBrowser.getPoweredByLogoUrlByName(mvpdName));
+                    }
                 }
 
                 @Override
                 public void onFailure(Bundle extras) {
 
                     Log.e(TAG, "User is not authenticated");
+                    // Clear the MVPD logo from preferences since user is not logged in.
+                    Preferences.setString(PreferencesConstants.MVPD_LOGO_URL, "");
                     broadcastAuthenticationStatus(false);
                     handleFailureCase(subscriber, extras);
                 }
@@ -393,7 +401,7 @@ public class AuthHelper {
     private void handleAuthenticationActivityResultBundle(Bundle bundle) {
 
         Bundle mvpdBundle = null;
-        if(bundle != null) {
+        if (bundle != null) {
             mvpdBundle = (Bundle) bundle.get(AuthenticationConstants.MVPD_BUNDLE);
         }
 
@@ -495,7 +503,8 @@ public class AuthHelper {
      * @param iAuthorizedHandler   Authorized handler.
      * @param authenticationResult Bundle
      */
-    public void handleAuthChain(IAuthorizedHandler iAuthorizedHandler, Bundle authenticationResult) {
+    public void handleAuthChain(IAuthorizedHandler iAuthorizedHandler, Bundle
+            authenticationResult) {
 
         if (authenticationResult == null) {
             Log.w(TAG, "resultBundle is null, user probably pressed back on login screen");
@@ -507,12 +516,14 @@ public class AuthHelper {
                 // If we were authorized return success.
                 if (bundle.getBoolean(RESULT)) {
                     iAuthorizedHandler.onAuthorized(bundle);
-                } else {
+                }
+                else {
                     // If we were not authorized return show error.
                     handleErrorBundle(bundle);
                 }
             });
-        } else {
+        }
+        else {
             // If everything failed then show error.
             handleErrorBundle(authenticationResult);
         }
@@ -572,14 +583,11 @@ public class AuthHelper {
     /**
      * Handle on activity result.
      *
-     * @param contentBrowser Content Browser.
-     * @param activity       Activity.
-     * @param requestCode    Request code.
-     * @param resultCode     Result code.
-     * @param data           Intent.
+     * @param requestCode Request code.
+     * @param resultCode  Result code.
+     * @param data        Intent.
      */
-    public void handleOnActivityResult(ContentBrowser contentBrowser, Activity activity,
-                                       int requestCode, int resultCode, Intent data) {
+    public void handleOnActivityResult(int requestCode, int resultCode, Intent data) {
 
         Log.d(TAG, "handleOnActivityResult " + requestCode);
         mRxLauncher.activityResult(requestCode, resultCode, data);
@@ -680,7 +688,8 @@ public class AuthHelper {
                             @Override
                             public void onFailure(Bundle extras) {
 
-                                AnalyticsHelper.trackLogOutResultFailure(retrieveErrorCategory(extras));
+                                AnalyticsHelper.trackLogOutResultFailure(retrieveErrorCategory
+                                                                                 (extras));
                                 fragment.getArguments()
                                         .putString(ErrorDialogFragment.ARG_ERROR_MESSAGE,
                                                    activity.getResources().getString(

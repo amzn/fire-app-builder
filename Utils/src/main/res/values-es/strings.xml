@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+  <string name="feed_error_message">El servicio no esta disponible. Vuelve a intentarlo más tarde.</string>
+  <string name="network_error_message">La red no está disponible en este momento. Vuelve a intentarlo más tarde.</string>
+  <string name="registration_code_error_message">Error al obtener el código de registro. Descarta este mensaje e inténtalo de nuevo.</string>
+  <string name="authentication_error_message">Error al autenticar tus datos.\r\nIntroduce tu información de nuevo o ponte en contacto con el proveedor del servicio para acceder a este contenido.</string>
+  <string name="authorization_error_message">No tienes autorización para ver este contenido.\r\nPonte en contacto con el proveedor del servicio para acceder al contenido.</string>
+  <string name="logout_success_message">Has cerrado sesión. En breve volverás a la página de detalles.</string>
+  <string name="logout_failure_message">Error al cerrar la sesión. Vuelve a intentarlo.</string>
+  <string name="playback_error_message">Error en la reproducción. Vuelve a intentarlo.</string>
+  <string name="try_again_label">Volver a intentarlo</string>
+  <string name="exit_app_label">Salir de la aplicación</string>
+  <string name="go_to_network_settings_label">Ir a la Configuración de red</string>
+  <string name="dismiss_label">Descartar</string>
+  <string name="login_label">Identificarse</string>
+  <string name="logout_label">Cerrar sesión</string>
+  <string name="slideshow_label">Configuración de la presentación</string>
+  <string name="auto_play_speed">Velocidad de la diapositiva</string>
+  <string name="terms_title">Términos de uso</string>
+  <string name="terms_description">Lee los avisos legales.</string>
+  <string name="slideshow_title">Velocidad de la presentación</string>
+  <string name="slideshow_description">Define la velocidad de la presentación.</string>
+  <string name="logout_description">Cierra la sesión de tu cuenta.</string>
+  <string name="login_description">Inicia sesión en tu cuenta.</string>
+  <string name="logout_dialog_description">¿Estás seguro/a de que quieres cerrar sesión?</string>
+  <string name="login_dialog_description">No te has identificado. Selecciona un vídeo y reprodúcelo para iniciar sesión.</string>
+  <string name="logout_dialog_option_1">Sí</string>
+  <string name="logout_dialog_option_2">No</string>
+  <string name="btn_submit">ENVIAR</string>
+  <string name="btn_get_new_code">OBTENER UN CÓDIGO NUEVO</string>
+  <string name="second_screen_login_instruction_line_1">Accede a tu equipo o dispositivo móvil</string>
+  <string name="second_screen_login_instruction_line_3">Introduce el siguiente código (distingue entre mayúsculas y minúsculas):</string>
+  <string name="second_screen_login_instruction_line_4">Cargando…</string>
+</resources>

@@ -5,6 +5,6 @@
   "modelType": "array",
   "conversionType": "dynamic",
   "query": "$.categories[?(@.type == 'category')]",
-  "matchList": ["name@name", "id@id"],
+  "matchList": ["name@mName", "id@id"],
   "keyDataPath": "data@keyDataPath"
 }

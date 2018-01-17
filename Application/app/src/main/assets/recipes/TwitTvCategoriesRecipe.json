@@ -7,7 +7,7 @@
   "query": "//item/category/text()",
   "queryResultType": "[]$",
   "matchList": [
-    "/StringKey@name"
+    "/StringKey@mName"
   ],
   "keyDataType": "/StringKey@keyDataPath"
 }

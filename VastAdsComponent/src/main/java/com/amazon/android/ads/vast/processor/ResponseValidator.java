@@ -44,6 +44,7 @@
  */
 package com.amazon.android.ads.vast.processor;
 
+import com.amazon.android.ads.vast.model.vast.AdElement;
 import com.amazon.android.ads.vast.model.vast.MediaFile;
 import com.amazon.android.ads.vast.model.vmap.AdBreak;
 import com.amazon.android.ads.vast.model.vmap.VmapResponse;
@@ -61,49 +62,25 @@ public class ResponseValidator {
     private static final String TAG = ResponseValidator.class.getSimpleName();
 
     /**
-     * Validate if the VMAP response with the given media picker.
+     * Validate if the VMAP response follows the specification.
      *
-     * @param response    The VMAP ad response.
-     * @param mediaPicker The media file picker.
+     * @param response The VMAP ad response.
      * @return True if the response is valid, false otherwise.
      */
-    public static boolean validate(VmapResponse response, MediaPicker mediaPicker) {
+    public static boolean validateVMAPResponse(VmapResponse response) {
 
-        boolean isValid = false;
+        Log.d(TAG, "Validating vmap response.");
 
-        Log.d(TAG, "validating ad response.");
-
-        // We need at least one media file to play for the VMAP response to be valid.
-        for (AdBreak adBreak : response.getAdBreaks()) {
-
-            // Must have a MediaPicker to choose one of the MediaFile element from XML
-            if (mediaPicker != null) {
-                MediaFile mediaFile = mediaPicker.pickVideo(adBreak.getMediaFiles());
-
-                if (mediaFile != null) {
-                    String url = mediaFile.getValue();
-                    if (!TextUtils.isEmpty(url)) {
-                        isValid = true;
-                        // Set the best media file to use when playing the ad.
-                        adBreak.setSelectedMediaFileUrl(url);
-                        Log.d(TAG, "mediaPicker selected mediaFile with URL " + url);
-                    }
-                }
-            }
-            else {
-                Log.e(TAG, "A MediaPicker is necessary to validate ad response.");
-                return false;
-            }
+        if (response != null && response.getVmapVersion() == null) {
+            Log.e(TAG, "Validator error: vmap response need the required attributes");
+            return false;
         }
 
-        Log.d(TAG, "Validator returns: " + (isValid ? "valid" : "not valid (no media file)"));
-
-        return isValid;
+        return true;
     }
 
     /**
-     * Validate the ad break. To be valid, the ad break must have at least one impression and at
-     * least one media file.
+     * Validate the ad break.
      *
      * @param adBreak The ad to validate.
      * @return True if the ad break is valid, false otherwise.
@@ -112,29 +89,78 @@ public class ResponseValidator {
 
         Log.d(TAG, "Validating ad break.");
 
-        // Validate that there is an ad source
-        if (adBreak.getAdSource().getAdTagURI() == null &&
-                adBreak.getAdSource().getCustomAdData() == null &&
-                adBreak.getAdSource().getVastResponse() == null) {
-            Log.d(TAG, "Validator error: ad break needs a valid ad source");
+        //time offset and breakType are required field for an ad break
+        if (adBreak.getTimeOffset() == null || adBreak.getBreakType() == null) {
+            Log.e(TAG, "Validator error: ad break need the required attributes");
             return false;
         }
 
-        // There should be at least one impression.
-        List<String> impressions = adBreak.getImpressions();
-        if (impressions == null || impressions.size() == 0) {
-            Log.d(TAG, "Validator error: impressions list invalid");
-            return false;
-        }
-
-        // There must be at least one media file.
-        List<MediaFile> mediaFiles = adBreak.getMediaFiles();
-        if (mediaFiles == null || mediaFiles.size() == 0) {
-            Log.d(TAG, "Validator error: mediaFile list invalid");
-            return false;
+        //If ad source element is provided, it must define the source for ads with one of the
+        //following elements <VastAdData> / <AdTagURI> / <CustomAdData>
+        if (adBreak.getAdSource() != null) {
+            if (adBreak.getAdSource().getAdTagURI() == null &&
+                    adBreak.getAdSource().getCustomAdData() == null &&
+                    adBreak.getAdSource().getVastResponse() == null) {
+                Log.e(TAG, "Validator error: ad break needs a valid ad source");
+                return false;
+            }
         }
 
         return true;
     }
 
+    /**
+     * Validate the ad element. To be valid, the ad element must have at least one impression and at
+     * least one media file supported by the media player.
+     *
+     * @param adElement   The ad element to validate.
+     * @param mediaPicker The media file picker.
+     * @return True if the ad break is valid, false otherwise.
+     */
+    public static boolean validateAdElement(AdElement adElement, MediaPicker mediaPicker) {
+
+        Log.d(TAG, "Validating ad element.");
+
+        if (adElement == null || adElement.getInlineAd() == null) {
+            Log.e(TAG, "Validator error: no inline Ad found");
+            return false;
+        }
+
+        // There should be at least one impression.
+        List<String> impressions = adElement.getInlineAd().getImpressions();
+        if (impressions == null || impressions.size() == 0) {
+            Log.e(TAG, "Validator error: impressions list invalid");
+            return false;
+        }
+
+        // There must be at least one media file.
+        List<MediaFile> mediaFiles = adElement.getInlineAd().getMediaFiles();
+        if (mediaFiles == null || mediaFiles.size() == 0) {
+            Log.e(TAG, "Validator error: mediaFile list invalid");
+            return false;
+        }
+
+        boolean isValid = false;
+
+        // Must have a MediaPicker to choose one of the MediaFile element from XML
+        if (mediaPicker != null) {
+            MediaFile mediaFile = mediaPicker.pickVideo(adElement.getInlineAd().getMediaFiles());
+
+            if (mediaFile != null) {
+                String url = mediaFile.getValue();
+                if (!TextUtils.isEmpty(url)) {
+                    // Set the best media file to use when playing the ad.
+                    adElement.setSelectedMediaFileUrl(url);
+                    Log.d(TAG, "mediaPicker selected mediaFile with URL " + url);
+                    isValid = true;
+                }
+            }
+        }
+        else {
+            Log.e(TAG, "A MediaPicker is necessary to validate ad response.");
+            return false;
+        }
+
+        return isValid;
+    }
 }

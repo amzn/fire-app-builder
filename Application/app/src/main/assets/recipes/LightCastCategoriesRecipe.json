@@ -7,7 +7,7 @@
   "query": "$..categories[*]",
   "queryResultType": "[]$",
   "matchList": [
-    "StringKey@name"
+    "StringKey@mName"
   ],
   "keyDataType": "StringKey@keyDataPath"
 }

@@ -58,29 +58,14 @@ public class VastResponse {
     public static final String VAST = "vast";
 
     /**
-     * Key to get the version attribute.
-     */
-    private static final String VERSION_KEY = "version";
-
-    /**
      * Key to get the ad element.
      */
-    private static final String AD_KEY = "Ad";
+    public static final String AD_KEY = "Ad";
 
     /**
-     * Key to get the wrapper element.
+     * Error URL at vast root element.
      */
-    private static final String WRAPPER_ELEMENT_KEY = "Wrapper";
-
-    /**
-     * Key to get the VAST ad tag URI element.
-     */
-    private static final String VASTADTAGURI_ELEMENT_KEY = "VASTAdTagURI";
-
-    /**
-     * Path for the TrackingEvents element.
-     */
-    private static final String TRACKING_EVENTS_PATH = "Creatives/Creative/Linear/TrackingEvents";
+    private String mErrorUrl;
 
     /**
      * The official version with which the response is complaint.
@@ -88,16 +73,16 @@ public class VastResponse {
     private String mVersion;
 
     /**
-     * The Inline element.
+     * List of Ad elements.
      */
-    private List<Inline> mInlineAds;
+    private List<AdElement> mAdElements;
 
     /**
      * Constructor.
      */
     public VastResponse() {
 
-        mInlineAds = new ArrayList<>();
+        mAdElements = new ArrayList<>();
     }
 
     /**
@@ -114,7 +99,17 @@ public class VastResponse {
         Map<String, String> attributes = xmlMap.get(XmlParser.ATTRIBUTES_TAG);
 
         if (attributes != null) {
-            vastResponse.setVersion(attributes.get(VERSION_KEY));
+            vastResponse.setVersion(attributes.get(VmapHelper.VERSION_KEY));
+            //Check for Vast root error element
+            if (xmlMap.containsKey(VmapHelper.ERROR_ELEMENT_KEY)) {
+                Map errorMap = xmlMap.get(VmapHelper.ERROR_ELEMENT_KEY);
+                if (errorMap != null) {
+                    vastResponse.setErrorUrl(VmapHelper.getTextValueFromMap(errorMap));
+                }
+                Log.d(TAG, "Root Error element found in vast response, Server does not / can not " +
+                        "return an ad");
+                return vastResponse;
+            }
             Object adElementObject = xmlMap.get(AD_KEY);
             if (adElementObject == null) {
                 Log.d(TAG, "No ad found in vast response");
@@ -123,74 +118,15 @@ public class VastResponse {
 
             if (adElementObject instanceof List) {
                 for (Map<String, Map> map : (List<Map<String, Map>>) adElementObject) {
-                    processAdElement(map, vastResponse);
+                    vastResponse.getAdElements().add(AdElement.createInstance(map));
                 }
             }
             else {
-                processAdElement((Map<String, Map>) adElementObject, vastResponse);
+                vastResponse.getAdElements().add(AdElement.createInstance((Map<String, Map>)
+                                                                                  adElementObject));
             }
         }
         return vastResponse;
-    }
-
-    /**
-     * Helper method to process ad element. It will either process the wrapper withing the ad
-     * element or create inlines (whichever is available in the map).
-     *
-     * @param map          The map containing the ad element data to process.
-     * @param vastResponse The original VAST response object.
-     */
-    private static void processAdElement(Map<String, Map> map, VastResponse vastResponse) {
-
-        if (map.containsKey(WRAPPER_ELEMENT_KEY)) {
-            processWrapper(map.get(WRAPPER_ELEMENT_KEY), vastResponse);
-        }
-        else {
-            vastResponse.getInlineAds().add(new Inline(map));
-        }
-    }
-
-    /**
-     * Process the wrapper element. Creates a VastResponse from the VASTAdTagURI element and then
-     * ads the wrapper's impression URL, error URL, and linear tracking events to the Inline ads of
-     * the VastResponse.
-     *
-     * @param wrapperMap   The map containing the wrapper data.
-     * @param vastResponse The original VAST response object.
-     */
-    private static void processWrapper(Map<String, Map> wrapperMap, VastResponse
-            vastResponse) {
-
-        // Process the VastAdTagURI to get wrapped VAST response.
-        String vastAdTagUri = VmapHelper.getTextValueFromMap(wrapperMap.get
-                (VASTADTAGURI_ELEMENT_KEY));
-        VastResponse wrappedVastResponse = createInstance(vastAdTagUri);
-
-        // Add the creative's tracking events from the wrapper to the inline ad.
-        Map<String, Map> trackingEventsMap =
-                PathHelper.getMapByPath((Map) wrapperMap, TRACKING_EVENTS_PATH);
-
-        // Add the impression, error url, and tracking events to each creative of each inline add.
-        for (Inline inline : wrappedVastResponse.getInlineAds()) {
-            for (Map trackingMap : (List<Map>) trackingEventsMap.get(VmapHelper.TRACKING_KEY)) {
-                for (Creative creative : inline.getCreatives()) {
-                    creative.getVastAd().addTrackingEvent(new Tracking(trackingMap));
-                }
-            }
-            // Add the impression to the inline
-            if (wrapperMap.containsKey(VmapHelper.IMPRESSION_KEY)) {
-                inline.getImpressions().addAll(
-                        VmapHelper.getStringListFromMap(wrapperMap, VmapHelper.IMPRESSION_KEY));
-            }
-            // Add the error url to the inline
-            if (wrapperMap.containsKey(VmapHelper.ERROR_ELEMENT_KEY)) {
-                inline.getErrorUrls().addAll(
-                        VmapHelper.getStringListFromMap(wrapperMap, VmapHelper.ERROR_ELEMENT_KEY));
-            }
-
-            // Add the inline ad to the original vast response object.
-            vastResponse.getInlineAds().add(inline);
-        }
     }
 
     /**
@@ -253,97 +189,52 @@ public class VastResponse {
     }
 
     /**
-     * Get the inline ads.
+     * Get the Vast Ad element list.
      *
-     * @return The inline ads.
+     * @return The vast Ad element list.
      */
-    public List<Inline> getInlineAds() {
+    public List<AdElement> getAdElements() {
 
-        return mInlineAds;
+        return mAdElements;
     }
 
     /**
-     * Set the inline ads.
+     * Set the Vast ad elements.
      *
-     * @param inlineAds The inline ads.
+     * @param adElements The Vast ad elements.
      */
-    public void setInlineAds(List<Inline> inlineAds) {
+    public void setAdElements(List<AdElement> adElements) {
 
-        mInlineAds = inlineAds;
+        mAdElements = adElements;
     }
 
     /**
-     * Gets all the media files from the inline.
+     * Get the error URL.
      *
-     * @return List of media files.
+     * @return error URL.
      */
-    public List<MediaFile> getMediaFiles() {
+    public String getErrorUrl() {
 
-        ArrayList<MediaFile> mediaFiles = new ArrayList<>();
-        for (Inline inline : mInlineAds) {
-
-            mediaFiles.addAll(inline.getMediaFiles());
-        }
-        return mediaFiles;
+        return mErrorUrl;
     }
 
     /**
-     * Gets all the impressions from the inline.
+     * Set the error URL.
      *
-     * @return List of impression strings.
+     * @param errorUrl error URL.
      */
-    public List<String> getImpressions() {
+    public void setErrorUrl(String errorUrl) {
 
-        List<String> impressions = new ArrayList<>();
-        for (Inline inline : mInlineAds) {
-
-            impressions.addAll(inline.getImpressions());
-        }
-        return impressions;
-    }
-
-    /**
-     * Gets all the tracking URLs from the inline.
-     *
-     * @return Map of tracking events and their corresponding URLs.
-     */
-    public Map<String, List<String>> getTrackingUrls() {
-
-        Map<String, List<String>> sortedMap = new HashMap<>();
-        for (Inline inline : mInlineAds) {
-            HashMap<String, List<String>> map = inline.getTrackingEvents();
-            for (String key : map.keySet()) {
-                if (sortedMap.containsKey(key)) {
-                    sortedMap.get(key).addAll(map.get(key));
-                }
-                else {
-                    sortedMap.put(key, map.get(key));
-                }
-            }
-        }
-        return sortedMap;
-    }
-
-    /**
-     * Get the error URLs from the inline.
-     *
-     * @return List of error URLs.
-     */
-    public List<String> getErrorUrls() {
-
-        List<String> errorUrls = new ArrayList<>();
-        for (Inline inline : mInlineAds) {
-            errorUrls.addAll(inline.getErrorUrls());
-        }
-        return errorUrls;
+        mErrorUrl = errorUrl;
     }
 
     @Override
     public String toString() {
 
         return "VastResponse{" +
-                "mVersion='" + mVersion + '\'' +
-                ", mInlineAds=" + mInlineAds +
+                "mErrorUrl='" + mErrorUrl + '\'' +
+                ", mVersion='" + mVersion + '\'' +
+                ", mAdElements=" + mAdElements +
                 '}';
     }
 }

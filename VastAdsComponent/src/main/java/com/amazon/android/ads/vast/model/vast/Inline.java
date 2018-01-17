@@ -41,11 +41,6 @@ public class Inline {
     private static final String CREATIVE_KEY = "Creative";
 
     /**
-     * The ad id.
-     */
-    private String mId;
-
-    /**
      * A list of creatives.
      */
     private List<Creative> mCreatives;
@@ -71,11 +66,6 @@ public class Inline {
         mImpressions = new ArrayList<>();
         mErrorUrls = new ArrayList<>();
 
-        Map<String, String> attributes = adMap.get(XmlParser.ATTRIBUTES_TAG);
-        if (attributes != null) {
-            setId(attributes.get(VmapHelper.ID_KEY));
-        }
-
         if (adMap.containsKey((VmapHelper.INLINE_KEY))) {
             Map<String, Map> inLineMap = adMap.get(VmapHelper.INLINE_KEY);
 
@@ -97,26 +87,6 @@ public class Inline {
                                                                   VmapHelper.ERROR_ELEMENT_KEY));
             }
         }
-    }
-
-    /**
-     * Get the id.
-     *
-     * @return The id.
-     */
-    public String getId() {
-
-        return mId;
-    }
-
-    /**
-     * Set the id.
-     *
-     * @param id The id.
-     */
-    public void setId(String id) {
-
-        mId = id;
     }
 
     /**
@@ -202,7 +172,6 @@ public class Inline {
     public String toString() {
 
         return "Inline{" +
-                "mId='" + mId + '\'' +
                 ", mCreatives=" + mCreatives +
                 ", mImpressions=" + mImpressions +
                 ", mErrorUrls=" + mErrorUrls +

@@ -33,6 +33,7 @@ import java.util.Map;
 import com.amazon.analytics.AnalyticsActionBuilder;
 import com.amazon.analytics.AnalyticsTags;
 import com.amazon.analytics.AnalyticsManager;
+import com.amazon.android.recipe.Recipe;
 
 /**
  * Analytics helper class.
@@ -99,10 +100,24 @@ public class AnalyticsHelper {
         Map<String, Object> attributes = new HashMap<>();
         attributes.put(AnalyticsTags.ATTRIBUTE_PUBLISHER_NAME, content.getStudio());
         attributes.put(AnalyticsTags.ATTRIBUTE_AIRDATE, content.getAvailableDate());
-        if (content.getAdCuePoints() != null) {
-            attributes.put(AnalyticsTags.ATTRIBUTE_NUMBER_OF_SEGMENTS,
-                           content.getAdCuePoints().size());
+        return attributes;
+    }
+
+    /**
+     * Get analytics attributes needed to identify the correct content or ad type.
+     *
+     * @param content Content to get attributes for.
+     * @return Attributes needed for the classification of the given Content.
+     */
+    private static Map<String, Object> getClassificationTypeAttributes(Content content) {
+
+        Map<String, Object> attributes = new HashMap<>();
+        boolean liveContent = false;
+        if (content != null) {
+            liveContent = content.getExtraValue(Recipe.LIVE_FEED_TAG) != null &&
+                    Boolean.valueOf(content.getExtraValue(Recipe.LIVE_FEED_TAG).toString());
         }
+        attributes.put(AnalyticsTags.ATTRIBUTE_LIVE_FEED, liveContent);
 
         return attributes;
     }
@@ -207,17 +222,22 @@ public class AnalyticsHelper {
      * @param content         Content that started/resumed playback.
      * @param duration        Total duration of the content.
      * @param currentPosition The current playback position.
+     * @param totalSegments   Total number of segments to be played.
+     * @param currentSegment  Segment number of current content being played.
      */
-    public static void trackPlaybackStarted(Content content, long duration, long currentPosition) {
+    public static void trackPlaybackStarted(Content content, long duration, long currentPosition,
+                                            int totalSegments, int currentSegment) {
 
         Map<String, Object> attributes = getBasicAnalyticsAttributesForContent(content);
         attributes.putAll(getDetailedContentAttributes(content));
+        attributes.putAll(getClassificationTypeAttributes(content));
 
         // Get Content extras
         attributes.putAll(ExtraContentAttributes.getExtraAttributes(content.getExtras()));
         attributes.put(AnalyticsTags.ATTRIBUTE_VIDEO_DURATION, duration);
         attributes.put(AnalyticsTags.ATTRIBUTE_VIDEO_CURRENT_POSITION, currentPosition);
-
+        attributes.put(AnalyticsTags.ATTRIBUTE_NUMBER_OF_SEGMENTS, totalSegments);
+        attributes.put(AnalyticsTags.ATTRIBUTE_SEGMENT_NUMBER, currentSegment);
         sendAnalytics(AnalyticsTags.ACTION_PLAYBACK_STARTED, attributes);
     }
 

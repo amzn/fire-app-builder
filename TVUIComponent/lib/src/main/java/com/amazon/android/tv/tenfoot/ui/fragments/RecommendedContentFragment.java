@@ -106,7 +106,7 @@ public class RecommendedContentFragment extends RowsFragment {
 
                 ContentBrowser.getInstance(getActivity())
                               .setLastSelectedContent(content)
-                              .switchToScreen(ContentBrowser.CONTENT_DETAILS_SCREEN);
+                              .switchToScreen(ContentBrowser.CONTENT_DETAILS_SCREEN, content);
 
             }
         }

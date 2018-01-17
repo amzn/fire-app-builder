@@ -37,6 +37,11 @@ public class VmapHelper {
     public static final String EXTENSION_KEY = "vmap:Extension";
 
     /**
+     * Key to get the VAST element.
+     */
+    public static final String VAST_KEY = "VAST";
+
+    /**
      * Key to get the inline element.
      */
     public static final String INLINE_KEY = "InLine";
@@ -45,6 +50,16 @@ public class VmapHelper {
      * Key to get the id attribute.
      */
     public static final String ID_KEY = "id";
+
+    /**
+     * Key to get the sequence attribute.
+     */
+    public static final String SEQUENCE_KEY = "sequence";
+
+    /**
+     * Key to get the version attribute.
+     */
+    public static final String VERSION_KEY = "version";
 
     /**
      * Key to get the template type attribute.

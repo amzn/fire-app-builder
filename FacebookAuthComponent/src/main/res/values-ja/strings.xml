@@ -14,9 +14,8 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-    <string name="facebook_error_authentication_message">アカウントの認証中にエラーが発生しました。後でもう一度お試しください。
-    </string>
-    <string name="access_token_null">アクセストークンがnullです。ユーザーはログインしていません。</string>
-    <string name="error_checking_token">リターンマップがnullです。アクセストークンの確認中に不明なエラーが発生しました。</string>
-    <string name="error_checking_token_caught">アクセストークンの確認中にエラーが発生しました。</string>
+  <string name="facebook_error_authentication_message">アカウントの認証中にエラーが発生しました。後でもう一度お試しください。</string>
+  <string name="access_token_null">アクセストークンがnullです。ユーザーはログインしていません。</string>
+  <string name="error_checking_token">リターンマップがnullです。アクセストークンの確認中に不明なエラーが発生しました。</string>
+  <string name="error_checking_token_caught">アクセストークンの確認中にエラーが発生しました。</string>
 </resources>

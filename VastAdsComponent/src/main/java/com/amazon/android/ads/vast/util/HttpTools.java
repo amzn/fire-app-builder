@@ -49,11 +49,17 @@ import android.util.Log;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 public class HttpTools {
 
     private static final String TAG = HttpTools.class.getName();
 
+    /**
+     * Http get request.
+     *
+     * @param url url need to be used for http get request.
+     */
     public static void httpGetURL(final String url) {
 
         if (!TextUtils.isEmpty(url)) {
@@ -93,5 +99,25 @@ public class HttpTools {
 
         }
 
+    }
+
+    /**
+     * Request all urls provided in list.
+     *
+     * @param urls urls need to be requested using http request.
+     */
+    public static void fireUrls(List<String> urls) {
+
+        Log.i(TAG, "entered fireUrls");
+
+        if (urls != null) {
+            for (String url : urls) {
+                Log.i(TAG, "\tfiring url:" + url);
+                httpGetURL(url);
+            }
+        }
+        else {
+            Log.i(TAG, "\turl list is null");
+        }
     }
 }

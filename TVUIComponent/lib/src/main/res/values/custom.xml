@@ -16,6 +16,8 @@ permissions and limitations under the License.
 
 <resources>
 
+     <string translatable="false" name="browse_title"><![CDATA[TenFootUI]]></string>
+
     <!-- Default App Colors -->
 
     <!-- The background color of the screens. -->

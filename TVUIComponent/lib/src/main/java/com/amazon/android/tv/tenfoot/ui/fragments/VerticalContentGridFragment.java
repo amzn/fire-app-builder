@@ -81,7 +81,7 @@ public class VerticalContentGridFragment extends android.support.v17.leanback.ap
 
                 ContentBrowser.getInstance(getActivity())
                               .setLastSelectedContent(content)
-                              .switchToScreen(ContentBrowser.CONTENT_DETAILS_SCREEN);
+                              .switchToScreen(ContentBrowser.CONTENT_DETAILS_SCREEN, content);
             }
         });
 

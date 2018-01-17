@@ -15,7 +15,10 @@
 package com.amazon.android.ads.vast.model.vmap;
 
 import com.amazon.ads.IAds;
+import com.amazon.android.ads.vast.model.vast.AdElement;
 import com.amazon.android.ads.vast.model.vast.VastResponse;
+import com.amazon.android.ads.vast.processor.ResponseValidator;
+import com.amazon.dynamicparser.impl.XmlParser;
 import com.amazon.utils.ListUtils;
 
 import android.util.Log;
@@ -43,9 +46,24 @@ public class VmapResponse {
     private List<AdBreak> mAdBreaks;
 
     /**
-     * The ad that the
+     * List of ad elements.
      */
-    private AdBreak mCurrentAd;
+    private List<AdElement> mAdElements;
+
+    /**
+     * Current Ad to be played
+     */
+    private AdElement mCurrentAd;
+
+    /**
+     * Current Ad Break being played
+     */
+    private AdBreak mCurrentAdBreak;
+
+    /**
+     * Vmap version
+     */
+    private String mVmapVersion;
 
     /**
      * Constructor.
@@ -70,17 +88,27 @@ public class VmapResponse {
 
         if (xmlMap != null) {
 
-            // All VMAP models must have at least one ad break, return null if none are found.
-            if (xmlMap.get(AD_BREAK_KEY) == null) {
-                Log.e(TAG, "VMAP model xml contains no ad break element");
-                return null;
-            }
-            List<Map> adBreakMapList = ListUtils.getValueAsMapList(xmlMap, AD_BREAK_KEY);
-            for (Map adBreakMap : adBreakMapList) {
-                model.getAdBreaks().add(new AdBreak(adBreakMap));
+            Map<String, String> attributes = xmlMap.get(XmlParser.ATTRIBUTES_TAG);
+
+            //setting the VMAP version
+            if (attributes != null) {
+                model.setVmapVersion(attributes.get(VmapHelper.VERSION_KEY));
+
+                // All VMAP models must have at least one ad break, return null if none are found.
+                if (xmlMap.get(AD_BREAK_KEY) == null) {
+                    Log.e(TAG, "VMAP model xml contains no ad break element");
+                    return null;
+                }
+                List<Map> adBreakMapList = ListUtils.getValueAsMapList(xmlMap, AD_BREAK_KEY);
+                for (Map adBreakMap : adBreakMapList) {
+                    AdBreak adBreak = new AdBreak(adBreakMap);
+                    //Validate if Ad break follows VMAP specification
+                    if (ResponseValidator.validateAdBreak(adBreak)) {
+                        model.getAdBreaks().add(adBreak);
+                    }
+                }
             }
         }
-        model.setCurrentAd(model.getAdBreaks().get(0));
 
         return model;
     }
@@ -111,6 +139,26 @@ public class VmapResponse {
         vmapResponse.addAdBreak(adBreak);
 
         return vmapResponse;
+    }
+
+    /**
+     * Get the vmap version.
+     *
+     * @return The vmap version.
+     */
+    public String getVmapVersion() {
+
+        return mVmapVersion;
+    }
+
+    /**
+     * Set the ad breaks.
+     *
+     * @param vmapVersion The vmap version.
+     */
+    public void setVmapVersion(String vmapVersion) {
+
+        mVmapVersion = vmapVersion;
     }
 
     /**
@@ -151,9 +199,9 @@ public class VmapResponse {
      *
      * @return List of ads.
      */
-    public List<AdBreak> getPreRollAdBreaks() {
+    public List<AdBreak> getPreRollAdBreaks(long duration) {
 
-        return getAdBreaksForType(IAds.PRE_ROLL_AD);
+        return getAdBreaksInRange(duration, -1, 1);
     }
 
     /**
@@ -161,9 +209,9 @@ public class VmapResponse {
      *
      * @return List of ads.
      */
-    public List<AdBreak> getMidRollAdBreaks() {
+    public List<AdBreak> getMidRollAdBreaks(long duration) {
 
-        return getAdBreaksForType(IAds.MID_ROLL_AD);
+        return getAdBreaksInRange(duration, 0, duration);
     }
 
     /**
@@ -171,22 +219,28 @@ public class VmapResponse {
      *
      * @return List of ids.
      */
-    public List<AdBreak> getPostRollAdBreaks() {
+    public List<AdBreak> getPostRollAdBreaks(long duration) {
 
-        return getAdBreaksForType(IAds.POST_ROLL_AD);
+        if (duration == 0) {
+            return new ArrayList<>();
+        }
+        return getAdBreaksInRange(duration, duration - 1, duration + 1);
     }
 
     /**
-     * Get a list of ad breaks for the given type of ad.
+     * Get a list of ad breaks for the given playback position range and duration.
      *
-     * @param type The type of ad: preroll, midroll, or postroll.
+     * @param duration The duration of the video.
+     * @param low      The ad playback position should be higher than this.
+     * @param high     The ad playback position should be lower than this.
      * @return List of ad breaks.
      */
-    private List<AdBreak> getAdBreaksForType(String type) {
+    private List<AdBreak> getAdBreaksInRange(long duration, long low, long high) {
 
         List<AdBreak> ads = new ArrayList<>();
         for (AdBreak ad : mAdBreaks) {
-            if (ad.getBreakId().contains(type)) {
+            double timeOffset = ad.getConvertedTimeOffset(duration);
+            if (timeOffset > low && timeOffset < high) {
                 ads.add(ad);
             }
         }
@@ -198,7 +252,7 @@ public class VmapResponse {
      *
      * @return The current ad.
      */
-    public AdBreak getCurrentAd() {
+    public AdElement getCurrentAd() {
 
         return mCurrentAd;
     }
@@ -208,9 +262,29 @@ public class VmapResponse {
      *
      * @param currentAd The current ad.
      */
-    public void setCurrentAd(AdBreak currentAd) {
+    public void setCurrentAd(AdElement currentAd) {
 
         mCurrentAd = currentAd;
+    }
+
+    /**
+     * Get the current ad break being played.
+     *
+     * @return The current ad break.
+     */
+    public AdBreak getCurrentAdBreak() {
+
+        return mCurrentAdBreak;
+    }
+
+    /**
+     * Set the current ad being played.
+     *
+     * @param currentAdBreak The current ad break.
+     */
+    public void setCurrentAdBreak(AdBreak currentAdBreak) {
+
+        mCurrentAdBreak = currentAdBreak;
     }
 
     @Override
@@ -218,7 +292,9 @@ public class VmapResponse {
 
         return "VmapResponse{" +
                 "mAdBreaks=" + mAdBreaks +
+                ", mAdElements=" + mAdElements +
                 ", mCurrentAd=" + mCurrentAd +
+                ", mVmapVersion='" + mVmapVersion + '\'' +
                 '}';
     }
 }

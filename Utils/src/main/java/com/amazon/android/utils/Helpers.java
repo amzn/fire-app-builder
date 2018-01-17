@@ -19,7 +19,9 @@ import com.amazon.utils.R;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.content.res.Resources;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -44,7 +46,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * A collection of utility methods, all static.
@@ -58,6 +63,11 @@ public class Helpers {
      * Default charset to be used in app.
      */
     private static final String DEFAULT_CHARSET_TEXT = "UTF-8";
+
+    private static final double PROGRESS_BAR_TOP_HEIGHT_RATIO = 0.98;
+    private static final double OVERLAY_TOP_HEIGHT_RATIO = 0.9;
+    private static final double TEXT_BOTTOM_HEIGHT_RATIO = 0.96;
+    private static final double TEXT_HEIGHT_RATIO = 0.05;
 
     /**
      * Making sure public utility methods remain static.
@@ -247,6 +257,73 @@ public class Helpers {
     }
 
     /**
+     * Add progress bar to image.
+     *
+     * @param activity The activity.
+     * @param raw      The raw bitmap image to round.
+     * @param playbackPercentage The playback percentage
+     * @return The progress bar image.
+     */
+    public static Bitmap addProgress(Activity activity, Bitmap raw, double playbackPercentage) {
+
+        int width = raw.getWidth();
+        int height = raw.getHeight();
+        Canvas canvas = new Canvas(raw);
+
+        final Paint paint = new Paint();
+        paint.setAntiAlias(true);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+
+        final Rect bar = new Rect(0, (int) (height * PROGRESS_BAR_TOP_HEIGHT_RATIO), width, height);
+        paint.setColor(ContextCompat.getColor(activity, android.R.color.darker_gray));
+        canvas.drawRect(bar, paint);
+
+        final Rect progress = new Rect(0, (int) (height * PROGRESS_BAR_TOP_HEIGHT_RATIO), (int)
+                (width * playbackPercentage), height);
+        paint.setColor(ContextCompat.getColor(activity, android.R.color.white));
+        canvas.drawRect(progress, paint);
+        return raw;
+    }
+
+    /**
+     * Add time remaining to image.
+     *
+     * @param activity The activity;
+     * @param raw      The raw bitmap image to round.
+     * @param timeRemainingText The time remaining text.
+     * @return The time remaining image.
+     */
+    public static Bitmap addTimeRemaining(Activity activity, Bitmap raw, String timeRemainingText) {
+
+        int width = raw.getWidth();
+        int height = raw.getHeight();
+        Canvas canvas = new Canvas(raw);
+
+        final Paint paint = new Paint();
+        paint.setAntiAlias(true);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+
+        final Rect overlay = new Rect(0, (int) (height * OVERLAY_TOP_HEIGHT_RATIO), width, (int)
+                (height * PROGRESS_BAR_TOP_HEIGHT_RATIO));
+        paint.setColor(ContextCompat.getColor(activity, android.R.color.black));
+        paint.setAlpha(125);
+        canvas.drawRect(overlay, paint);
+
+        paint.setColor(ContextCompat.getColor(activity, android.R.color.white));
+        paint.setAlpha(255);
+
+        paint.setTextSize((int) (height * TEXT_HEIGHT_RATIO));
+        paint.setTextAlign(Paint.Align.CENTER);
+
+        canvas.drawText(timeRemainingText, (width / 2), (int) (height * TEXT_BOTTOM_HEIGHT_RATIO)
+                , paint);
+
+        return raw;
+    }
+
+    /**
      * This method updates the opacity of the bitmap.
      *
      * @param bitmap  The bitmap.
@@ -336,5 +413,32 @@ public class Helpers {
         Runtime.getRuntime().exec("logcat -c");
         // allow logs to finish clearing, this is not instantaneous;
         Thread.sleep(delay);
+    }
+
+    /**
+     * Get declared permissions by the application.
+     *
+     * @param context application context object.
+     */
+    public static List<String> getDeclaredPermissions(Context context) {
+
+        PackageManager pm = context.getPackageManager();
+        List<String> requestedPermissionsList = new ArrayList<>();
+
+        try {
+            PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), PackageManager
+                    .GET_PERMISSIONS);
+            String[] requestedPermissions = null;
+            if (packageInfo != null) {
+                requestedPermissions = packageInfo.requestedPermissions;
+            }
+            if (requestedPermissions.length > 0) {
+                requestedPermissionsList.addAll(Arrays.asList(requestedPermissions));
+            }
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            Log.e(TAG, "Error in getting declared permissions", e);
+        }
+        return requestedPermissionsList;
     }
 }

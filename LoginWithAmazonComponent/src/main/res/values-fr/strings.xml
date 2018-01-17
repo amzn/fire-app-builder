@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+  <string name="default_message">Bienvenue dans Se connecter avec Amazon&#160;!\nLors de votre première connexion,
+        vous devrez autoriser cette application à accéder aux données de votre profil.
+    </string>
+  <string name="login_button_content_description">Bouton pour obtenir l\'autorisation via Se connecter avec
+        Amazon
+    </string>
+  <string name="return_to_app">Revenir</string>
+  <string name="incorrect_api_key">La clé d\'API est incorrecte ou n\'existe pas.</string>
+  <string name="profile_Login">profil</string>
+  <string name="error_during_auth">Erreur lors de l\'autorisation. Veuillez réessayer.</string>
+  <string name="error_getting_profile">Erreur lors de la récupération des informations de profil.\nVeuillez vous
+        reconnecter
+    </string>
+  <string name="auth_cancelled">Autorisation annulée</string>
+  <string name="welcome">Bienvenue, %s&#160;!</string>
+  <string name="your_email_is">Votre e-mail est %s</string>
+</resources>

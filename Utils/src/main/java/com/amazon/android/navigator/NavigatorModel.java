@@ -89,6 +89,21 @@ public class NavigatorModel {
         public boolean enableCEA608 = false;
 
         /**
+         * Enable the row that displays content to continue watching.
+         */
+        public boolean enableRecentRow = true;
+
+        /**
+         * The maximum number of items displayed in the continue watching row.
+         */
+        public int maxNumberOfRecentItems = 20;
+
+        /**
+         * Enable the watchlist row in the browse screen.
+         */
+        public boolean enableWatchlistRow = true;
+
+        /**
          * The number of global recommendations that the app should send; assuming there are
          * global recommendation recipes available.
          */

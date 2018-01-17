@@ -31,7 +31,6 @@ permissions and limitations under the License.
 -->
 
 <resources>
-    <string name="browse_title"><![CDATA[TenFootUI]]></string>
     <string name="feed_reloading">Reloading</string>
     <string name="feed_loading">Loading</string>
 
@@ -51,6 +50,10 @@ permissions and limitations under the License.
         <item quantity="other">%1$d results for \"%2$s\":</item>
     </plurals>
 
+    <!-- Time Remaining Label. -->
+    <string name="time_remaining">Time Remaining: %s</string>
+    <string name="duration">%1$d:%2$02d:%3$02d</string>
+
     <!-- Settings -->
     <string name="settings_title">Settings</string>
     <!-- Copyright string -->
@@ -63,4 +66,9 @@ permissions and limitations under the License.
 
     <string name="season">Season</string>
     <string name="episode">Episode</string>
+    <string name="recent_row">Continue Watching</string>
+    <string name="watchlist_row">Watchlist</string>
+    <string name="alexa_media_session_permission" translatable="false">
+        com.amazon.permission.media.session.voicecommandcontrol
+    </string>
 </resources>

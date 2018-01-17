@@ -41,11 +41,11 @@ android {
     buildToolsVersion "25.0.0"
 
     defaultConfig {
-        applicationId "com.amazon.android.calypso"
+        applicationId "com.fireappbuilder.android.calypso"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 9
-        versionName "1.0.5"
+        versionCode 10
+        versionName "1.0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -70,6 +70,7 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/services/com.fasterxml.jackson.core.JsonFactory'
         exclude 'META-INF/services/com.fasterxml.jackson.core.ObjectCodec'
+        exclude 'META-INF/rxjava.properties'
     }
 
     lintOptions {

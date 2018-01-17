@@ -95,7 +95,6 @@ public abstract class AModelTranslator<E> {
             String fieldPath = path.substring(0, path.indexOf(PATH_NAME_SEPARATOR));
             // Follow the path to get the value
             Object value = PathHelper.getValueByPath(map, fieldPath);
-
             // Try setting the member variable with the value of fieldName to the value found
             // at the end of the path.
             if (!setMemberVariable(object, fieldName, value)) {
@@ -124,6 +123,19 @@ public abstract class AModelTranslator<E> {
         if (recipe.containsItem(Recipe.LIVE_FEED_TAG)) {
             setMemberVariable(object, Recipe.LIVE_FEED_TAG,
                               recipe.getItemAsBoolean(Recipe.LIVE_FEED_TAG));
+        }
+
+        // Check if the recipe states that this content is free and add to object if so.
+        if (recipe.containsItem(Recipe.CONTENT_TYPE_TAG)) {
+
+            String contentType = recipe.getItemAsString(Recipe.CONTENT_TYPE_TAG);
+            String fieldPath = contentType.substring(0, contentType.indexOf(PATH_NAME_SEPARATOR));
+            Object value = PathHelper.getValueByPath(map, fieldPath);
+            if (value != null && !setMemberVariable(object, Recipe.CONTENT_TYPE_TAG, value)) {
+                Log.e(TAG, "contentType value was not parsed properly, check recipe.");
+                throw new TranslationException("Tried to set an invalid member variable during " +
+                                                       "translation: " + Recipe.CONTENT_TYPE_TAG);
+            }
         }
 
         // Check that the model was properly translated.

@@ -1,1 +1,1 @@
-=== User your API Key Here ===
+Remove all the text here and insert your API key instead.

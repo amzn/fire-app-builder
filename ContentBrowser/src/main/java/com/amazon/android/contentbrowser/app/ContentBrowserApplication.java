@@ -15,6 +15,7 @@
 package com.amazon.android.contentbrowser.app;
 
 import com.amazon.ads.IAds;
+import com.amazon.android.contentbrowser.R;
 import com.amazon.android.contentbrowser.helper.AnalyticsHelper;
 import com.amazon.android.contentbrowser.recommendations.UpdateRecommendationsService;
 import com.amazon.android.module.ModularApplication;
@@ -27,12 +28,16 @@ import com.amazon.purchase.IPurchase;
 import com.squareup.leakcanary.RefWatcher;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.amazon.analytics.AnalyticsManager;
 import com.amazon.analytics.IAnalytics;
@@ -108,8 +113,22 @@ public class ContentBrowserApplication extends ModularApplication {
         mAnalyticsManager = AnalyticsManager.getInstance(this);
 
         initAllModules(this.getApplicationContext());
-
+        initializeAuthModule();
         scheduleRecommendationUpdate(this.getApplicationContext(), INITIAL_DELAY);
+    }
+
+    private void initializeAuthModule() {
+        try {
+            IAuthentication authentication =
+                    (IAuthentication) ModuleManager.getInstance()
+                                                   .getModule(IAuthentication.class.getSimpleName())
+                                                   .getImpl(true);
+            // Init authentication module.
+            authentication.init(this);
+        }
+        catch (NoClassDefFoundError error) {
+            //Dont log here, SplashActivity takes care of it
+        }
     }
 
     /**
@@ -132,14 +151,7 @@ public class ContentBrowserApplication extends ModularApplication {
         mAnalyticsManager.setAnalyticsInterface(analytics);
         sInstance.registerActivityLifecycleCallbacks(mAnalyticsManager);
         AnalyticsHelper.trackAppEntry();
-
-        // Init authentication module.
-        IAuthentication authentication =
-                (IAuthentication) ModuleManager.getInstance()
-                                               .getModule(IAuthentication.class.getSimpleName())
-                                               .getImpl(true);
-        authentication.init(this);
-
+        initializeAuthModule();
         // Last call.
         postModulesLoaded();
     }

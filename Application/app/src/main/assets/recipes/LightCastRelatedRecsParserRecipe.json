@@ -2,17 +2,17 @@
   "cooker": "DynamicParser",
   "format": "json",
   "model": "com.amazon.android.model.content.Content",
-  "translator": "ContentTranslator",
   "modelType": "array",
   "query": "$.items[?(@.categories[0] in [$$par0$$])]",
   "matchList": [
-    "title@title",
-    "id@id",
-    "description@description",
-    "videoURL@url",
-    "imgURL@cardImageUrl",
-    "imgURL@backgroundImageUrl",
-    "channel_id@channelId",
-    "recommendations@recommendations"
+    "title@mTitle",
+    "id@mId",
+    "description@mDescription",
+    "videoURL@mUrl",
+    "imgURL@mCardImageUrl",
+    "imgURL@mBackgroundImageUrl",
+    "channel_id@mChannelId",
+    "recommendations@mRecommendations",
+    "live@live"
   ]
 }

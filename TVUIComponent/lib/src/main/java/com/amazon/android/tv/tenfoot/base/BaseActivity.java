@@ -26,12 +26,13 @@ import android.support.v17.leanback.widget.HorizontalGridView;
 import android.support.v17.leanback.widget.OnChildViewHolderSelectedListener;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * BaseActivity class that handles common actions such as setting the font.
  */
-public class BaseActivity extends Activity {
+public abstract class BaseActivity extends Activity {
 
     /**
      * Debug TAG.
@@ -130,5 +131,20 @@ public class BaseActivity extends Activity {
         }
     }
 
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+        setRestoreActivityValues();
+    }
+
+    /**
+     * Use this method to set the
+     * {@link com.amazon.android.ui.constants.PreferencesConstants#LAST_ACTIVITY}
+     * and {@link com.amazon.android.ui.constants.PreferencesConstants#TIME_LAST_SAVED} values in
+     * the {@link com.amazon.android.utils.Preferences} instance. This will allow the activity to be
+     * restored when the app launches.
+     */
+    public abstract void setRestoreActivityValues();
 }
 

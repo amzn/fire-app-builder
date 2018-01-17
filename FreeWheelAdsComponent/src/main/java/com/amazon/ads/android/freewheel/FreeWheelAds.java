@@ -26,6 +26,7 @@ import android.widget.FrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 import tv.freewheel.ad.AdManager;
 import tv.freewheel.ad.interfaces.IAdContext;
@@ -131,6 +132,11 @@ public class FreeWheelAds implements IAds {
     private List<ISlot> mMidRollSlots = new ArrayList<>();
 
     /**
+     * Ordered set for getting ad slots before a given video position.
+     */
+    private TreeSet<Long> mMidRollAdsSegment;
+
+    /**
      * List for MidRoll ad slot played flags.
      */
     private List<Boolean> mMidrollSlotsIsPlayedList = new ArrayList<>();
@@ -139,6 +145,11 @@ public class FreeWheelAds implements IAds {
      * Ad start time.
      */
     private long mAdSlotStartTime;
+
+    /**
+     * Flag to keep track of current Ad state.
+     */
+    private boolean mAdInProgress;
 
     /**
      * Init FreeWheel instance.
@@ -255,9 +266,16 @@ public class FreeWheelAds implements IAds {
                 case STOP:
                     state = mAdConstants.ACTIVITY_STATE_STOP();
                     break;
+                case DESTROY:
+                    state = mAdConstants.ACTIVITY_STATE_DESTROY();
+                    break;
             }
 
             mAdContext.setActivityState(state);
+
+            if(activityState == ActivityState.DESTROY) {
+                cleanUpAdContext();
+            }
         }
     }
 
@@ -291,14 +309,42 @@ public class FreeWheelAds implements IAds {
      * {@inheritDoc}
      * Show pre roll Ads in the FrameLayout provided.
      */
-    @Override
-    public void showPreRollAd() {
+    public void showAds() {
 
-        // AdContext is single use so get rid of it.
+        Log.d(TAG, "showAds called");
+        // Ad context is available, no need to cleanup and start with pre-roll ads.
+        if (mAdContext != null && mAdInProgress) {
+
+            if (mIAdsEvents != null) {
+                mIAdsEvents.onAdSlotStarted(getBasicAdDetailBundle());
+            }
+            return;
+        }
+        //Start with a new ad context and pre roll ads.
+        showPreRollAds();
+    }
+
+    /**
+     * Clean up previous ad context.
+     */
+    private void cleanUpAdContext() {
+
+        Log.d(TAG, "entered cleanUpAdContext ");
         if (mAdContext != null) {
             mAdContext.dispose();
         }
         mAdContext = null;
+        mMidRollAdsSegment = new TreeSet<>();
+        mAdInProgress = false;
+    }
+
+    /**
+     * Show pre roll Ads in the FrameLayout provided.
+     */
+    private void showPreRollAds() {
+
+        // AdContext is single use so get rid of it.
+        cleanUpAdContext();
 
         // Get extra video data.
         try {
@@ -312,7 +358,6 @@ public class FreeWheelAds implements IAds {
         }
         catch (Exception e) {
             Log.e(TAG, "Using default video info!!!", e);
-
         }
 
         // Each AdContext instance can only submit ad request once.
@@ -373,6 +418,7 @@ public class FreeWheelAds implements IAds {
                                 // Ad request failed, continue with the content.
                                 startSlot(null);
                                 endSlot(null);
+                                cleanUpAdContext();
                             }
                         }
                     }
@@ -412,6 +458,13 @@ public class FreeWheelAds implements IAds {
             }
         }
 
+        // Start listening slot start message.
+        mAdContext.addEventListener(mAdConstants.EVENT_SLOT_STARTED(), new IEventListener() {
+            public void run(IEvent e) {
+                mAdInProgress = true;
+            }
+        });
+
         // Start listening slot end message.
         mAdContext.addEventListener(mAdConstants.EVENT_SLOT_ENDED(), new IEventListener() {
             public void run(IEvent e) {
@@ -421,6 +474,8 @@ public class FreeWheelAds implements IAds {
 
                 ISlot completedSlot = mAdContext.getSlotByCustomId(completedSlotID);
                 Log.d(TAG, "Completed playing slot: " + completedSlotID);
+
+                mAdInProgress = false;
 
                 // EVENT_SLOT_ENDED could be fired for several types of slots
                 // (pre-, mid-, post-, pause, overlay, display)
@@ -541,6 +596,40 @@ public class FreeWheelAds implements IAds {
     public Bundle getExtra() {
 
         return mExtras;
+    }
+
+    @Override
+    public int getNumberOfSegments(){
+
+        if(mMidRollSlots != null)
+        {
+            return mMidRollSlots.size() + 1;
+        }
+        return 1;
+    }
+
+    /**
+     * Get the current segment number of the content based on the mid roll ads list.
+     *
+     * @param position playback location of current Content.
+     * @param duration total duration of the current Content.
+     * @return the current segment of the content media. Start with value 1 and based on mid roll
+     * ads.
+     */
+    public int getCurrentContentSegmentNumber(long position, long duration) {
+
+        if (mMidRollAdsSegment.isEmpty() && mMidRollSlots != null && !mMidRollSlots.isEmpty()) {
+            for (ISlot slot : mMidRollSlots) {
+                mMidRollAdsSegment.add((long) slot.getTimePosition());
+            }
+        }
+        if (!mMidRollAdsSegment.isEmpty()) {
+            Long lowerValue = mMidRollAdsSegment.lower(position);
+            if (lowerValue != null) {
+                return mMidRollAdsSegment.headSet(lowerValue, true).size() + 1;
+            }
+        }
+        return 1;
     }
 
     /**

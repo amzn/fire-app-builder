@@ -63,7 +63,7 @@ public class ContentContainer implements Iterable<Content> {
     /**
      * Constant for title field name.
      */
-    public static final String NAME_FIELD_NAME = "name";
+    public static final String NAME_FIELD_NAME = "mName";
 
     /**
      * Constructs an empty ContentContainer.

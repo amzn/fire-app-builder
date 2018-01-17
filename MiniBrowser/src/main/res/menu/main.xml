@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright 2015-present Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Amazon Software License (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    https://aws.amazon.com/asl/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.amazon.android.minibrowser.WebViewHandlerActivity" >
+
+    <item
+        android:id="@+id/turn_on_mouse"
+        android:orderInCategory="92"
+        android:title="@string/cursor_mode_description" />
+
+    <item
+        android:id="@+id/turn_off_mouse"
+        android:orderInCategory="94"
+        android:title="@string/turn_off_cursor" />
+</menu>

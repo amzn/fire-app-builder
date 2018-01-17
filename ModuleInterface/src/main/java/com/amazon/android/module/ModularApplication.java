@@ -14,6 +14,8 @@
  */
 package com.amazon.android.module;
 
+import com.amazon.android.utils.Preferences;
+
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +23,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+
 
 /**
  * Base class for a modular application.
@@ -47,6 +50,11 @@ public abstract class ModularApplication extends Application {
     private static final String AMZN_PLUGIN_DATA_SEPARATOR = "@";
 
     /**
+     * Key for retrieving the number of app crashes from Shared Preferences.
+     */
+    public static final String APP_CRASHES_KEY = "appCrashes";
+
+    /**
      * onCreate method.
      */
     @Override
@@ -55,6 +63,7 @@ public abstract class ModularApplication extends Application {
         super.onCreate();
         Log.d(TAG, "onCreate called.");
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+
             @Override
             public void uncaughtException(Thread thread, Throwable exception) {
 
@@ -66,11 +75,24 @@ public abstract class ModularApplication extends Application {
                     android.os.Process.killProcess(android.os.Process.myPid());
                     System.exit(0);
                 }
-                intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                Log.i(TAG, "Launching intent " + intent.toString());
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                        | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+
+                long crashes = Preferences.getLong(APP_CRASHES_KEY);
+                crashes++;
+                // If less than 3 uncaught exceptions were already caught try restarting the app.
+                if (crashes < 3) {
+                    Preferences.setLong(APP_CRASHES_KEY, crashes);
+                    Log.e(TAG, "This is crash number " + crashes);
+
+                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                    Log.i(TAG, "Launching intent " + intent.toString());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                            | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                // Otherwise clear the app crash counter and just kill the app for manual restart.
+                else {
+                    Preferences.setLong(APP_CRASHES_KEY, 0);
+                }
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
         });

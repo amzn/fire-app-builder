@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+A copy of the License is located at
+
+    http://aws.amazon.com/apache2.0/
+
+or in the "license" file accompanying this file. This file is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<resources>
+  <string name="facebook_error_authentication_message">Ocorreu um erro ao autenticar
+        a conta. Tente novamente mais tarde.
+    </string>
+  <string name="access_token_null">Token de acesso nulo. O usuário não está conectado.</string>
+  <string name="error_checking_token">Mapa de retorno nulo. Um erro foi encontrado ao checar
+        o token de acesso.
+    </string>
+  <string name="error_checking_token_caught">Erro encontrado ao checar o token de acesso</string>
+</resources>
