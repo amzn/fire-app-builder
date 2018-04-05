@@ -34,6 +34,8 @@ Calligraphy
 
 Font enumeration (Copyright (C) 2011 George Yunaev @ Ulduzsoft)
 
+IMA Sample Tags from Doubleclick.net
+
 *** Licensed under the Apache License, Version 2.0, reproduced below. ***
 
 Notices for component(s):
