@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VAST version="2.0">
+    <Ad id="xrVrw7pPaXf2vbZiWCi7">
+        <InLine>
+            <AdSystem version="1.0">Nexage PlayTime</AdSystem>
+            <AdTitle>Nexage Vast demo</AdTitle>
+            <Error>
+                <![CDATA[http://www.target.com/error]]>
+            </Error>
+            <Impression>
+                <![CDATA[http://www.target.com/impression?impression]]>
+            </Impression>
+            <Creatives>
+                <Creative>
+                    <Linear>
+                        <Duration>00:00:15</Duration>
+                        <VideoClicks>
+                            <ClickThrough><![CDATA[http://www.nexage.com]]></ClickThrough>
+                        </VideoClicks>
+                        <MediaFiles>
+                            <MediaFile height="300" width="400" bitrate="500" type="video/mp4"
+                                       delivery="progressive">
+                                <![CDATA[http://files.nexage.com/SDK/VAST-Demo/sdkdemo.mp4]]>
+                            </MediaFile>
+                        </MediaFiles>
+                    </Linear>
+                </Creative>
+            </Creatives>
+        </InLine>
+    </Ad>
+</VAST>
+

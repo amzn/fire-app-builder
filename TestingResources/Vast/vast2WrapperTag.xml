@@ -1,0 +1,44 @@
+<VAST version="2.0">
+    <Ad id="wrapper1">
+        <Wrapper>
+            <AdSystem version="1.0">Wrapper1</AdSystem>
+            <VASTAdTagURI>
+                <![CDATA[https://raw.githubusercontent.com/calypsodevtech/vast/master/vast2Tag.xml]]>
+            </VASTAdTagURI>
+            <Error>
+                <![CDATA[http://www.wrapper1.com/error]]>
+            </Error>
+            <Impression>
+                <![CDATA[http://www.wrapper1.com/impression?impression]]>
+            </Impression>
+            <Creatives>
+                <Creative>
+                    <Linear>
+                        <TrackingEvents>
+                            <Tracking event="firstQuartile">
+                                <![CDATA[http://www.wrapper1.com/event?firstQuartile]]>
+                            </Tracking>
+                            <Tracking event="midpoint">
+                                <![CDATA[http://www.wrapper1.com/event?midpoint]]>
+                            </Tracking>
+                            <Tracking event="thirdQuartile">
+                                <![CDATA[http://www.wrapper1.com/event?thirdQuartile]]>
+                            </Tracking>
+                            <Tracking event="complete">
+                                <![CDATA[http://www.wrapper1.com/event?complete]]>
+                            </Tracking>
+                            <Tracking event="mute">
+                                <![CDATA[http://www.wrapper1.com/event?mute]]>
+                            </Tracking>
+                        </TrackingEvents>
+                        <VideoClicks>
+                            <ClickTracking id="wrapper1 clickTracking">
+                                <![CDATA[http://www.wrapper1.com/clickTracking]]>
+                            </ClickTracking>
+                        </VideoClicks>
+                    </Linear>
+                </Creative>
+            </Creatives>
+        </Wrapper>
+    </Ad>
+</VAST>
