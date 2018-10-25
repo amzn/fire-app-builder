@@ -24,7 +24,7 @@ include ':app',
         ':DataLoader',
         ':Utils',
         // Uncomment when using ComScore Analytics
-        //':comscore',
+//        ':comscore',
         /* Interfaces */
         ':PurchaseInterface',
         ':AuthInterface',
@@ -36,6 +36,8 @@ include ':app',
         ':AMZNMediaPlayerComponent',
         ':PassThroughLoginComponent',
         ':LoggerAnalyticsComponent'
+        // Uncomment when using Tealium Analytics
+//        ':TealiumAnalyticsComponent'
 
 /* Frameworks */
 project(':TVUIComponent').projectDir = new File(rootProject.projectDir, '../TVUIComponent/lib')
@@ -63,3 +65,5 @@ project(':PassThroughLoginComponent').projectDir = new File(rootProject.projectD
 project(':LoggerAnalyticsComponent').projectDir = new File(rootProject.projectDir, '../LoggerAnalyticsComponent')
 // Uncomment when using ComScore Analytics
 //project(':comscore').projectDir = new File(rootProject.projectDir, '../ComScoreAnalyticsComponent/libs/comscore')
+// Uncomment when using Tealium Analytics
+//project(':TealiumAnalyticsComponent').projectDir = new File(rootProject.projectDir, '../TealiumAnalyticsComponent')
