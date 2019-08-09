@@ -33,7 +33,7 @@ include ':app',
         ':ModuleInterface',
         /* Implementations */
         ':PassThroughAdsComponent',
-        ':AMZNMediaPlayerComponent',
+        ':ExoPlayer2MediaPlayerComponent',
         ':PassThroughLoginComponent',
         ':LoggerAnalyticsComponent'
 
@@ -57,7 +57,7 @@ project(':AnalyticsInterface').projectDir = new File(rootProject.projectDir, '..
 project(':PurchaseInterface').projectDir = new File(rootProject.projectDir, '../PurchaseInterface')
 
 /* Implementations */
-project(':AMZNMediaPlayerComponent').projectDir = new File(rootProject.projectDir, '../AMZNMediaPlayerComponent')
+project(':ExoPlayer2MediaPlayerComponent').projectDir = new File(rootProject.projectDir, '../ExoPlayer2MediaPlayerComponent')
 project(':PassThroughAdsComponent').projectDir = new File(rootProject.projectDir, '../PassThroughAdsComponent')
 project(':PassThroughLoginComponent').projectDir = new File(rootProject.projectDir, '../PassThroughLoginComponent')
 project(':LoggerAnalyticsComponent').projectDir = new File(rootProject.projectDir, '../LoggerAnalyticsComponent')
