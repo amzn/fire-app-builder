@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
+//apply plugin: 'me.tatarka.retrolambda'
 // Uncomment when using CrashlyticsComponent
 //apply plugin: 'io.fabric'
 apply from: "../artifacts.gradle"
@@ -30,7 +30,7 @@ buildscript {
         //maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'me.tatarka:gradle-retrolambda:3.2.3'
+        //classpath 'me.tatarka:gradle-retrolambda:3.2.3'
         // Uncomment when using CrashlyticsComponent
         //classpath 'io.fabric.tools:gradle:1.+'
     }
