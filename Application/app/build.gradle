@@ -43,6 +43,7 @@ android {
     defaultConfig {
         applicationId "com.fireappbuilder.android.calypso"
         minSdkVersion 21
+        //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 23
         versionCode 10
         versionName "1.0.7"
