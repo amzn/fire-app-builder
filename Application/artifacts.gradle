@@ -16,6 +16,12 @@ android.applicationVariants.all { variant ->
         } else {
             newApkName = "${appName}-${output.baseName}-${variant.versionName}-unaligned.apk"
         }
-        output.outputFile = new File(output.outputFile.parent, newApkName)
+        //fix from https://stackoverflow.com/questions/49530142/android-studio-3-1-buildgradle3-1-0-absolute-path-are-not-supported-when-se
+        def relativeRootDir = output.packageApplication.outputDirectory.toPath()
+                .relativize(rootDir.toPath()).toFile()
+        output.outputFileName = new File( "$relativeRootDir/build", newApkName)
+
+        //-- original causes error
+        //output.outputFileName = new File(output.outputFile.parent, newApkName)
     }
 }
