@@ -7,4 +7,4 @@ Fire App Builder is a java framework that allows developers to quickly build imm
 Full Documentation for Fire App Builder is located [here](https://developer.amazon.com/public/solutions/devices/fire-tv/docs/fire-app-builder-overview).
 
 ##
-Fire App Builder is java based and is built using Android Studio.  If you would like to build web apps for Fire TV, please check out the [Web App Starter Kit](https://github.com/amzn/web-app-starter-kit-for-fire-tv).
+Fire App Builder is java based and is built using Android Studio.
