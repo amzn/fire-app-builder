@@ -13,14 +13,15 @@
  * permissions and limitations under the License.
  */
 apply plugin: 'com.android.library'
-apply plugin: 'me.tatarka.retrolambda'
+//apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "24.0.3"
+    buildToolsVersion '28.0.2'
 
     defaultConfig {
         minSdkVersion 21
+        //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -72,7 +73,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'me.tatarka:gradle-retrolambda:3.2.3'
+        //classpath 'me.tatarka:gradle-retrolambda:3.2.3'
     }
 }
 
