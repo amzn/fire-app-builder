@@ -15,11 +15,12 @@ permissions and limitations under the License.
 -->
 <resources>
 
-    <string translatable="false" name="app_name">Fire App Builder</string>
+    <string translatable="false" name="app_name">FilmFeed</string>
     <!-- The app's display name that should have a max of 15 characters
-         Currently used with recommendations on the Home Screen -->
-    <string translatable="false" name="app_name_short">FireAppBuilder</string>
 
+         Currently used with recommendations on the Home Screen -->
+    <string translatable="false" name="app_name_short">FilmFeed</string>
+    <string name="ad_tag" translatable="false"><![CDATA[https://pubads.g.doubleclick.net/gampad/ads?iu=/22724345706/dai_test1&description_url=http%3A%2F%2Ffilmhub.com&tfcd=0&npa=0&sz=1280x720&min_ad_duration=5000&max_ad_duration=45000&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=&vad_type=linear]]></string>
     <!-- App colors -->
 
     <!-- The background color of the screens. -->

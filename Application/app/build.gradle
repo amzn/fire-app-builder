@@ -41,7 +41,7 @@ android {
     buildToolsVersion '28.0.2'
 
     defaultConfig {
-        applicationId "com.fireappbuilder.android.calypso"
+        applicationId "com.filmhub.filmdistribution.primefilms"
         minSdkVersion 21
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 23
@@ -98,7 +98,7 @@ dependencies {
     compile project(':TVUIComponent')
     compile project(':UAMP')
     compile project(':AMZNMediaPlayerComponent')
-    compile project(':PassThroughAdsComponent')
+    compile project(':VastAdsComponent')
     compile project(':PassThroughLoginComponent')
     compile project(':LoggerAnalyticsComponent')
 }
