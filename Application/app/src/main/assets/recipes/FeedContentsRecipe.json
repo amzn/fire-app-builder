@@ -1,0 +1,18 @@
+{
+  "cooker": "DynamicParser",
+  "format": "json",
+  "model": "com.amazon.android.model.content.Content",
+  "translator": "ContentTranslator",
+  "modelType": "array",
+  "query": "$.movies[?(@.genres[0] in [$$par0$$])]",
+  "queryResultType": "[]$",
+  "matchList": [
+    "title@mTitle",
+    "id@mId",
+    "videoUrl@mUrl",
+    "description@mDescription",
+    "thumbnail@mCardImageUrl",
+    "thumbnail@mBackgroundImageUrl",
+    "captions@mCloseCaptionUrls"
+  ]
+}

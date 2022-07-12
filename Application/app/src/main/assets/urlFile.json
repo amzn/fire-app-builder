@@ -1,5 +1,5 @@
 {
   "urls": [
-    "http://www.lightcast.com/api/firetv/channels.php?app_id=249&app_key=gtn89uj3dsw&action=channels_videos"
+    "https://dd1wfhboovkh2.cloudfront.net/mediafeed.json"
   ]
 }

@@ -9,28 +9,19 @@
   },
   "branding": {
     "globalTheme": "AppTheme",
-    "lightFont" : "Roboto Light",
-    "boldFont" : "Roboto Bold",
-    "regularFont" : "Roboto Regular"
+    "lightFont" : "fonts/DMSans-Regular.ttf",
+    "boldFont" : "fonts/DMSans-Bold.ttf",
+    "regularFont" : "fonts/DMSans-Medium.ttf"
   },
   "globalRecipes": [
     {
       "categories": {
-        "dataLoader": "recipes/LightCastDataLoaderRecipe1.json",
-        "dynamicParser": "recipes/LightCastCategoriesRecipe.json"
+        "dataLoader": "recipes/FeedDataLoaderRecipe.json",
+        "dynamicParser": "recipes/FeedCategoriesRecipe.json"
       },
       "contents": {
-        "dataLoader": "recipes/LightCastDataLoaderRecipe1.json",
-        "dynamicParser": "recipes/LightCastContentsRecipe.json"
-      }
-    },
-    {
-      "categories": {
-        "name": "Hardcoded Category Name"
-      },
-      "contents": {
-        "dataLoader": "recipes/LightCastDataLoaderRecipe1.json",
-        "dynamicParser": "recipes/LightCastAllContentsRecipe.json"
+        "dataLoader": "recipes/FeedDataLoaderRecipe.json",
+        "dynamicParser": "recipes/FeedContentsRecipe.json"
       }
     }
   ],
