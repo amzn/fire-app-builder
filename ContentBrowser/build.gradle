@@ -16,13 +16,13 @@ apply plugin: 'com.android.library'
 //apply plugin: 'me.tatarka.retrolambda'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 30
     buildToolsVersion '28.0.2'
 
     defaultConfig {
         minSdkVersion 21
         //noinspection ExpiredTargetSdkVersion
-        targetSdkVersion 23
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

@@ -62,33 +62,32 @@ permissions and limitations under the License.
         <include layout="@layout/powered_by_image_view"/>
 
         <LinearLayout
-                android:id="@+id/content_details"
-                android:layout_width="352dp"
-                android:layout_height="125dp"
-                android:layout_below="@id/main_logo"
-                android:layout_marginBottom="71dp"
-                android:layout_marginLeft="@dimen/lb_browse_padding_start"
-                android:orientation="vertical">
+            android:id="@+id/content_details"
+            android:layout_width="352dp"
+            android:layout_height="160dp"
+            android:layout_below="@id/main_logo"
+            android:layout_marginLeft="@dimen/lb_browse_padding_start"
+            android:layout_marginBottom="71dp"
+            android:orientation="vertical">
 
             <TextView
-                    android:id="@+id/content_detail_title"
-                    style="@style/Widget.Leanback.DetailsDescriptionTitleStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:textSize="@dimen/lb_details_description_title_text_size"/>
+                android:id="@+id/content_detail_title"
+                style="@style/Widget.Leanback.DetailsDescriptionTitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:maxLines="2"
+                android:textSize="@dimen/lb_details_description_title_text_size" />
 
             <TextView
-                    android:id="@+id/content_detail_description"
-                    style="@style/Widget.Leanback.DetailsDescriptionBodyStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:ellipsize="end"
-                    android:maxLines="4"
-                    android:textSize="@dimen/lb_details_description_body_text_size"/>
+                android:id="@+id/content_detail_description"
+                style="@style/Widget.Leanback.DetailsDescriptionBodyStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:ellipsize="end"
+                android:maxLines="4"
+                android:textSize="@dimen/lb_details_description_body_text_size" />
 
         </LinearLayout>
 

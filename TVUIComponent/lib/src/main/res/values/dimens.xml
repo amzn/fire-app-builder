@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -112,5 +111,6 @@ permissions and limitations under the License.
     <dimen name="content_image_gradient_size">100dp</dimen>
     <dimen name="content_image_width">540dp</dimen>
     <dimen name="content_image_height">400dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 </resources>

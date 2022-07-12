@@ -21,11 +21,11 @@ permissions and limitations under the License.
     <!-- Default App Colors -->
 
     <!-- The background color of the screens. -->
-    <color name="background">#22282E</color>
+    <color name="background">#111111</color>
     <!-- Used for card background. -->
     <color name="card_background">#2B2B2B</color>
     <!-- The color of button highlights and widgets. -->
-    <color name="accent">#EE962D</color>
+    <color name="accent">#F5CE49</color>
     <!-- Used for the text of a selected item's title and description.
          Also used for button text, Splash screen text, and read more dialog text. -->
     <color name="primary_text">#E6FFFFFF</color>
@@ -41,7 +41,7 @@ permissions and limitations under the License.
     <!-- Background image for splash screen -->
     <drawable name="splash_background">@color/background</drawable>
     <!-- Company logo to show on Splash Screen -->
-    <drawable name="splash_logo">@drawable/fire_app_builder_white</drawable>
+    <drawable name="splash_logo">@drawable/stashtv_medium_logo</drawable>
     <!-- Color of splash screen loader -->
     <color name="spinner_color">#FFFFFFFF</color>
     <!-- Alpha of spinner -->
@@ -67,7 +67,7 @@ permissions and limitations under the License.
     <!-- Header text size -->
     <dimen name="browse_header_text">16sp</dimen>
     <!-- Company logo -->
-    <drawable name="company_logo">@drawable/fire_app_builder_white_2</drawable>
+    <drawable name="company_logo">@drawable/stashtv_medium_logo</drawable>
     <!-- App icon -->
     <drawable name="app_logo">@mipmap/ic_launcher</drawable>
     <!-- Background color -->

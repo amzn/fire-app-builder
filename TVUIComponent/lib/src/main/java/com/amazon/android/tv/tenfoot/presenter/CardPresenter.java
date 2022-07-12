@@ -98,8 +98,12 @@ public class CardPresenter extends Presenter {
         int CARD_WIDTH_PX = 160;
         mCardWidthDp = Helpers.convertPixelToDp(mContext, CARD_WIDTH_PX);
 
-        int CARD_HEIGHT_PX = 120;
-        mCardHeightDp = Helpers.convertPixelToDp(mContext, CARD_HEIGHT_PX);
+        /**
+         * Fix Aspect Ratio - by Shiraj Sayed
+         */
+        /*int CARD_HEIGHT_PX = 120;
+        mCardHeightDp = Helpers.convertPixelToDp(mContext, CARD_HEIGHT_PX);*/
+        mCardHeightDp = (mCardWidthDp * 9) / 16;
 
         TextView subtitle = (TextView) cardView.findViewById(R.id.content_text);
         if (subtitle != null) {
@@ -130,8 +134,10 @@ public class CardPresenter extends Presenter {
                 // actual Title.
                 cardView.setTitleText(ContentHelper.getCardViewSubtitle(mContext, content));
 
-
-                cardView.setContentText(content.getTitle());
+                /**
+                 * Content Text not set - by Shiraj Sayed
+                 */
+                //cardView.setContentText(content.getTitle());
                 cardView.setMainImageDimensions(mCardWidthDp, mCardHeightDp);
                 GlideHelper.loadImageIntoView(cardView.getMainImageView(),
                                               viewHolder.view.getContext(),

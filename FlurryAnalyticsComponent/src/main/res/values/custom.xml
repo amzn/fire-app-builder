@@ -15,14 +15,14 @@ permissions and limitations under the License.
 -->
 <resources>
     <!-- Encrypted Flurry API key, override this with your own encrypted API key -->
-    <string name="encrypted_flurry_api_key">YOUR_ENCRYPTED_FLURRY_API_KEY</string>
-    <!-- PseudoRandom strings, used to generate random key for encrypting/decrypting Flurry
-    resources. These keys should always remain in sync with the keys used by
-    ResourceObfuscationStandaloneUtility -->
-    <string name="flurry_key_1">flurry_random_key_1</string>
-    <string name="flurry_key_2">flurry_random_key_2</string>
-    <string name="flurry_key_3">flurry_random_key_3</string>
-    <string name="flurry_key_4">flurry_random_key_4</string>
-    <string name="flurry_key_5">flurry_random_key_5</string>
-    <string name="flurry_key_6">flurry_random_key_6</string>
+    <!--Flurry Analytics   -->
+    <string name="encrypted_flurry_api_key" translatable="false">ZQT117S0h3JPEnyI08NZhtz0voDxIG5FujooS7MCyPo=</string>
+
+    <!-- Encrypted Flurry API key, override this with your own encrypted API key -->
+    <string name="flurry_key_1" translatable="false">qwerty</string>
+    <string name="flurry_key_2" translatable="false">ytrewq</string>
+    <string name="flurry_key_3" translatable="false">asdfgh</string>
+    <string name="flurry_key_4" translatable="false">hgfdsa</string>
+    <string name="flurry_key_5" translatable="false">zxcvbn</string>
+    <string name="flurry_key_6" translatable="false">nbvcxz</string>
 </resources>

@@ -131,7 +131,9 @@ public class MediaFile {
                 setId(attributes.get(VmapHelper.ID_KEY));
                 setDelivery(attributes.get(DELIVERY_KEY));
                 setType(attributes.get(TYPE_KEY));
-                setBitrate(BigInteger.valueOf(Long.valueOf(attributes.get(BITRATE_KEY))));
+                if (attributes.get(BITRATE_KEY) != null) {
+                    setBitrate(BigInteger.valueOf(Long.valueOf(attributes.get(BITRATE_KEY))));
+                }
                 setWidth(BigInteger.valueOf(Long.valueOf(attributes.get(WIDTH_KEY))));
                 setHeight(BigInteger.valueOf(Long.valueOf(attributes.get(HEIGHT_KEY))));
                 setScalable(Boolean.valueOf(attributes.get(SCALABLE_KEY)));

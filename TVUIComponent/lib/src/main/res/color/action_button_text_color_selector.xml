@@ -15,12 +15,12 @@ permissions and limitations under the License.
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true"
-          android:color="@color/action_button_text_color_focused"/>
+          android:color="#000000"/>
     <item android:state_focused="true" android:state_enabled="true"
-          android:color="@color/action_button_text_color_focused"/>
+          android:color="#000000"/>
     <item android:state_enabled="true"
-          android:color="@color/action_button_text_color"/>
+          android:color="#D8D8D8"/>
     <item android:state_focused="true"
-          android:color="@color/action_button_text_color_focused"/>
-    <item android:color="@color/action_button_text_color"/>
+          android:color="#000000"/>
+    <item android:color="#D8D8D8"/>
 </selector>

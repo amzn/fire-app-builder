@@ -3,7 +3,7 @@
     "showRelatedContent": true,
     "useCategoryAsDefaultRelatedContent": true,
     "searchAlgo": "basic",
-    "enableCEA608": false,
+    "enableCEA608": true,
     "enableRecentRow": true,
     "maxNumberOfRecentItems": 5
   },

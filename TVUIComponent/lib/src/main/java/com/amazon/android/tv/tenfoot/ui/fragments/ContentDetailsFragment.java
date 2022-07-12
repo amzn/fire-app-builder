@@ -277,8 +277,13 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                                                        android.R.color.transparent));
         int width = Helpers.convertDpToPixel(getActivity().getApplicationContext(),
                                              DETAIL_THUMB_WIDTH);
-        int height = Helpers.convertDpToPixel(getActivity().getApplicationContext(),
-                                              DETAIL_THUMB_HEIGHT);
+
+        /**
+         * Fix Aspect Ratio - by Shiraj Sayed
+         */
+        /*int height = Helpers.convertDpToPixel(getActivity().getApplicationContext(),
+                                              DETAIL_THUMB_HEIGHT);*/
+        int height = (width * 9) / 16;
 
         long timeRemaining = ContentBrowser.getInstance(getActivity())
                                            .getContentTimeRemaining(mSelectedContent);

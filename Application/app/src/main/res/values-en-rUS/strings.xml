@@ -15,7 +15,7 @@ permissions and limitations under the License.
 -->
 <resources>
     <!-- Copyright string -->
-    <string name="copyright">Copyright 2016. All Rights Reserved.</string>
+    <string name="copyright">© 2022 Stash TV. All Rights Reserved.</string>
     <!-- Search hint text -->
-    <string name="search_bar_hint">I\'m looking forвЂ¦</string>
+    <string name="search_bar_hint">I\'m looking for…</string>
 </resources>

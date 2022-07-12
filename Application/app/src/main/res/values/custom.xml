@@ -15,16 +15,15 @@ permissions and limitations under the License.
 -->
 <resources>
 
-    <string translatable="false" name="app_name">FilmFeed</string>
+    <string translatable="false" name="app_name">Stash TV</string>
     <!-- The app's display name that should have a max of 15 characters
-
          Currently used with recommendations on the Home Screen -->
-    <string translatable="false" name="app_name_short">FilmFeed</string>
+    <string translatable="false" name="app_name_short">Stash TV</string>
     <string name="ad_tag" translatable="false"><![CDATA[https://pubads.g.doubleclick.net/gampad/ads?iu=/22724345706/dai_test1&description_url=http%3A%2F%2Ffilmhub.com&tfcd=0&npa=0&sz=1280x720&min_ad_duration=5000&max_ad_duration=45000&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=&vad_type=linear]]></string>
     <!-- App colors -->
 
     <!-- The background color of the screens. -->
-    <color name="background">#22282E</color>
+    <color name="background">#111111</color>
     <!-- Used for card background -->
     <color name="card_background">#2B2B2B</color>
     <!-- Background color of the progress bar -->
@@ -36,7 +35,7 @@ permissions and limitations under the License.
     <!-- Color of splash screen spinning loader animation -->
     <color name="spinner_color">#FFFFFFFF</color>
     <!-- The color of button highlights and widgets. -->
-    <color name="accent">#EE962D</color>
+    <color name="accent">#F5CE49</color>
     <!-- FullContentBrowser:
          The header's bar color (left-hand navigation bar). -->
     <color name="browse_headers_bar">#0DFFFFFF</color>
@@ -63,18 +62,18 @@ permissions and limitations under the License.
     <!-- Splash Screen Customization -->
 
     <!-- Company logo to show on Splash Screen -->
-    <drawable name="splash_logo">@drawable/fire_app_builder_white</drawable>
+    <drawable name="splash_logo">@drawable/stashtv_medium_logo</drawable>
 
     <!-- End of Splash Screen Customization -->
 
     <!-- Browse Customization -->
 
     <!-- Company logo -->
-    <drawable name="company_logo">@drawable/fire_app_builder_white_2</drawable>
+    <drawable name="company_logo">@drawable/stashtv_medium_logo</drawable>
     <!-- App icon -->
     <drawable name="app_logo">@mipmap/ic_launcher</drawable>
     <!-- App banner. Note: Used for Google Play Store -->
-    <drawable name="app_banner">@drawable/placeholder_banner</drawable>
+    <drawable name="app_banner">@drawable/stashtv_app_logo</drawable>
     <!-- Content preview window customization -->
     <dimen name="content_image_height">350dp</dimen>
     <dimen name="content_image_width">540dp</dimen>
@@ -130,5 +129,16 @@ permissions and limitations under the License.
     <string translatable="false" name="second_screen_login_instruction_line_2">Visit facebook.com/device</string>
 
     <!-- End of Authentication Customization -->
+
+    <!--Flurry Analytics   -->
+    <string name="encrypted_flurry_api_key" translatable="false">ZQT117S0h3JPEnyI08NZhtz0voDxIG5FujooS7MCyPo=</string>
+
+    <!-- Encrypted Flurry API key, override this with your own encrypted API key -->
+    <string name="flurry_key_1" translatable="false">qwerty</string>
+    <string name="flurry_key_2" translatable="false">ytrewq</string>
+    <string name="flurry_key_3" translatable="false">asdfgh</string>
+    <string name="flurry_key_4" translatable="false">hgfdsa</string>
+    <string name="flurry_key_5" translatable="false">zxcvbn</string>
+    <string name="flurry_key_6" translatable="false">nbvcxz</string>
 
 </resources>

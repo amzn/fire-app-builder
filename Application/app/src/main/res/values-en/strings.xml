@@ -14,6 +14,8 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-  <string name="copyright">Copyright 2016. All Rights Reserved.</string>
-  <string name="search_bar_hint">I\'m looking for…</string>
+    <!-- Copyright string -->
+    <string name="copyright">© 2022 Stash TV. All Rights Reserved.</string>
+    <!-- Search hint text -->
+    <string name="search_bar_hint">I\'m looking for…</string>
 </resources>

@@ -34,9 +34,9 @@ permissions and limitations under the License.
     <declare-styleable name="LeanbackTheme">
 
         <!-- left padding of ContentBrowseFragment, RowsFragment, DetailsFragment -->
-        <attr name="browsePaddingLeft" format="dimension"/>
+        <attr name="browsePaddingLeft" format="dimension" />
         <!-- right padding of ContentBrowseFragment, RowsFragment, DetailsFragment -->
-        <attr name="browsePaddingRight" format="dimension"/>
+        <attr name="browsePaddingRight" format="dimension" />
 
     </declare-styleable>
 
@@ -46,10 +46,9 @@ permissions and limitations under the License.
         <item name="android:padding">4dp</item>
     </style>
 
-    <style name="Widget.Example.Leanback.Title.Text" parent="Widget.Leanback.Title.Text">
-    </style>
-    <style name="Widget.Example.Leanback.Rows.VerticalGridView"
-           parent="Widget.Leanback.Rows.VerticalGridView">
+    <style name="Widget.Example.Leanback.Title.Text" parent="Widget.Leanback.Title.Text"></style>
+
+    <style name="Widget.Example.Leanback.Rows.VerticalGridView" parent="Widget.Leanback.Rows.VerticalGridView">
         <item name="android:paddingTop">96dp</item>
     </style>
 
@@ -61,20 +60,24 @@ permissions and limitations under the License.
     <!-- End playback overlay fragment custom styles-->
 
     <!-- Start content_details_activity_layout fragment custom styles-->
-    <style name="Widget.Leanback.DetailsActionButtonStyle.Custom"
-           parent="Widget.Leanback.DetailsActionButtonStyle">
+    <style name="Widget.Leanback.DetailsActionButtonStyle.Custom" parent="Widget.Leanback.DetailsActionButtonStyle">
         <item name="android:background">@drawable/action_button_background</item>
-        <item name="android:gravity">center_vertical|start</item>
+        <item name="android:textAppearance">
+            @style/TextAppearance.Leanback.DetailsActionButton
+        </item>
     </style>
+
     <style name="TextAppearance.Leanback.DetailsActionButton">
         <item name="android:textSize">@dimen/lb_action_text_size</item>
         <item name="android:textColor">@color/action_button_text_color_selector</item>
-        <item name="android:textAllCaps">true</item>
+        <item name="android:textAllCaps">false</item>
     </style>
+
     <style name="TextAppearance.Leanback.DetailsDescriptionBody">
         <item name="android:textSize">@dimen/lb_details_description_body_text_size</item>
         <item name="android:textColor">@color/lb_details_description_body_color</item>
     </style>
+
     <style name="TextAppearance.Leanback.DetailsDescriptionTitle">
         <item name="android:textSize">@dimen/lb_details_description_title_text_size</item>
         <item name="android:textColor">@color/lb_details_description_color</item>

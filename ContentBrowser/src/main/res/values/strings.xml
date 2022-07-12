@@ -21,8 +21,8 @@ permissions and limitations under the License.
     <!-- IMPORTANT: Following 2 strings are concatenated to generate the multi-line title of Watch
     from Beginning button, watch_from_beginning_1 being the first line of the title and
     watch_from_beginning_2 being the second line of the title -->
-    <string name="watch_from_beginning_1">Watch</string>
-    <string name="watch_from_beginning_2">from Beginning</string>
+    <string name="watch_from_beginning_1">Watch from</string>
+    <string name="watch_from_beginning_2">Beginning</string>
     <!-- IMPORTANT: Following 2 strings are concatenated to generate the multi-line title of Resume
      Playback button, resume_1 being the first line of the title and resume_2 being the second line
      of the title -->

@@ -37,16 +37,16 @@ buildscript {
 }
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 30
     buildToolsVersion '28.0.2'
 
     defaultConfig {
         applicationId "com.filmhub.filmdistribution.primefilms"
         minSdkVersion 21
         //noinspection ExpiredTargetSdkVersion
-        targetSdkVersion 23
-        versionCode 10
-        versionName "1.0.7"
+        targetSdkVersion 30
+        versionCode 13
+        versionName "1.0.10"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -100,5 +100,5 @@ dependencies {
     compile project(':AMZNMediaPlayerComponent')
     compile project(':VastAdsComponent')
     compile project(':PassThroughLoginComponent')
-    compile project(':LoggerAnalyticsComponent')
+    compile project(':FlurryAnalyticsComponent')
 }

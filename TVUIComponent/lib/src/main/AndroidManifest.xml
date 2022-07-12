@@ -55,14 +55,14 @@ permissions and limitations under the License.
 
     <application>
         <activity
-                android:name="com.amazon.android.tv.tenfoot.ui.activities.FullContentBrowseActivity"
-                android:screenOrientation="landscape"/>
+            android:name=".ui.activities.FullContentBrowseActivity"
+            android:screenOrientation="landscape" />
         <activity
-                android:name="com.amazon.android.tv.tenfoot.ui.activities.ContentBrowseActivity"
-                android:screenOrientation="landscape"/>
+            android:name=".ui.activities.ContentBrowseActivity"
+            android:screenOrientation="landscape" />
         <activity
-                android:name="com.amazon.android.tv.tenfoot.ui.activities.ContentDetailsActivity"
-                android:exported="true">
+            android:name=".ui.activities.ContentDetailsActivity"
+            android:exported="true">
 
             <!-- Receives the PendingIntent requests to view a specific content. -->
             <intent-filter>
@@ -71,9 +71,9 @@ permissions and limitations under the License.
             </intent-filter>
 
         </activity>
-        <activity android:name="com.amazon.android.tv.tenfoot.ui.activities.ContentSearchActivity"/>
-        <activity android:name="com.amazon.android.tv.tenfoot.ui.activities.SplashActivity"/>
-        <activity android:name="com.amazon.android.uamp.ui.PlaybackActivity"/>
+        <activity android:name=".ui.activities.ContentSearchActivity" />
+        <activity android:name=".ui.activities.SplashActivity" />
+        <activity android:name="com.amazon.android.uamp.ui.PlaybackActivity" />
     </application>
 
 </manifest>

@@ -35,7 +35,7 @@ include ':app',
         ':VastAdsComponent',
         ':AMZNMediaPlayerComponent',
         ':PassThroughLoginComponent',
-        ':LoggerAnalyticsComponent'
+        ':FlurryAnalyticsComponent'
 
 /* Frameworks */
 project(':TVUIComponent').projectDir = new File(rootProject.projectDir, '../TVUIComponent/lib')
@@ -60,6 +60,6 @@ project(':PurchaseInterface').projectDir = new File(rootProject.projectDir, '../
 project(':AMZNMediaPlayerComponent').projectDir = new File(rootProject.projectDir, '../AMZNMediaPlayerComponent')
 project(':VastAdsComponent').projectDir = new File(rootProject.projectDir, '../VastAdsComponent')
 project(':PassThroughLoginComponent').projectDir = new File(rootProject.projectDir, '../PassThroughLoginComponent')
-project(':LoggerAnalyticsComponent').projectDir = new File(rootProject.projectDir, '../LoggerAnalyticsComponent')
+project(':FlurryAnalyticsComponent').projectDir = new File(rootProject.projectDir, '../FlurryAnalyticsComponent')
 // Uncomment when using ComScore Analytics
 //project(':comscore').projectDir = new File(rootProject.projectDir, '../ComScoreAnalyticsComponent/libs/comscore')
