@@ -74,6 +74,6 @@ public class StashDataDownloader extends ADataDownloader {
      */
     @Override
     protected String getConfigFilePath(Context context) {
-        return mContext.getString(R.string.stash_downloader_config_file_path);
+        return mContext.getString(R.string.authentication_error_message);
     }
 }
