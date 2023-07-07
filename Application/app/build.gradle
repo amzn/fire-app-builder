@@ -101,4 +101,5 @@ dependencies {
     implementation project(':PassThroughAdsComponent')
     implementation project(':PassThroughLoginComponent')
     implementation project(':LoggerAnalyticsComponent')
+    androidTestImplementation project(path: ':ContentBrowser')
 }

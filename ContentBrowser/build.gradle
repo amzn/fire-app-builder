@@ -48,6 +48,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:23.1.1'
     implementation 'com.android.support:support-v4:23.1.1'
     implementation 'com.android.support:recommendation:23.1.1'
+    implementation 'org.greenrobot:eventbus:3.0.0'
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
@@ -61,16 +62,16 @@ dependencies {
     }
     androidTestImplementation 'junit:junit:4.12'
 
-    implementation project(':ModuleInterface')
-    implementation project(':AuthInterface')
-    implementation project(':AnalyticsInterface')
-    implementation project(':AdsInterface')
-    implementation project(':PurchaseInterface')
-    implementation project(':UAMP')
-    implementation project(':DataLoader')
-    implementation project(':DynamicParser')
-    implementation project(':Utils')
-    implementation project(':ContentModel')
+    api project(':ModuleInterface')
+    api project(':AuthInterface')
+    api project(':AnalyticsInterface')
+    api project(':AdsInterface')
+    api project(':PurchaseInterface')
+    api project(':UAMP')
+    api project(':DataLoader')
+    api project(':DynamicParser')
+    api project(':Utils')
+    api project(':ContentModel')
     // Global font support
     implementation project(':Calligraphy')
 }

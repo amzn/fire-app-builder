@@ -53,8 +53,10 @@ dependencies {
             rootProject.mediaPlayerType.equals("externalExoPlayer")) {
         implementation rootProject.compileUrl
     } else {
-        implementation files('libs/exoplayer.jar')
+        api files('libs/exoplayer.jar')
     }
+
+    api files('libs/amznplayerinterfacelib.jar')
 
     implementation 'com.android.support:recyclerview-v7:23.1.1'
     implementation 'com.android.support:leanback-v17:23.1.1'
@@ -68,6 +70,6 @@ dependencies {
         exclude module: 'support-annotations'
     }
 
-    implementation project(':ModuleInterface')
-    implementation project(':ContentModel')
+    api project(':ModuleInterface')
+    api project(':ContentModel')
 }
