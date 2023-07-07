@@ -44,35 +44,35 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:support-v4:23.1.1'
-    compile 'com.android.support:recommendation:23.1.1'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:23.1.1'
+    implementation 'com.android.support:support-v4:23.1.1'
+    implementation 'com.android.support:recommendation:23.1.1'
 
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
-    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
 
-    androidTestCompile('com.android.support.test:runner:0.4') {
+    androidTestImplementation('com.android.support.test:runner:0.4') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
-    androidTestCompile('com.android.support.test:rules:0.4') {
+    androidTestImplementation('com.android.support.test:rules:0.4') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
-    androidTestCompile 'junit:junit:4.12'
+    androidTestImplementation 'junit:junit:4.12'
 
-    compile project(':ModuleInterface')
-    compile project(':AuthInterface')
-    compile project(':AnalyticsInterface')
-    compile project(':AdsInterface')
-    compile project(':PurchaseInterface')
-    compile project(':UAMP')
-    compile project(':DataLoader')
-    compile project(':DynamicParser')
-    compile project(':Utils')
-    compile project(':ContentModel')
+    implementation project(':ModuleInterface')
+    implementation project(':AuthInterface')
+    implementation project(':AnalyticsInterface')
+    implementation project(':AdsInterface')
+    implementation project(':PurchaseInterface')
+    implementation project(':UAMP')
+    implementation project(':DataLoader')
+    implementation project(':DynamicParser')
+    implementation project(':Utils')
+    implementation project(':ContentModel')
     // Global font support
-    compile project(':Calligraphy')
+    implementation project(':Calligraphy')
 }
 
 buildscript {

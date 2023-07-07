@@ -57,15 +57,15 @@ jacoco {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':Utils')
-    androidTestCompile('com.android.support.test:runner:0.4') {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':Utils')
+    androidTestImplementation('com.android.support.test:runner:0.4') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
-    androidTestCompile('com.android.support.test:rules:0.4') {
+    androidTestImplementation('com.android.support.test:rules:0.4') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
-    androidTestCompile 'junit:junit:4.12'
+    androidTestImplementation 'junit:junit:4.12'
 }
 
 buildscript {
