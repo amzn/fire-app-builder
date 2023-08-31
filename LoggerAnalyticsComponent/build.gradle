@@ -45,15 +45,15 @@ jacoco {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':ModuleInterface')
-    compile project(':AnalyticsInterface')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':ModuleInterface')
+    implementation project(':AnalyticsInterface')
 
     // Set this dependency to use JUnit 4 rules
-    androidTestCompile 'com.android.support.test:rules:0.4.1'
-    androidTestCompile('junit:junit:4.12')
+    androidTestImplementation 'com.android.support.test:rules:0.4.1'
+    androidTestImplementation('junit:junit:4.12')
 
-    androidTestCompile('com.android.support.test:runner:0.4.1') {
+    androidTestImplementation('com.android.support.test:runner:0.4.1') {
         exclude module: 'support-annotations'
     }
 }

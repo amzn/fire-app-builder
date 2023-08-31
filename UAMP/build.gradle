@@ -46,28 +46,30 @@ jacoco {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', excludes: ['exoplayer.jar'], include: ['*.jar'])
+    implementation fileTree(dir: 'libs', excludes: ['exoplayer.jar'], include: ['*.jar'])
 
     //Selectively choose which version of exo player to compile
     if (rootProject.hasProperty('mediaPlayerType') &&
             rootProject.mediaPlayerType.equals("externalExoPlayer")) {
-        compile rootProject.compileUrl
+        implementation rootProject.compileUrl
     } else {
-        compile files('libs/exoplayer.jar')
+        api files('libs/exoplayer.jar')
     }
 
-    compile 'com.android.support:recyclerview-v7:23.1.1'
-    compile 'com.android.support:leanback-v17:23.1.1'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:support-v4:23.1.1'
+    api files('libs/amznplayerinterfacelib.jar')
+
+    implementation 'com.android.support:recyclerview-v7:23.1.1'
+    implementation 'com.android.support:leanback-v17:23.1.1'
+    implementation 'com.android.support:appcompat-v7:23.1.1'
+    implementation 'com.android.support:support-v4:23.1.1'
 
     // Set this dependency to use JUnit 4 rules
-    androidTestCompile 'com.android.support.test:rules:0.4.1'
+    androidTestImplementation 'com.android.support.test:rules:0.4.1'
 
-    androidTestCompile('com.android.support.test:runner:0.4.1') {
+    androidTestImplementation('com.android.support.test:runner:0.4.1') {
         exclude module: 'support-annotations'
     }
 
-    compile project(':ModuleInterface')
-    compile project(':ContentModel')
+    api project(':ModuleInterface')
+    api project(':ContentModel')
 }

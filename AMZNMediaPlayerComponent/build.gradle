@@ -47,16 +47,16 @@ jacoco {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile files('libs/AMZNMediaPlayer.jar')
-    compile project(':ModuleInterface')
-    compile project(':UAMP')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:23.1.1'
+    implementation files('libs/AMZNMediaPlayer.jar')
+    implementation project(':ModuleInterface')
+    implementation project(':UAMP')
 
     // Set this dependency to use JUnit 4 rules
-    androidTestCompile 'com.android.support.test:rules:0.4.1'
+    androidTestImplementation 'com.android.support.test:rules:0.4.1'
 
-    androidTestCompile('com.android.support.test:runner:0.4.1') {
+    androidTestImplementation('com.android.support.test:runner:0.4.1') {
         exclude module: 'support-annotations'
     }
 }

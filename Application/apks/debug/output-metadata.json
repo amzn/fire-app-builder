@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.fireappbuilder.android.calypso",
+  "variantName": "debug",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 10,
+      "versionName": "1.0.7",
+      "outputFile": "FireAppBuilder_1.0.7.apk"
+    }
+  ],
+  "elementType": "File"
+}

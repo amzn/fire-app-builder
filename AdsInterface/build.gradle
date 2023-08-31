@@ -42,12 +42,12 @@ jacoco {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // Set this dependency to use JUnit 4 rules
-    androidTestCompile 'com.android.support.test:rules:0.4.1'
+    androidTestImplementation 'com.android.support.test:rules:0.4.1'
 
-    androidTestCompile('com.android.support.test:runner:0.4.1') {
+    androidTestImplementation('com.android.support.test:runner:0.4.1') {
         exclude module: 'support-annotations'
     }
 }
